@@ -15,6 +15,11 @@ public class SpaceShip extends DirectionalMovingSpaceObject {
 	public Vector2D getAcceleration() {
 		return mAcceleration;
 	}
+	
+	public boolean isAccelerating()
+	{
+		return (mAcceleration.getLength() > 0.001) ? true : false;
+	}
 
 	public void setAcceleration(Vector2D acceleration) {
 		mAcceleration = acceleration;

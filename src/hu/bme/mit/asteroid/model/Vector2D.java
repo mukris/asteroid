@@ -38,8 +38,13 @@ public class Vector2D {
 		// TODO
 		return this;
 	}
-
+	
 	public int getDirection() {
+		// FIXME
+		return 0;
+	}
+
+	public float getLength() {
 		// FIXME
 		return 0;
 	}
