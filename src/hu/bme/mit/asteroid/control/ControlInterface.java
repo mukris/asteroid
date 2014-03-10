@@ -1,4 +1,4 @@
-package hu.bme.mit.asteroid;
+package hu.bme.mit.asteroid.control;
 
 public abstract class ControlInterface {
 	public static interface Callback {

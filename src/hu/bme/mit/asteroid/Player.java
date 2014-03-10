@@ -1,5 +1,6 @@
 package hu.bme.mit.asteroid;
 
+import hu.bme.mit.asteroid.control.ControlInterface;
 import hu.bme.mit.asteroid.model.SpaceShip;
 
 public abstract class Player implements ControlInterface.Callback {

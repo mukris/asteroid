@@ -83,8 +83,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="10" language="java" name="hu.bme.mit.asteroid.ControlInterface" project="asteroid" 
-    file="/asteroid/src/hu/bme/mit/asteroid/ControlInterface.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="10" language="java" name="hu.bme.mit.asteroid.control.ControlInterface" project="asteroid" 
+    file="/asteroid/src/hu/bme/mit/asteroid/control/ControlInterface.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="-486" y="536"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -92,8 +92,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <interface id="11" language="java" name="hu.bme.mit.asteroid.ControlInterface.Callback" project="asteroid" 
-    file="/asteroid/src/hu/bme/mit/asteroid/ControlInterface.java" binary="false" corner="BOTTOM_RIGHT">    
+  <interface id="11" language="java" name="hu.bme.mit.asteroid.control.ControlInterface.Callback" project="asteroid" 
+    file="/asteroid/src/hu/bme/mit/asteroid/control/ControlInterface.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="-767" y="554"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -101,8 +101,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <class id="12" language="java" name="hu.bme.mit.asteroid.ArrowControlInterface" project="asteroid" 
-    file="/asteroid/src/hu/bme/mit/asteroid/ArrowControlInterface.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="12" language="java" name="hu.bme.mit.asteroid.control.ArrowControlInterface" project="asteroid" 
+    file="/asteroid/src/hu/bme/mit/asteroid/control/ArrowControlInterface.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="-444" y="853"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -146,8 +146,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="17" language="java" name="hu.bme.mit.asteroid.WADControlInterface" project="asteroid" 
-    file="/asteroid/src/hu/bme/mit/asteroid/WADControlInterface.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="17" language="java" name="hu.bme.mit.asteroid.control.WADControlInterface" project="asteroid" 
+    file="/asteroid/src/hu/bme/mit/asteroid/control/WADControlInterface.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="-247" y="853"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -155,8 +155,9 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="18" language="java" name="hu.bme.mit.asteroid.NetworkRemoteControlInterface" project="asteroid" 
-    file="/asteroid/src/hu/bme/mit/asteroid/NetworkRemoteControlInterface.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="18" language="java" name="hu.bme.mit.asteroid.control.NetworkRemoteControlInterface" project="asteroid" 
+    file="/asteroid/src/hu/bme/mit/asteroid/control/NetworkRemoteControlInterface.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="-677" y="826"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -164,84 +165,84 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <generalization id="19">    
+  <nesting id="19">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="11"/>  
+  </nesting>  
+  <generalization id="20">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="4"/>  
+  </generalization>  
+  <generalization id="21">    
     <end type="SOURCE" refId="7"/>    
     <end type="TARGET" refId="9"/>  
   </generalization>  
-  <generalization id="20">    
+  <generalization id="22">    
     <end type="SOURCE" refId="8"/>    
     <end type="TARGET" refId="7"/>  
   </generalization>  
-  <association id="21">    
+  <generalization id="23">    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="13"/>  
+  </generalization>  
+  <generalization id="24">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="2"/>  
+  </generalization>  
+  <generalization id="25">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="13"/>  
+  </generalization>  
+  <generalization id="26">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="10"/>  
+  </generalization>  
+  <generalization id="27">    
+    <end type="SOURCE" refId="18"/>    
+    <end type="TARGET" refId="10"/>  
+  </generalization>  
+  <generalization id="28">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="2"/>  
+  </generalization>  
+  <association id="29">    
     <bendpoint x="-633" y="585"/>    
     <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="22" name="mCallback"/>      
-      <multiplicity id="23" minimum="0" maximum="1"/>    
+      <attribute id="30" name="mCallback"/>      
+      <multiplicity id="31" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="11" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="24">    
-    <end type="SOURCE" refId="12"/>    
-    <end type="TARGET" refId="10"/>  
-  </generalization>  
-  <generalization id="25">    
-    <end type="SOURCE" refId="9"/>    
-    <end type="TARGET" refId="4"/>  
-  </generalization>  
-  <association id="26">    
-    <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="27" name="mControlInterface"/>      
-      <multiplicity id="28" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="10" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="29">    
-    <end type="SOURCE" refId="16"/>    
-    <end type="TARGET" refId="13"/>  
-  </generalization>  
-  <generalization id="30">    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="9"/>  
-  </generalization>  
-  <generalization id="31">    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="2"/>  
-  </generalization>  
   <generalization id="32">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="4"/>  
-  </generalization>  
-  <generalization id="33">    
     <end type="SOURCE" refId="17"/>    
     <end type="TARGET" refId="10"/>  
   </generalization>  
-  <generalization id="34">    
-    <end type="SOURCE" refId="14"/>    
+  <generalization id="33">    
+    <end type="SOURCE" refId="16"/>    
     <end type="TARGET" refId="13"/>  
   </generalization>  
-  <generalization id="35">    
-    <end type="SOURCE" refId="18"/>    
-    <end type="TARGET" refId="10"/>  
-  </generalization>  
-  <generalization id="36">    
-    <end type="SOURCE" refId="15"/>    
-    <end type="TARGET" refId="13"/>  
-  </generalization>  
-  <realization id="37">    
+  <realization id="34">    
     <bendpoint x="-658" y="464"/>    
     <end type="SOURCE" refId="13"/>    
     <end type="TARGET" refId="11"/>  
   </realization>  
+  <association id="35">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="36" name="mControlInterface"/>      
+      <multiplicity id="37" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
   <generalization id="38">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="2"/>  
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="9"/>  
   </generalization>  
-  <nesting id="39">    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="11"/>  
-  </nesting>  
+  <generalization id="39">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="4"/>  
+  </generalization>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    

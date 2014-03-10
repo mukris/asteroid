@@ -1,4 +1,4 @@
-package hu.bme.mit.asteroid;
+package hu.bme.mit.asteroid.control;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
