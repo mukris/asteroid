@@ -8,7 +8,7 @@ public abstract class ControlInterface {
 		public void onFire();
 	}
 	
-	private Callback mCallback;
+	protected Callback mCallback;
 
 	public void setCallback(Callback callback) {
 		mCallback = callback;
