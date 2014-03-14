@@ -3,6 +3,9 @@ package hu.bme.mit.asteroid;
 import hu.bme.mit.asteroid.control.ControlInterface;
 import hu.bme.mit.asteroid.model.SpaceShip;
 
+/**
+ * Egy játékost reprezentáló absztrakt osztály
+ */
 public abstract class Player implements ControlInterface.Callback {
 
 	private SpaceShip mSpaceShip;
@@ -10,6 +13,13 @@ public abstract class Player implements ControlInterface.Callback {
 	private int mPoints;
 	private ControlInterface mControlInterface;
 
+	/**
+	 * Konstruktor
+	 * 
+	 * @param controlInterface
+	 *            A felhasználó vezérlő utasításait eseményekké leképező
+	 *            objektum
+	 */
 	public Player(ControlInterface controlInterface) {
 		mControlInterface = controlInterface;
 		if (mControlInterface != null) {

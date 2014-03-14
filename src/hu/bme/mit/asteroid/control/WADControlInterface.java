@@ -3,8 +3,11 @@ package hu.bme.mit.asteroid.control;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class WADControlInterface extends ControlInterface implements
-		KeyListener {
+/**
+ * A billentyűzet "W", "A" "D", illetve control billentyűinek segítségével
+ * megvalósított {@link ControlInterface}.
+ */
+public class WADControlInterface extends ControlInterface implements KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {

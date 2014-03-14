@@ -1,5 +1,8 @@
 package hu.bme.mit.asteroid.model;
 
+/**
+ * Két dimenziós vektor
+ */
 public class Vector2D {
 
 	private float mX;

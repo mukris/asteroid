@@ -1,5 +1,8 @@
 package hu.bme.mit.asteroid.model;
 
+/**
+ * A játékban szereplő fegyvereket reprezentáló absztrakt osztály
+ */
 public abstract class Weapon extends DirectionalMovingSpaceObject {
 	
 	private static final int WEAPON_SIZE = 10;

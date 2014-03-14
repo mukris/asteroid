@@ -1,18 +1,46 @@
 package hu.bme.mit.asteroid;
 
+/**
+ * Egy pálya fő tulajdonságait tároló osztály. A {@link GameState} osztállyal
+ * ellentétben nem az aktuális állapotot tárolja, hanem csak a főbb
+ * paramétereket.
+ */
 public class LevelDescriptor {
+
 	private boolean mIsUnlocked;
 	private final int mNumAsteroidLarge;
 	private final int mNumAsteroidMedium;
 	private final int mNumAsteroidSmall;
 
-	public LevelDescriptor(int numAsteroidLarge, int numAsteroidMedium,
-			int numAsteroidSmall) {
+	/**
+	 * Konstruktor
+	 * 
+	 * A pályát alapértelmezés szerint nem feloldottnak állítja be
+	 * 
+	 * @param numAsteroidLarge
+	 *            Nagy aszteroidák száma
+	 * @param numAsteroidMedium
+	 *            Közepes aszteroidák száma
+	 * @param numAsteroidSmall
+	 *            Kis aszteroidák száma
+	 */
+	public LevelDescriptor(int numAsteroidLarge, int numAsteroidMedium, int numAsteroidSmall) {
 		this(numAsteroidLarge, numAsteroidMedium, numAsteroidSmall, false);
 	}
 
-	public LevelDescriptor(int numAsteroidLarge, int numAsteroidMedium,
-			int numAsteroidSmall, boolean isUnlocked) {
+	/**
+	 * Konstruktor
+	 * 
+	 * @param numAsteroidLarge
+	 *            Nagy aszteroidák száma
+	 * @param numAsteroidMedium
+	 *            Közepes aszteroidák száma
+	 * @param numAsteroidSmall
+	 *            Kis aszteroidák száma
+	 * @param isUnlocked
+	 *            Fel van-e oldva a pálya
+	 */
+	public LevelDescriptor(int numAsteroidLarge, int numAsteroidMedium, int numAsteroidSmall, boolean isUnlocked) {
 		mIsUnlocked = isUnlocked;
 		mNumAsteroidLarge = numAsteroidLarge;
 		mNumAsteroidMedium = numAsteroidMedium;

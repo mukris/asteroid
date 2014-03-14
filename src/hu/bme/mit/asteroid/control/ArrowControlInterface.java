@@ -3,8 +3,11 @@ package hu.bme.mit.asteroid.control;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class ArrowControlInterface extends ControlInterface implements
-		KeyListener {
+/**
+ * A billentyűzet nyíl, illetve szóköz billentyűinek segítségével megvalósított
+ * {@link ControlInterface}.
+ */
+public class ArrowControlInterface extends ControlInterface implements KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
@@ -17,7 +20,7 @@ public class ArrowControlInterface extends ControlInterface implements
 
 			break;
 		case KeyEvent.VK_RIGHT:
-			
+
 			break;
 		case KeyEvent.VK_SPACE:
 
@@ -39,7 +42,7 @@ public class ArrowControlInterface extends ControlInterface implements
 
 			break;
 		case KeyEvent.VK_RIGHT:
-			
+
 			break;
 		case KeyEvent.VK_SPACE:
 
