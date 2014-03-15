@@ -50,9 +50,10 @@ public class GameFactory {
 	 */
 	public GameState createSingleplayerGame(int levelID, Player player) {
 		// TODO check levelID, unlock status
-		GameState gameState = new GameState();
-		generateAsteroidPositions(gameState, sLevels.get(levelID), false);
 		// TODO initialize Player, SpaceShip...
+		GameState gameState = new GameState(player, null);
+		generateAsteroidPositions(gameState, sLevels.get(levelID));
+		
 		return gameState;
 	}
 
@@ -69,9 +70,10 @@ public class GameFactory {
 	 */
 	public GameState createMultiplayerGame(int levelID, Player player1, Player player2) {
 		// TODO check levelID
-		GameState gameState = new GameState();
-		generateAsteroidPositions(gameState, sLevels.get(levelID), true);
 		// TODO initialize Players, SpaceShips...
+		GameState gameState = new GameState(player1, player2);
+		generateAsteroidPositions(gameState, sLevels.get(levelID));
+		
 		return gameState;
 	}
 
@@ -83,10 +85,10 @@ public class GameFactory {
 	 *            A játékteret leíró objektum
 	 * @param levelDescriptor
 	 *            A pályát leíró objektum
-	 * @param isMultiplayer
-	 *            Két játékos számára kell a pálya?
 	 */
-	private void generateAsteroidPositions(GameState gameState, LevelDescriptor levelDescriptor, boolean isMultiplayer) {
+	private void generateAsteroidPositions(GameState gameState, LevelDescriptor levelDescriptor) {
+		boolean isMultiplayer = gameState.isMultiplayer();
+		// TODO create Asteroids
 		// TODO randomize Asteroids' position, speed..
 	}
 }
