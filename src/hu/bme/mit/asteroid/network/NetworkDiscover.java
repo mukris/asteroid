@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * A hálózati szerver felderítésért felelős osztály
+ */
 public class NetworkDiscover {
 
 	private static final String MAGIC_STRING = "### Asteroid game magic string ###";
@@ -22,11 +25,18 @@ public class NetworkDiscover {
 		mAddresses = new HashSet<>();
 	}
 
-	public void startBroadcasting() {
+	/**
+	 * Broadcast üzenetek periodikus küldésének indítása
+	 * @throws SocketException 
+	 */
+	public void startBroadcasting() throws SocketException {
 		mSenderThread = new BroadcastSenderThread(MAGIC_STRING, PORT);
 		mSenderThread.start();
 	}
 
+	/**
+	 * Broadcast üzenetek küldésének leállítása
+	 */
 	public void stopBroadcasting() {
 		if (mSenderThread != null && mSenderThread.isAlive()) {
 			mSenderThread.interrupt();
@@ -37,22 +47,31 @@ public class NetworkDiscover {
 		}
 	}
 
+	/**
+	 * Broadcast üzenetek figyelésének indítása
+	 */
 	public void startListening() {
 		clearDiscoveredAddresses();
 		mReceiverThread = new BroadcastReceiverThread(MAGIC_STRING, PORT);
 		mReceiverThread.start();
 	}
 
+	/**
+	 * Broadcast üzenetek figyelésének leállítása
+	 */
 	public void stopListening() {
 		if (mReceiverThread != null && mReceiverThread.isAlive()) {
-			mReceiverThread.close();
+			mReceiverThread.interrupt();
 			try {
 				mReceiverThread.join();
 			} catch (InterruptedException e) {
 			}
 		}
 	}
-	
+
+	/**
+	 * A hálózaton talált szerverek listájának lekérdezése
+	 */
 	public synchronized ArrayList<InetAddress> getDiscoveredAddresses() {
 		ArrayList<InetAddress> addr = new ArrayList<>();
 		for (InetAddress inetAddress : mAddresses) {
@@ -60,23 +79,33 @@ public class NetworkDiscover {
 		}
 		return addr;
 	}
-	
+
+	/**
+	 * A hálózaton talált szerverek listájának ürítése
+	 */
 	public synchronized void clearDiscoveredAddresses() {
 		mAddresses.clear();
 	}
-	
-	private synchronized void addInetAddress(InetAddress address)
-	{
+
+	/**
+	 * Új cím hozzáadása a hálózaton talált szerverek listájához
+	 * 
+	 * @param address
+	 */
+	private synchronized void addInetAddress(InetAddress address) {
 		mAddresses.add(address);
 	}
 
+	/**
+	 * A broadcast üzenetek periodikus küldését végző Thread
+	 */
 	private static class BroadcastSenderThread extends Thread {
 
 		private final byte[] mBuffer;
 		private DatagramPacket mPacket;
 		private DatagramSocket mSocket;
 
-		public BroadcastSenderThread(String magic, int port) {
+		public BroadcastSenderThread(String magic, int port) throws SocketException {
 			mBuffer = magic.getBytes();
 
 			try {
@@ -85,6 +114,7 @@ public class NetworkDiscover {
 				mSocket.setBroadcast(true);
 			} catch (SocketException e) {
 				e.printStackTrace();
+				throw e;
 			} catch (UnknownHostException e) {
 				e.printStackTrace();
 			}
@@ -112,6 +142,9 @@ public class NetworkDiscover {
 		}
 	}
 
+	/**
+	 * A broadcast üzenetekre várakozó Thread
+	 */
 	private class BroadcastReceiverThread extends Thread {
 
 		private byte[] mBuffer;
@@ -131,8 +164,12 @@ public class NetworkDiscover {
 			}
 		}
 
-		public void close() {
-			mSocket.close();
+		@Override
+		public void interrupt() {
+			super.interrupt();
+			if(!mSocket.isClosed()) {
+				mSocket.close();
+			}
 		}
 
 		@Override

@@ -6,6 +6,14 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * A hálózati réteg közös elemeit egyesítő absztrakt osztály
+ * 
+ * @param <ReceiveType>
+ *            A várt objektumok típusa
+ * @param <SendType>
+ *            A küldött objektumok típusa
+ */
 abstract class NetworkHelper<ReceiveType, SendType> {
 
 	protected static final int PORT = 8766;
@@ -16,6 +24,13 @@ abstract class NetworkHelper<ReceiveType, SendType> {
 	private ReceiverThread<ReceiveType> mReceiverThread;
 	protected NetworkListener<ReceiveType> mListener;
 
+	/**
+	 * A hálózati kapcsolat főbb eseményeinek lekezelését lehetővé tévő
+	 * interfész.
+	 * 
+	 * @param <ReceiveType>
+	 *            A várt objektum típusa
+	 */
 	protected interface NetworkListener<ReceiveType> {
 		/**
 		 * Akkor hívódik, ha sikerült csatlakozni a másik játékoshoz.
@@ -36,6 +51,12 @@ abstract class NetworkHelper<ReceiveType, SendType> {
 		void onReceive(ReceiveType data);
 	}
 
+	/**
+	 * A megadott típusú adatok fogadásáért felelős Thread
+	 * 
+	 * @param <ReceiveType>
+	 *            A várt adatok típusa
+	 */
 	@SuppressWarnings("hiding")
 	protected class ReceiverThread<ReceiveType> extends Thread {
 
@@ -58,6 +79,7 @@ abstract class NetworkHelper<ReceiveType, SendType> {
 						if (Thread.interrupted()) {
 							throw new InterruptedException();
 						}
+						@SuppressWarnings("unchecked")
 						ReceiveType readObject = (ReceiveType) mInput.readObject();
 						if (mListener != null) {
 							mListener.onReceive(readObject);
@@ -86,11 +108,17 @@ abstract class NetworkHelper<ReceiveType, SendType> {
 		mOutput.flush();
 	}
 
+	/**
+	 * A {@link ReceiverThread} indítása.
+	 */
 	protected void startReceiving() {
 		mReceiverThread = new ReceiverThread<>(mListener);
 		mReceiverThread.start();
 	}
 
+	/**
+	 * A {@link ReceiverThread} leállítása.
+	 */
 	protected void stopReceiving() {
 		if (mReceiverThread != null) {
 			try {
@@ -103,6 +131,10 @@ abstract class NetworkHelper<ReceiveType, SendType> {
 		}
 	}
 
+	/**
+	 * Kapcsolat bontása. Meghívása kötelező az erőforrások felszabadítása
+	 * érdekben.
+	 */
 	protected void disconnect() {
 		try {
 			stopReceiving();
@@ -113,11 +145,21 @@ abstract class NetworkHelper<ReceiveType, SendType> {
 				mOutput.close();
 			if (mClientSocket != null)
 				mClientSocket.close();
+			if (mListener != null) {
+				mListener.onDisconnect();
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
+	/**
+	 * Adat küldése a másik gépnek
+	 * 
+	 * @param data
+	 *            A küldendő objektum
+	 * @return Sikeres küldés esetén true, egyébként false
+	 */
 	protected boolean send(SendType data) {
 		if (mClientSocket == null || mOutput == null) {
 			return false;
