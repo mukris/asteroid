@@ -1,5 +1,6 @@
 package hu.bme.mit.asteroid;
 
+import hu.bme.mit.asteroid.control.ControlEvent;
 import hu.bme.mit.asteroid.control.ControlInterface;
 import hu.bme.mit.asteroid.model.SpaceShip;
 
@@ -54,7 +55,7 @@ public abstract class Player implements ControlInterface.Callback {
 	public void setState(State state) {
 		mState = state;
 	}
-	
+
 	public int getLives() {
 		return mState.getLives();
 	}
@@ -62,11 +63,11 @@ public abstract class Player implements ControlInterface.Callback {
 	public void setLives(int lives) {
 		mState.setLives(lives);
 	}
-	
+
 	public int getPoints() {
 		return mState.getPoints();
 	}
-	
+
 	public void setPoints(int points) {
 		mState.setPoints(points);
 	}
@@ -80,30 +81,23 @@ public abstract class Player implements ControlInterface.Callback {
 	}
 
 	@Override
-	public void onAccelerate() {
-		if (mSpaceShip != null) {
-			mSpaceShip.accelerate();
-		}
-	}
-
-	@Override
-	public void onTurnLeft() {
-		if (mSpaceShip != null) {
-			mSpaceShip.rotateLeft();
-		}
-	}
-
-	@Override
-	public void onTurnRight() {
-		if (mSpaceShip != null) {
-			mSpaceShip.rotateRight();
-		}
-	}
-
-	@Override
-	public void onFire() {
-		if (mSpaceShip != null) {
-			mSpaceShip.fire();
+	public void control(ControlEvent event) {
+		// TODO Vezérlőesemények leképezése az űrhajó irányítására
+		switch (event.getType()) {
+		case ACCELERATE_START:
+			break;
+		case ACCELERATE_STOP:
+			break;
+		case TURN_LEFT_START:
+			break;
+		case TURN_RIGHT_START:
+			break;
+		case TURN_STOP:
+			break;
+		case FIRE_START:
+			break;
+		case FIRE_STOP:
+			break;
 		}
 	}
 }

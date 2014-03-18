@@ -16,25 +16,9 @@ public abstract class ControlInterface {
 	 */
 	public interface Callback {
 		/**
-		 * Gyorsítás esemény bekövetkezésekor hívódó eseménykezelő függvény
+		 * Új vezérlőutasítás érkezésekor hívódó eseménykezelő függvény
 		 */
-		public void onAccelerate();
-
-		/**
-		 * Balra fordulás esemény bekövetkezésekor hívódó eseménykezelő függvény
-		 */
-		public void onTurnLeft();
-
-		/**
-		 * Jobbra fordulás esemény bekövetkezésekor hívódó eseménykezelő
-		 * függvény
-		 */
-		public void onTurnRight();
-
-		/**
-		 * Tüzelés esemény bekövetkezésekor hívódó eseménykezelő függvény
-		 */
-		public void onFire();
+		public void control(ControlEvent event);
 	}
 
 	/**
