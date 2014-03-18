@@ -1,11 +1,11 @@
-package hu.bme.mit.asteroid;
+package hu.bme.mit.asteroid.gui;
 
 import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
 /**
- * A játk grafikus megjelenítését végző osztály
+ * A játék grafikus megjelenítését végző osztály
  */
 public class GameField extends JPanel {
 

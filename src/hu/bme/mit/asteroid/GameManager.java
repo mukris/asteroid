@@ -1,5 +1,7 @@
 package hu.bme.mit.asteroid;
 
+import hu.bme.mit.asteroid.gui.GameField;
+
 /**
  * A játékmenetet irányító osztály
  */
