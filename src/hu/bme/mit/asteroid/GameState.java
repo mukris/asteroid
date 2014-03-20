@@ -3,6 +3,7 @@ package hu.bme.mit.asteroid;
 import hu.bme.mit.asteroid.model.Asteroid;
 import hu.bme.mit.asteroid.model.SpaceShip;
 import hu.bme.mit.asteroid.model.Weapon;
+import hu.bme.mit.asteroid.player.Player;
 
 import java.util.ArrayList;
 

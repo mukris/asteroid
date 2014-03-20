@@ -1,4 +1,4 @@
-package hu.bme.mit.asteroid;
+package hu.bme.mit.asteroid.player;
 
 import hu.bme.mit.asteroid.control.ControlEvent;
 import hu.bme.mit.asteroid.control.ControlInterface;
@@ -10,15 +10,15 @@ import hu.bme.mit.asteroid.network.NetworkClient;
 public class NetworkLocalPlayer extends Player {
 
 	private NetworkClient mNetworkClient;
-	
+
 	public NetworkLocalPlayer(ControlInterface controlInterface, NetworkClient networkClient) {
 		super(controlInterface);
 		mNetworkClient = networkClient;
 	}
-	
+
 	@Override
 	public void control(ControlEvent event) {
-		if(mNetworkClient != null){
+		if (mNetworkClient != null) {
 			mNetworkClient.sendControlEvent(event);
 		}
 	}

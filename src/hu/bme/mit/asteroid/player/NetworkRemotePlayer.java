@@ -1,4 +1,4 @@
-package hu.bme.mit.asteroid;
+package hu.bme.mit.asteroid.player;
 
 import hu.bme.mit.asteroid.control.ControlEvent;
 import hu.bme.mit.asteroid.network.NetworkServer.NetworkServerListener;
