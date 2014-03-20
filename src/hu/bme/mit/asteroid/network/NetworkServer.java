@@ -31,8 +31,12 @@ public class NetworkServer extends NetworkHelper<ControlEvent, GameState> {
 
 	private AcceptThread mAcceptThread;
 
-	public NetworkServer(NetworkServerListener listener) {
-		mListener = listener;
+	public NetworkServer() {
+
+	}
+
+	public NetworkServer(NetworkServerListener listener) throws NullPointerException {
+		addListener(listener);
 	}
 
 	/**
@@ -73,8 +77,12 @@ public class NetworkServer extends NetworkHelper<ControlEvent, GameState> {
 	}
 
 	private void onConnect() {
-		if (mListener != null) {
-			mListener.onConnect();
+		if (mListeners != null) {
+			synchronized (mListeners) {
+				for (NetworkListener<?> listener : mListeners) {
+					listener.onConnect();
+				}
+			}
 		}
 		startReceiving();
 		if (mAcceptThread != null) {

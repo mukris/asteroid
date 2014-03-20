@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -22,7 +23,7 @@ abstract class NetworkHelper<ReceiveType, SendType> {
 	private ObjectInputStream mInput;
 	private ObjectOutputStream mOutput;
 	private ReceiverThread<ReceiveType> mReceiverThread;
-	protected NetworkListener<ReceiveType> mListener;
+	protected ArrayList<NetworkListener<ReceiveType>> mListeners;
 
 	/**
 	 * A hálózati kapcsolat főbb eseményeinek lekezelését lehetővé tévő
@@ -51,6 +52,21 @@ abstract class NetworkHelper<ReceiveType, SendType> {
 		void onReceive(ReceiveType data);
 	}
 
+	public void addListener(NetworkListener<ReceiveType> listener) throws NullPointerException {
+		if (listener == null) {
+			throw new NullPointerException();
+		}
+		synchronized (mListeners) {
+			mListeners.add(listener);
+		}
+	}
+
+	public void removeListener(NetworkListener<ReceiveType> listener) {
+		synchronized (mListeners) {
+			mListeners.remove(listener);
+		}
+	}
+
 	/**
 	 * A megadott típusú adatok fogadásáért felelős Thread
 	 * 
@@ -61,11 +77,11 @@ abstract class NetworkHelper<ReceiveType, SendType> {
 	protected class ReceiverThread<ReceiveType> extends Thread {
 
 		private AtomicBoolean mRunning;
-		private NetworkListener<ReceiveType> mListener;
+		private ArrayList<NetworkListener<ReceiveType>> mListeners;
 
-		public ReceiverThread(NetworkListener<ReceiveType> listener) {
+		public ReceiverThread(ArrayList<NetworkListener<ReceiveType>> listeners) {
 			mRunning.set(true);
-			mListener = listener;
+			mListeners = listeners;
 		}
 
 		@Override
@@ -81,8 +97,12 @@ abstract class NetworkHelper<ReceiveType, SendType> {
 						}
 						@SuppressWarnings("unchecked")
 						ReceiveType readObject = (ReceiveType) mInput.readObject();
-						if (mListener != null) {
-							mListener.onReceive(readObject);
+						if (mListeners != null) {
+							synchronized (NetworkHelper.this.mListeners) {
+								for (NetworkListener<ReceiveType> listener : mListeners) {
+									listener.onReceive(readObject);
+								}
+							}
 						}
 					} else {
 						sleep(10);
@@ -112,7 +132,7 @@ abstract class NetworkHelper<ReceiveType, SendType> {
 	 * A {@link ReceiverThread} indítása.
 	 */
 	protected void startReceiving() {
-		mReceiverThread = new ReceiverThread<>(mListener);
+		mReceiverThread = new ReceiverThread<>(mListeners);
 		mReceiverThread.start();
 	}
 
@@ -145,8 +165,12 @@ abstract class NetworkHelper<ReceiveType, SendType> {
 				mOutput.close();
 			if (mClientSocket != null)
 				mClientSocket.close();
-			if (mListener != null) {
-				mListener.onDisconnect();
+			if (mListeners != null) {
+				synchronized (mListeners) {
+					for (NetworkListener<ReceiveType> listener : mListeners) {
+						listener.onDisconnect();
+					}
+				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -29,8 +29,12 @@ public class NetworkClient extends NetworkHelper<GameState, ControlEvent> {
 	public interface NetworkClientListener extends NetworkListener<GameState> {
 	}
 
-	public NetworkClient(NetworkClientListener listener) {
-		mListener = listener;
+	public NetworkClient() {
+		mClientSocket = new Socket();
+	}
+
+	public NetworkClient(NetworkClientListener listener) throws NullPointerException {
+		addListener(listener);
 		mClientSocket = new Socket();
 	}
 
@@ -50,8 +54,12 @@ public class NetworkClient extends NetworkHelper<GameState, ControlEvent> {
 			mClientSocket.connect(new InetSocketAddress(address, PORT), TIMEOUT);
 			initCommunication();
 
-			if (mListener != null) {
-				mListener.onConnect();
+			if (mListeners != null) {
+				synchronized (mListeners) {
+					for (NetworkListener<?> listener : mListeners) {
+						listener.onConnect();
+					}
+				}
 			}
 
 			startReceiving();
