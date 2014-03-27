@@ -1,5 +1,7 @@
 package hu.bme.mit.asteroid;
 
+import hu.bme.mit.asteroid.exceptions.LevelNotExistsException;
+import hu.bme.mit.asteroid.exceptions.LevelNotUnlockedException;
 import hu.bme.mit.asteroid.player.Player;
 
 import java.util.ArrayList;
@@ -49,13 +51,23 @@ public class GameFactory {
 	 * @param player
 	 *            A játékost reprezentáló objektum
 	 * @return Az újonnan létrehozott játéktér
+	 * @throws LevelNotExistsException
+	 *             Akkor dobja, ha a levelID érvénytelen
+	 * @throws LevelNotUnlockedException
+	 *             Akkor dobja, ha az adott pálya még nincs feloldva
 	 */
-	public GameState createSingleplayerGame(int levelID, Player player) {
-		// TODO check levelID, unlock status
+	public GameState createSingleplayerGame(int levelID, Player player) throws LevelNotExistsException,
+			LevelNotUnlockedException {
+		if (levelID < 0 || levelID > sLevels.size()) {
+			throw new LevelNotExistsException();
+		}
+		if (!sLevels.get(levelID).isUnlocked()) {
+			throw new LevelNotUnlockedException();
+		}
 		// TODO initialize Player, SpaceShip...
 		GameState gameState = new GameState(player, null);
 		generateAsteroidPositions(gameState, sLevels.get(levelID));
-		
+
 		return gameState;
 	}
 
@@ -75,7 +87,7 @@ public class GameFactory {
 		// TODO initialize Players, SpaceShips...
 		GameState gameState = new GameState(player1, player2);
 		generateAsteroidPositions(gameState, sLevels.get(levelID));
-		
+
 		return gameState;
 	}
 
