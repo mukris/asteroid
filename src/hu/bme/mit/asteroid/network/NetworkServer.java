@@ -2,6 +2,7 @@ package hu.bme.mit.asteroid.network;
 
 import hu.bme.mit.asteroid.GameState;
 import hu.bme.mit.asteroid.control.ControlEvent;
+import hu.bme.mit.asteroid.network.NetworkHelper.NetworkConnectionListener;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -26,7 +27,7 @@ public class NetworkServer extends NetworkHelper<ControlEvent, GameState> {
 	 * A hálózati kapcsolat főbb szerveroldali eseményeinek lekezelését lehetővé
 	 * tévő interfész.
 	 */
-	public interface NetworkServerListener extends NetworkListener<ControlEvent> {
+	public interface NetworkServerListener extends NetworkReceiveListener<ControlEvent>, NetworkConnectionListener {
 	}
 
 	private AcceptThread mAcceptThread;
@@ -36,7 +37,26 @@ public class NetworkServer extends NetworkHelper<ControlEvent, GameState> {
 	}
 
 	public NetworkServer(NetworkServerListener listener) throws NullPointerException {
-		addListener(listener);
+		addConnectionListener(listener);
+		addReceiveListener(listener);
+	}
+
+	public NetworkServer(NetworkConnectionListener listener) throws NullPointerException {
+		addConnectionListener(listener);
+	}
+
+	public NetworkServer(NetworkReceiveListener<ControlEvent> listener) throws NullPointerException {
+		addReceiveListener(listener);
+	}
+
+	public void addNetworkServerListener(NetworkServerListener listener) throws NullPointerException {
+		addConnectionListener(listener);
+		addReceiveListener(listener);
+	}
+
+	public void removeNetworkServerListener(NetworkServerListener listener) {
+		removeConnectionListener(listener);
+		removeReceiveListener(listener);
 	}
 
 	/**
@@ -77,9 +97,9 @@ public class NetworkServer extends NetworkHelper<ControlEvent, GameState> {
 	}
 
 	private void onConnect() {
-		if (mListeners != null) {
-			synchronized (mListeners) {
-				for (NetworkListener<?> listener : mListeners) {
+		if (mReceiveListeners != null) {
+			synchronized (mReceiveListeners) {
+				for (NetworkConnectionListener listener : mConnectionListeners) {
 					listener.onConnect();
 				}
 			}

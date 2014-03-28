@@ -58,7 +58,7 @@ public class GameFactory {
 	 */
 	public GameState createSingleplayerGame(int levelID, Player player) throws LevelNotExistsException,
 			LevelNotUnlockedException {
-		if (levelID < 0 || levelID > sLevels.size()) {
+		if (levelID < 0 || levelID > sLevels.size() - 1) {
 			throw new LevelNotExistsException();
 		}
 		if (!sLevels.get(levelID).isUnlocked()) {
@@ -81,9 +81,13 @@ public class GameFactory {
 	 * @param player2
 	 *            A másik játékost reprezentáló objektum
 	 * @return Az újonnan létrehozott játéktér
+	 * @throws LevelNotExistsException
+	 *             Akkor dobja, ha a levelID érvénytelen
 	 */
-	public GameState createMultiplayerGame(int levelID, Player player1, Player player2) {
-		// TODO check levelID
+	public GameState createMultiplayerGame(int levelID, Player player1, Player player2) throws LevelNotExistsException {
+		if (levelID < 0 || levelID > sLevels.size() - 1) {
+			throw new LevelNotExistsException();
+		}
 		// TODO initialize Players, SpaceShips...
 		GameState gameState = new GameState(player1, player2);
 		generateAsteroidPositions(gameState, sLevels.get(levelID));

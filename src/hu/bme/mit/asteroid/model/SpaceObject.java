@@ -77,4 +77,16 @@ public abstract class SpaceObject {
 	public void setRadius(int radius) {
 		mRadius = radius;
 	}
+
+	/**
+	 * Ellenőrzi, hogy a vizsgált objektum ütközik-e a paraméterül kapott másik
+	 * objektummal.
+	 * 
+	 * @param other
+	 *            Másik objektum
+	 * @return True, ha igen, false, ha nem.
+	 */
+	public boolean checkCollision(SpaceObject other) {
+		return false; // FIXME
+	}
 }

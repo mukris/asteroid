@@ -1,6 +1,7 @@
 package hu.bme.mit.asteroid;
 
 import hu.bme.mit.asteroid.model.Asteroid;
+import hu.bme.mit.asteroid.model.Powerup;
 import hu.bme.mit.asteroid.model.SpaceShip;
 import hu.bme.mit.asteroid.model.Weapon;
 import hu.bme.mit.asteroid.player.Player;
@@ -20,6 +21,7 @@ public class GameState {
 
 	private ArrayList<Asteroid> mAsteroids;
 	private ArrayList<Weapon> mWeapons;
+	private ArrayList<Powerup> mPowerups;
 
 	public GameState(Player player1, Player player2) {
 		mPlayer1State = player1.getState();
@@ -29,11 +31,21 @@ public class GameState {
 			mPlayer2State = player2.getState();
 			mSpaceShip2 = player2.getSpaceShip();
 		}
-		
+
 		mAsteroids = new ArrayList<>();
 		mWeapons = new ArrayList<>();
+		mPowerups = new ArrayList<>();
 	}
-	
+
+	/**
+	 * Frissíti az aktuális állapotot új adatokkal
+	 * 
+	 * @param newGameState
+	 */
+	public synchronized void update(GameState newGameState) {
+		// TODO adatok frissítése
+	}
+
 	public boolean isMultiplayer() {
 		return (mPlayer2State != null);
 	}

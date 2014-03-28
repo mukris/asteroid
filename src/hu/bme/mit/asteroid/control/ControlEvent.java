@@ -1,5 +1,8 @@
 package hu.bme.mit.asteroid.control;
 
+/**
+ * Különböző vezérlőutasításokat, eseményeket reprezentáló osztály
+ */
 public class ControlEvent {
 
 	public enum Type {

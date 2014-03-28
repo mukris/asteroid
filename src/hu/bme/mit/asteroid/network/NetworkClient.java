@@ -26,16 +26,27 @@ public class NetworkClient extends NetworkHelper<GameState, ControlEvent> {
 	 * A hálózati kapcsolat főbb kliensoldali eseményeinek lekezelését lehetővé
 	 * tévő interfész.
 	 */
-	public interface NetworkClientListener extends NetworkListener<GameState> {
+	public interface NetworkClientListener extends NetworkReceiveListener<GameState>, NetworkConnectionListener {
 	}
 
 	public NetworkClient() {
 		mClientSocket = new Socket();
 	}
-
+	
 	public NetworkClient(NetworkClientListener listener) throws NullPointerException {
-		addListener(listener);
-		mClientSocket = new Socket();
+		this();
+		addConnectionListener(listener);
+		addReceiveListener(listener);
+	}
+
+	public NetworkClient(NetworkReceiveListener<GameState> listener) throws NullPointerException {
+		this();
+		addReceiveListener(listener);
+	}
+
+	public NetworkClient(NetworkConnectionListener listener) throws NullPointerException {
+		this();
+		addConnectionListener(listener);
 	}
 
 	/**
@@ -54,9 +65,9 @@ public class NetworkClient extends NetworkHelper<GameState, ControlEvent> {
 			mClientSocket.connect(new InetSocketAddress(address, PORT), TIMEOUT);
 			initCommunication();
 
-			if (mListeners != null) {
-				synchronized (mListeners) {
-					for (NetworkListener<?> listener : mListeners) {
+			if (mReceiveListeners != null) {
+				synchronized (mReceiveListeners) {
+					for (NetworkConnectionListener listener : mConnectionListeners) {
 						listener.onConnect();
 					}
 				}
