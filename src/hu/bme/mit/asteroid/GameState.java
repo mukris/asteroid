@@ -49,4 +49,24 @@ public class GameState {
 	public boolean isMultiplayer() {
 		return (mPlayer2State != null);
 	}
+	
+	public SpaceShip getSpaceShip1() {
+		return mSpaceShip1;
+	}
+
+	public SpaceShip getSpaceShip2() {
+		return mSpaceShip2;
+	}
+
+	public ArrayList<Asteroid> getAsteroids() {
+		return mAsteroids;
+	}
+
+	public ArrayList<Weapon> getWeapons() {
+		return mWeapons;
+	}
+
+	public ArrayList<Powerup> getPowerups() {
+		return mPowerups;
+	}
 }

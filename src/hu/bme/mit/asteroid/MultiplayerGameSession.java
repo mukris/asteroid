@@ -47,11 +47,11 @@ public class MultiplayerGameSession extends GameSession {
 	protected GameRunner newGameRunner() {
 		return new MultiplayerGameRunner();
 	}
-	
+
 	private class MultiplayerGameRunner extends GameRunner {
 		@Override
-		protected void calculateSpaceShipPhysics() {
-			super.calculateSpaceShipPhysics();
+		protected void calculateSpaceShipPhysics(long timeDelta) {
+			super.calculateSpaceShipPhysics(timeDelta);
 			
 			//TODO: a második űrhajóra is számoljunk...
 		}

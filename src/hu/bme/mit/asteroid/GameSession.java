@@ -1,8 +1,11 @@
 package hu.bme.mit.asteroid;
 
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
+import hu.bme.mit.asteroid.model.Asteroid;
+import hu.bme.mit.asteroid.model.SpaceShip;
 import hu.bme.mit.asteroid.player.Player;
 
 /**
@@ -84,6 +87,9 @@ public abstract class GameSession {
 		return new GameRunner();
 	}
 
+	/**
+	 * A játék fizikáját és grafikáját külön szálon ütemező osztály
+	 */
 	protected class GameRunner extends Thread {
 
 		private AtomicBoolean mRunning;
@@ -131,21 +137,36 @@ public abstract class GameSession {
 		}
 
 		protected void calculatePhysics(long timeDelta) {
-			calculateAsteroidPhysics();
-			calculateSpaceShipPhysics();
-			calculateWeaponPhysics();
+			calculateAsteroidPhysics(timeDelta);
+			calculateSpaceShipPhysics(timeDelta);
+			calculateWeaponPhysics(timeDelta);
 			// TODO mozgás, ütközésvizsgálat
 		}
 
-		protected void calculateSpaceShipPhysics() {
+		protected void calculateSpaceShipPhysics(long timeDelta) {
+			SpaceShip spaceShip1 = mGameState.getSpaceShip1();
+			// FIXME: Bűvészkedés az alábbi (és hasonló) függvényekkel:
+			// spaceShip1.getAcceleration();
+			// spaceShip1.getSpeed();
+			// spaceShip1.getPosition();
+			// spaceShip1.setPosition(position);
+			// az új pozíció meghatározása a paraméterül kapott
+			// időkülönbség és a pillanatnyi sebesség, gyorsulás alapján
+		}
+
+		protected void calculateAsteroidPhysics(long timeDelta) {
+			ArrayList<Asteroid> asteroids = mGameState.getAsteroids();
+
+			for (Asteroid asteroid : asteroids) {
+				// TODO: lásd fentebb...
+				// asteroid.getPosition();
+				// asteroid.getSpeed();
+				// asteroid.setPosition(position);
+			}
 			// TODO
 		}
 
-		protected void calculateAsteroidPhysics() {
-			// TODO
-		}
-
-		protected void calculateWeaponPhysics() {
+		protected void calculateWeaponPhysics(long timeDelta) {
 			// TODO
 		}
 
