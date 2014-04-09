@@ -1,11 +1,15 @@
 package hu.bme.mit.asteroid.network;
 
+import java.net.InetAddress;
+
 import hu.bme.mit.asteroid.GameState;
 import hu.bme.mit.asteroid.control.ControlEvent;
+import hu.bme.mit.asteroid.network.NetworkDiscover.NetworkDiscoverListener;
 import hu.bme.mit.asteroid.network.NetworkHelper.NetworkConnectionListener;
 import hu.bme.mit.asteroid.network.NetworkHelper.NetworkReceiveListener;
 
-public class NetworkListener implements NetworkConnectionListener, NetworkReceiveListener<Object> {
+public class NetworkListener implements NetworkConnectionListener, NetworkReceiveListener<Object>,
+		NetworkDiscoverListener {
 
 	private final NetworkReceiveListener<GameState> mGameStateListener = new NetworkReceiveListener<GameState>() {
 		@Override
@@ -45,7 +49,11 @@ public class NetworkListener implements NetworkConnectionListener, NetworkReceiv
 			throw new IllegalArgumentException();
 		}
 	}
-	
+
+	@Override
+	public void onDiscover(InetAddress address, NetworkDiscover networkDiscover) {
+	}
+
 	public final NetworkReceiveListener<GameState> asGameStateReceiver() {
 		return mGameStateListener;
 	}
