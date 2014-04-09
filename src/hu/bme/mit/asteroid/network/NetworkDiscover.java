@@ -7,8 +7,9 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * A hálózati szerver felderítésért felelős osztály
@@ -17,17 +18,61 @@ public class NetworkDiscover {
 
 	private static final String MAGIC_STRING = "### Asteroid game magic string ###";
 	private static final int PORT = 8765;
+	private static final int TIMEOUT = 2000;
+
+	/**
+	 * A hálózati felderítés eseményeinek lekezelését lehetővé tevő interfész
+	 */
+	public interface NetworkDiscoverListener {
+
+		/**
+		 * Akkor hívódik, ha új szerver jelent meg a hálózaton.
+		 * 
+		 * @param address
+		 *            A megtalált szerver címe
+		 * @param networkDiscover
+		 *            Az eseményt kiváltó {@link NetworkDiscover} objektum.
+		 *            Szükség esetén lekérdezhető az összes megtalált szerver
+		 *            címe, vagy leállítható a további figyelés.
+		 */
+		public void onDiscover(InetAddress address, NetworkDiscover networkDiscover);
+	}
+
+	private ArrayList<NetworkDiscoverListener> mListeners;
 	private BroadcastSenderThread mSenderThread;
 	private BroadcastReceiverThread mReceiverThread;
-	private Set<InetAddress> mAddresses;
+	private Map<InetAddress, Long> mAddresses;
 
 	public NetworkDiscover() {
-		mAddresses = new HashSet<>();
+		mAddresses = new HashMap<>();
+		mListeners = new ArrayList<>();
+	}
+
+	public NetworkDiscover(NetworkDiscoverListener listener) {
+		this();
+		addNetworkDiscoverListener(listener);
+	}
+
+	public void addNetworkDiscoverListener(NetworkDiscoverListener listener) {
+		if (listener != null) {
+			synchronized (mListeners) {
+				mListeners.add(listener);
+			}
+		}
+	}
+
+	public void removeNetworkDiscoverListener(NetworkDiscoverListener listener) {
+		if (listener != null) {
+			synchronized (mListeners) {
+				mListeners.remove(listener);
+			}
+		}
 	}
 
 	/**
 	 * Broadcast üzenetek periodikus küldésének indítása
-	 * @throws SocketException 
+	 * 
+	 * @throws SocketException
 	 */
 	public void startBroadcasting() throws SocketException {
 		mSenderThread = new BroadcastSenderThread(MAGIC_STRING, PORT);
@@ -72,10 +117,14 @@ public class NetworkDiscover {
 	/**
 	 * A hálózaton talált szerverek listájának lekérdezése
 	 */
-	public synchronized ArrayList<InetAddress> getDiscoveredAddresses() {
+	public ArrayList<InetAddress> getDiscoveredAddresses() {
 		ArrayList<InetAddress> addr = new ArrayList<>();
-		for (InetAddress inetAddress : mAddresses) {
-			addr.add(inetAddress);
+		synchronized (mAddresses) {
+			for (Entry<InetAddress, Long> entry : mAddresses.entrySet()) {
+				if (entry.getValue() > System.currentTimeMillis() - TIMEOUT) {
+					addr.add(entry.getKey());
+				}
+			}
 		}
 		return addr;
 	}
@@ -83,8 +132,10 @@ public class NetworkDiscover {
 	/**
 	 * A hálózaton talált szerverek listájának ürítése
 	 */
-	public synchronized void clearDiscoveredAddresses() {
-		mAddresses.clear();
+	public void clearDiscoveredAddresses() {
+		synchronized (mAddresses) {
+			mAddresses.clear();
+		}
 	}
 
 	/**
@@ -92,8 +143,31 @@ public class NetworkDiscover {
 	 * 
 	 * @param address
 	 */
-	private synchronized void addInetAddress(InetAddress address) {
-		mAddresses.add(address);
+	private void addInetAddress(InetAddress address) {
+		boolean newAddress = false;
+		synchronized (mAddresses) {
+			long currentTime = System.currentTimeMillis();
+			if (!mAddresses.containsKey(address) || mAddresses.get(address) < currentTime - TIMEOUT) {
+				mAddresses.put(address, currentTime);
+				newAddress = true;
+			}
+		}
+
+		if (newAddress && mListeners.size() > 0) {
+			// Listenerek értesítése
+			// Hogy elkerüljük az esetleges deadlock-ot, ha a listener szeretné
+			// törölni magát a listából, először kimásoljuk egy ideiglenes
+			// listába az összes listenert, és abból értesítjük őket
+			ArrayList<NetworkDiscoverListener> listenersTemp = new ArrayList<>();
+			synchronized (mListeners) {
+				for (NetworkDiscoverListener listener : mListeners) {
+					listenersTemp.add(listener);
+				}
+			}
+			for (NetworkDiscoverListener listener : listenersTemp) {
+				listener.onDiscover(address, this);
+			}
+		}
 	}
 
 	/**
@@ -167,7 +241,7 @@ public class NetworkDiscover {
 		@Override
 		public void interrupt() {
 			super.interrupt();
-			if(!mSocket.isClosed()) {
+			if (!mSocket.isClosed()) {
 				mSocket.close();
 			}
 		}
