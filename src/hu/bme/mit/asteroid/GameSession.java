@@ -117,7 +117,7 @@ public abstract class GameSession {
 								sleep(10); // ne járassuk 100%-on a procit...
 								continue;
 							}
-							calculatePhysics(timeDelta);
+							calculatePhysics(timeDelta, currentTime);
 							updateGUI();
 							setLastTime(currentTime);
 						}
@@ -136,25 +136,28 @@ public abstract class GameSession {
 			mLastTime = time;
 		}
 
-		protected void calculatePhysics(long timeDelta) {
-			calculateAsteroidPhysics(timeDelta);
-			calculateSpaceShipPhysics(timeDelta);
-			calculateWeaponPhysics(timeDelta);
+		protected void calculatePhysics(long timeDelta, long currentTime) {
+			calculateAsteroidPhysics(timeDelta, currentTime);
+			calculateSpaceShipPhysics(mGameState.getSpaceShip1(), timeDelta, currentTime);
+			
+			if (mGameState.isMultiplayer()) {
+				calculateSpaceShipPhysics(mGameState.getSpaceShip2(), timeDelta, currentTime);
+			}
+			calculateWeaponPhysics(timeDelta, currentTime);
 			// TODO mozgás, ütközésvizsgálat
 		}
 
-		protected void calculateSpaceShipPhysics(long timeDelta) {
-			SpaceShip spaceShip1 = mGameState.getSpaceShip1();
+		protected void calculateSpaceShipPhysics(SpaceShip spaceShip, long timeDelta, long currentTime) {
 			// FIXME: Bűvészkedés az alábbi (és hasonló) függvényekkel:
-			// spaceShip1.getAcceleration();
-			// spaceShip1.getSpeed();
-			// spaceShip1.getPosition();
-			// spaceShip1.setPosition(position);
+			// spaceShip.getAcceleration();
+			// spaceShip.getSpeed();
+			// spaceShip.getPosition();
+			// spaceShip.setPosition(position);
 			// az új pozíció meghatározása a paraméterül kapott
 			// időkülönbség és a pillanatnyi sebesség, gyorsulás alapján
 		}
 
-		protected void calculateAsteroidPhysics(long timeDelta) {
+		protected void calculateAsteroidPhysics(long timeDelta, long currentTime) {
 			ArrayList<Asteroid> asteroids = mGameState.getAsteroids();
 
 			for (Asteroid asteroid : asteroids) {
@@ -166,7 +169,7 @@ public abstract class GameSession {
 			// TODO
 		}
 
-		protected void calculateWeaponPhysics(long timeDelta) {
+		protected void calculateWeaponPhysics(long timeDelta, long currentTime) {
 			// TODO
 		}
 

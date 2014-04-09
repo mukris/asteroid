@@ -1,5 +1,6 @@
 package hu.bme.mit.asteroid;
 
+import hu.bme.mit.asteroid.MultiplayerGameSession.Type;
 import hu.bme.mit.asteroid.control.ArrowControlInterface;
 import hu.bme.mit.asteroid.control.WADControlInterface;
 import hu.bme.mit.asteroid.exceptions.LevelNotExistsException;
@@ -69,7 +70,7 @@ public class GameManager {
 		Player player2 = new LocalPlayer(wadControlInterface);
 
 		// TODO lokális multiplayerben nem mehetünk bármelyik pályától?
-		mGameSession = new MultiplayerGameSession(player1, player2, 0);
+		mGameSession = new MultiplayerGameSession(Type.LOCAL, player1, player2, 0);
 	}
 
 	public void startNetworkServerMultiplayerGame(GameField gameField, NetworkServer networkServer)
@@ -89,7 +90,7 @@ public class GameManager {
 
 		networkServer.addReceiveListener(player2);
 
-		MultiplayerGameSession gameSession = new MultiplayerGameSession(player1, player2, 0);
+		MultiplayerGameSession gameSession = new MultiplayerGameSession(Type.NETWORK_SERVER, player1, player2, 0);
 		registerAsServerListener(gameSession);
 		mGameSession = gameSession;
 	}
@@ -109,25 +110,26 @@ public class GameManager {
 		NetworkLocalPlayer player1 = new NetworkLocalPlayer(arrowControlInterface, networkClient);
 		Player player2 = new DummyPlayer();
 
-		MultiplayerGameSession gameSession = new MultiplayerGameSession(player1, player2, 0);
+		MultiplayerGameSession gameSession = new MultiplayerGameSession(Type.NETWORK_CLIENT, player1, player2, 0);
 		registerAsClientListener(gameSession);
 		mGameSession = gameSession;
 	}
-	
+
 	public void registerAsServerListener(MultiplayerGameSession gameSession) {
 		mNetworkServer.addConnectionListener(gameSession.getNetworkListener());
 		mNetworkServer.addReceiveListener(gameSession.getNetworkListener().asControlEventReceiver());
 	}
+
 	public void registerAsClientListener(MultiplayerGameSession gameSession) {
 		mNetworkClient.addConnectionListener(gameSession.getNetworkListener());
 		mNetworkClient.addReceiveListener(gameSession.getNetworkListener().asGameStateReceiver());
 	}
-	
+
 	public void unregisterServerListener(MultiplayerGameSession gameSession) {
 		mNetworkServer.removeConnectionListener(gameSession.getNetworkListener());
 		mNetworkServer.removeReceiveListener(gameSession.getNetworkListener().asControlEventReceiver());
 	}
-	
+
 	public void unregisterClientListener(MultiplayerGameSession gameSession) {
 		mNetworkClient.removeConnectionListener(gameSession.getNetworkListener());
 		mNetworkClient.removeReceiveListener(gameSession.getNetworkListener().asGameStateReceiver());
