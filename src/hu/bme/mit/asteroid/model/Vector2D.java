@@ -18,7 +18,8 @@ public class Vector2D {
 	}
 
 	public Vector2D(float length, int direction) {
-		// TODO
+		mX = (float) (length * Math.cos(direction * Math.PI / 180));
+		mY = (float) (length * Math.sin(direction * Math.PI / 180));
 	}
 
 	public float getX() {
@@ -38,17 +39,16 @@ public class Vector2D {
 	}
 
 	public Vector2D add(Vector2D vector) {
-		// TODO
+		mX += vector.mX;
+		mY += vector.mY;
 		return this;
 	}
-	
+
 	public int getDirection() {
-		// FIXME
-		return 0;
+		return (int) (Math.atan2(mY, mX) * 180 / Math.PI);
 	}
 
 	public float getLength() {
-		// FIXME
-		return 0;
+		return (float) Math.sqrt(mX * mX + mY * mY);
 	}
 }
