@@ -9,6 +9,7 @@ public class SpaceShip extends DirectionalMovingSpaceObject {
 
 	private Vector2D mAcceleration = new Vector2D();
 	private Weapon mWeapon;
+	private long timeMillisUntilVulnerable = 0;
 
 	/**
 	 * Konstruktor
@@ -50,20 +51,32 @@ public class SpaceShip extends DirectionalMovingSpaceObject {
 	public void setAcceleration(Vector2D acceleration) {
 		mAcceleration = acceleration;
 	}
-
-	public void accelerate() {
+	
+	public void accelerateStart() {
 		// TODO
 	}
 
-	public void rotateLeft() {
+	public void accelerateStop() {
 		// TODO
 	}
 
-	public void rotateRight() {
+	public void rotateLeftStart() {
+		// TODO
+	}
+	
+	public void rotateRightStart() {
 		// TODO
 	}
 
-	public void fire() {
+	public void rotateStop() {
+		// TODO
+	}
+	
+	public void fireStart() {
+		// TODO
+	}
+
+	public void fireStop() {
 		// TODO
 	}
 }
