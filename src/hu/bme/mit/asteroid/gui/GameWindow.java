@@ -24,18 +24,24 @@ public class GameWindow extends JFrame {
 	}
 
 	private void initComponents() {
-		mGameModeSelector = new GameModeSelector();
-		mLevelSelectorPanel = new LevelSelectorPanel();
+		mGameModeSelector = new GameModeSelector(this);
+		mLevelSelectorPanel = new LevelSelectorPanel(this);
 		mToplist = new Toplist();
+		// TODO: többi panel osztályból példány létrehozása
 
 		showPanel(PanelId.GAME_MODE_SELECTOR);
 	}
 
-	public void showPanel(PanelId panelId) {
+	/**
+	 * A {@link PanelId}-val azonosított felhasználói felület elem megjelenítése
+	 * 
+	 * @param panelId
+	 */
+	public void showPanel(final PanelId panelId) {
+		// TODO: Többi panel osztály létrehozása, itt a hiányzó részek kitöltése
 		switch (panelId) {
 		case LEVEL_SELECTOR:
-			removeAll();
-			add(mLevelSelectorPanel);
+			setContentPane(mLevelSelectorPanel);
 			break;
 
 		case NETWORK_PANEL:
@@ -54,7 +60,7 @@ public class GameWindow extends JFrame {
 			break;
 
 		case TOPLIST:
-			add(mToplist);
+			setContentPane(mToplist);
 			break;
 
 		case ERROR_PANEL:
@@ -62,10 +68,9 @@ public class GameWindow extends JFrame {
 
 		case GAME_MODE_SELECTOR:
 		default:
-			removeAll();
-			add(mGameModeSelector);
+			setContentPane(mGameModeSelector);
 			break;
 		}
+		validate();
 	}
-
 }
