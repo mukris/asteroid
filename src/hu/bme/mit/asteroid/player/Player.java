@@ -82,21 +82,30 @@ public abstract class Player implements ControlInterface.Callback {
 
 	@Override
 	public void control(ControlEvent event) {
-		// TODO Vezérlőesemények leképezése az űrhajó irányítására
 		switch (event.getType()) {
 		case ACCELERATE_START:
+			mSpaceShip.accelerateStart();
 			break;
 		case ACCELERATE_STOP:
+			mSpaceShip.accelerateStop();
 			break;
 		case TURN_LEFT_START:
+			mSpaceShip.rotateLeftStart();
 			break;
 		case TURN_RIGHT_START:
+			mSpaceShip.rotateRightStart();
 			break;
 		case TURN_STOP:
+			mSpaceShip.rotateStop();
 			break;
 		case FIRE_START:
+			mSpaceShip.fireStart();
 			break;
 		case FIRE_STOP:
+			mSpaceShip.fireStop();
+			break;
+			
+		default:
 			break;
 		}
 	}

@@ -9,7 +9,12 @@ public class SpaceShip extends DirectionalMovingSpaceObject {
 
 	private Vector2D mAcceleration = new Vector2D();
 	private Weapon mWeapon;
-	private long timeMillisUntilVulnerable = 0;
+	private long mTimeMillisUntilVulnerable = 0;
+	private long mTimeMillisSinceLastShoot = 0;
+	private boolean mIsAccelerating = false;
+	private boolean mIsTurningLeft = false;
+	private boolean mIsTurningRight = false;
+	private boolean mIsFiring = false;
 
 	/**
 	 * Konstruktor
@@ -34,15 +39,6 @@ public class SpaceShip extends DirectionalMovingSpaceObject {
 	}
 
 	/**
-	 * Gyorsul pillanatnyilag az űrhajó?
-	 * 
-	 * @return True, ha gyorsul, false ha nem
-	 */
-	public boolean isAccelerating() {
-		return (mAcceleration.getLength() > 0.001) ? true : false;
-	}
-
-	/**
 	 * Az űrhajó gyorsulásának beállítása
 	 * 
 	 * @param acceleration
@@ -51,32 +47,121 @@ public class SpaceShip extends DirectionalMovingSpaceObject {
 	public void setAcceleration(Vector2D acceleration) {
 		mAcceleration = acceleration;
 	}
-	
-	public void accelerateStart() {
-		// TODO
+
+	public Weapon getWeapon() {
+		return mWeapon;
 	}
 
-	public void accelerateStop() {
-		// TODO
+	public void setWeapon(Weapon weapon) {
+		mWeapon = weapon;
 	}
 
-	public void rotateLeftStart() {
-		// TODO
-	}
-	
-	public void rotateRightStart() {
-		// TODO
-	}
-
-	public void rotateStop() {
-		// TODO
-	}
-	
-	public void fireStart() {
-		// TODO
+	/**
+	 * Visszaadja, hogy sebezhető-e az űrhajó. Ha nem sebezhető, akkor képes
+	 * áthaladni egy aszteroida fölött.
+	 * 
+	 * @return True, ha sebezhető, false ha nem
+	 */
+	public boolean isVulnerable() {
+		return mTimeMillisUntilVulnerable == 0;
 	}
 
-	public void fireStop() {
-		// TODO
+	/**
+	 * Sebezhetetlenség idejének beállítása
+	 * 
+	 * @param timeMillis
+	 *            Az ezredmásodpercben kifejezett időtartamra az űrhajó
+	 *            sebezhetetlenné válik
+	 */
+	public void setUnvulnerableFor(long timeMillis) {
+		mTimeMillisUntilVulnerable = timeMillis;
+	}
+
+	/**
+	 * Gyorsul pillanatnyilag az űrhajó?
+	 * 
+	 * @return True, ha gyorsul, false ha nem
+	 */
+	public boolean isAccelerating() {
+		return mIsAccelerating;
+	}
+
+	/**
+	 * Balra fordul pillanatnyilag az űrhajó?
+	 * 
+	 * @return True, ha fordul, false ha nem
+	 */
+	public boolean isTurningLeft() {
+		return mIsTurningLeft;
+	}
+
+	/**
+	 * Jobbra fordul pillanatnyilag az űrhajó?
+	 * 
+	 * @return True, ha fordul, false ha nem
+	 */
+	public boolean isTurningRight() {
+		return mIsTurningRight;
+	}
+
+	/**
+	 * Tüzel pillanatnyilag az űrhajó?
+	 * 
+	 * @return True, ha tüzel, false ha nem
+	 */
+	public boolean isFiring() {
+		return mIsFiring;
+	}
+
+	/**
+	 * Gyorsítás megkezdése
+	 */
+	public synchronized void accelerateStart() {
+		mIsAccelerating = true;
+	}
+
+	/**
+	 * Gyorsítás befejezése
+	 */
+	public synchronized void accelerateStop() {
+		mIsAccelerating = false;
+	}
+
+	/**
+	 * Balra fordulás megkezdése
+	 */
+	public synchronized void rotateLeftStart() {
+		mIsTurningLeft = true;
+		mIsTurningRight = false;
+	}
+
+	/**
+	 * Jobbra fordulás megkezdése
+	 */
+	public synchronized void rotateRightStart() {
+		mIsTurningRight = true;
+		mIsTurningLeft = false;
+	}
+
+	/**
+	 * Fordulás befejezése
+	 */
+	public synchronized void rotateStop() {
+		mIsTurningLeft = false;
+		mIsTurningRight = false;
+	}
+
+	/**
+	 * Tüzelés megkezdése
+	 */
+	public synchronized void fireStart() {
+		mIsFiring = true;
+	}
+
+	/**
+	 * Tüzelés befejezése
+	 */
+	public synchronized void fireStop() {
+		mIsFiring = false;
 	}
 }
