@@ -10,37 +10,19 @@ import java.util.ArrayList;
  * A {@link GameFactory} osztály felelős egy játékmező összeállításáért
  */
 public class GameFactory {
-
-	/**
-	 * Singleton példány
-	 */
-	private static GameFactory sInstance = null;
-
 	/**
 	 * A pályák általános leírását tartalmazó tömb
 	 */
 	private static ArrayList<LevelDescriptor> sLevels = null;
 
 	/**
-	 * Privát konstruktor (mivel Singleton osztály)
+	 * Inicializálás
 	 */
-	private GameFactory() {
+	static {
 		sLevels = new ArrayList<>();
 		sLevels.add(new LevelDescriptor(0, 5, 0, true)); // első pálya feloldva
 		sLevels.add(new LevelDescriptor(1, 2, 0));
 		// TODO define levels, load unlocked level info from file
-	}
-
-	/**
-	 * A {@link GameFactory} osztály egyetlen (Singleton) példányának lekérése
-	 * 
-	 * @return Az egyetlen GameFactory példány
-	 */
-	public static GameFactory getInstance() {
-		if (sInstance == null) {
-			sInstance = new GameFactory();
-		}
-		return sInstance;
 	}
 
 	/**
@@ -56,7 +38,7 @@ public class GameFactory {
 	 * @throws LevelNotUnlockedException
 	 *             Akkor dobja, ha az adott pálya még nincs feloldva
 	 */
-	public GameState createSingleplayerGame(int levelID, Player player) throws LevelNotExistsException,
+	public static GameState createSingleplayerGame(int levelID, Player player) throws LevelNotExistsException,
 			LevelNotUnlockedException {
 		if (levelID < 0 || levelID > sLevels.size() - 1) {
 			throw new LevelNotExistsException();
@@ -84,7 +66,8 @@ public class GameFactory {
 	 * @throws LevelNotExistsException
 	 *             Akkor dobja, ha a levelID érvénytelen
 	 */
-	public GameState createMultiplayerGame(int levelID, Player player1, Player player2) throws LevelNotExistsException {
+	public static GameState createMultiplayerGame(int levelID, Player player1, Player player2)
+			throws LevelNotExistsException {
 		if (levelID < 0 || levelID > sLevels.size() - 1) {
 			throw new LevelNotExistsException();
 		}
@@ -104,7 +87,7 @@ public class GameFactory {
 	 * @param levelDescriptor
 	 *            A pályát leíró objektum
 	 */
-	private void generateAsteroidPositions(GameState gameState, LevelDescriptor levelDescriptor) {
+	private static void generateAsteroidPositions(GameState gameState, LevelDescriptor levelDescriptor) {
 		boolean isMultiplayer = gameState.isMultiplayer();
 		// TODO create Asteroids
 		// TODO randomize Asteroids' position, speed..

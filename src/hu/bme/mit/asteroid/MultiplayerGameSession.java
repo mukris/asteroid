@@ -19,7 +19,7 @@ public class MultiplayerGameSession extends GameSession {
 			throws LevelNotExistsException {
 		super(player1, levelID);
 		mPlayer2 = player2;
-		mGameState = GameFactory.getInstance().createMultiplayerGame(levelID, player1, player2);
+		mGameState = GameFactory.createMultiplayerGame(levelID, player1, player2);
 	}
 
 	public NetworkListener getNetworkListener() {
