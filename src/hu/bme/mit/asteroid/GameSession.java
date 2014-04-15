@@ -3,6 +3,8 @@ package hu.bme.mit.asteroid;
 import hu.bme.mit.asteroid.control.ControlEvent;
 import hu.bme.mit.asteroid.control.ControlInterface;
 import hu.bme.mit.asteroid.control.MiscControlInterface;
+import hu.bme.mit.asteroid.exceptions.GameOverException;
+import hu.bme.mit.asteroid.exceptions.LevelFinishedException;
 import hu.bme.mit.asteroid.model.Asteroid;
 import hu.bme.mit.asteroid.model.SpaceShip;
 import hu.bme.mit.asteroid.player.Player;
@@ -34,7 +36,7 @@ public abstract class GameSession implements ControlInterface.Callback {
 		mLevelID = levelID;
 		mState = State.LEVEL_STARTING;
 	}
-	
+
 	public void setMiscControlInterface(MiscControlInterface miscControlInterface) {
 		miscControlInterface.setCallback(this);
 	}
@@ -151,6 +153,11 @@ public abstract class GameSession implements ControlInterface.Callback {
 				}
 			} catch (InterruptedException e) {
 				return;
+			} catch (LevelFinishedException e) {
+				// TODO mit csinálunk ha vége a pályának
+			} catch (GameOverException e) {
+				// TODO mit csinálunk GameOvernél..
+				return;
 			}
 		}
 
@@ -162,10 +169,25 @@ public abstract class GameSession implements ControlInterface.Callback {
 			mLastTime = time;
 		}
 
-		protected void calculatePhysics(long timeDelta, long currentTime) {
+		/**
+		 * A játék fizikai számításait kezelő függvény
+		 * 
+		 * @param timeDelta
+		 *            A függvény utolsó futtatása óta eltelt idő
+		 *            ezredmásodpercben
+		 * @param currentTime
+		 *            Az aktuális rendszeridő ezredmásodpercben
+		 * @throws LevelFinishedException
+		 *             Abban az esetben, ha az adott pálya végére értünk,
+		 *             elfogytak az aszteroidák
+		 * @throws GameOverException
+		 *             Abban az esetben, ha az űrhajó megsemmisült
+		 */
+		protected void calculatePhysics(long timeDelta, long currentTime) throws LevelFinishedException,
+				GameOverException {
 			calculateAsteroidPhysics(timeDelta, currentTime);
 			calculateSpaceShipPhysics(mGameState.getSpaceShip1(), timeDelta, currentTime);
-			
+
 			if (mGameState.isMultiplayer()) {
 				calculateSpaceShipPhysics(mGameState.getSpaceShip2(), timeDelta, currentTime);
 			}
@@ -173,7 +195,8 @@ public abstract class GameSession implements ControlInterface.Callback {
 			// TODO mozgás, ütközésvizsgálat
 		}
 
-		protected void calculateSpaceShipPhysics(SpaceShip spaceShip, long timeDelta, long currentTime) {
+		protected void calculateSpaceShipPhysics(SpaceShip spaceShip, long timeDelta, long currentTime)
+				throws GameOverException {
 			// FIXME: Bűvészkedés az alábbi (és hasonló) függvényekkel:
 			// spaceShip.getAcceleration();
 			// spaceShip.getSpeed();
@@ -183,8 +206,12 @@ public abstract class GameSession implements ControlInterface.Callback {
 			// időkülönbség és a pillanatnyi sebesség, gyorsulás alapján
 		}
 
-		protected void calculateAsteroidPhysics(long timeDelta, long currentTime) {
+		protected void calculateAsteroidPhysics(long timeDelta, long currentTime) throws LevelFinishedException {
 			ArrayList<Asteroid> asteroids = mGameState.getAsteroids();
+
+			if (asteroids.isEmpty()) {
+				throw new LevelFinishedException();
+			}
 
 			for (Asteroid asteroid : asteroids) {
 				// TODO: lásd fentebb...
