@@ -2,6 +2,7 @@ package hu.bme.mit.asteroid;
 
 import hu.bme.mit.asteroid.MultiplayerGameSession.Type;
 import hu.bme.mit.asteroid.control.ArrowControlInterface;
+import hu.bme.mit.asteroid.control.MiscControlInterface;
 import hu.bme.mit.asteroid.control.WADControlInterface;
 import hu.bme.mit.asteroid.exceptions.LevelNotExistsException;
 import hu.bme.mit.asteroid.exceptions.LevelNotUnlockedException;
@@ -46,11 +47,15 @@ public class GameManager {
 		mGameField = gameField;
 
 		ArrowControlInterface controlInterface = new ArrowControlInterface();
+		MiscControlInterface miscControlInterface = new MiscControlInterface();
+		
 		mGameField.addKeyListener(controlInterface);
+		mGameField.addKeyListener(miscControlInterface);
 
 		Player player = new LocalPlayer(controlInterface);
 
 		mGameSession = new SingleplayerGameSession(player, levelID);
+		mGameSession.setMiscControlInterface(miscControlInterface);
 	}
 
 	public void startLocalMultiplayerGame(GameField gameField) throws NullPointerException, LevelNotExistsException {
@@ -62,15 +67,17 @@ public class GameManager {
 
 		ArrowControlInterface arrowControlInterface = new ArrowControlInterface();
 		WADControlInterface wadControlInterface = new WADControlInterface();
+		MiscControlInterface miscControlInterface = new MiscControlInterface();
 
 		mGameField.addKeyListener(arrowControlInterface);
 		mGameField.addKeyListener(wadControlInterface);
+		mGameField.addKeyListener(miscControlInterface);
 
 		Player player1 = new LocalPlayer(arrowControlInterface);
 		Player player2 = new LocalPlayer(wadControlInterface);
 
-		// TODO lokális multiplayerben nem mehetünk bármelyik pályától?
 		mGameSession = new MultiplayerGameSession(Type.LOCAL, player1, player2, 0);
+		mGameSession.setMiscControlInterface(miscControlInterface);
 	}
 
 	public void startNetworkServerMultiplayerGame(GameField gameField, NetworkServer networkServer)
@@ -83,7 +90,10 @@ public class GameManager {
 		mNetworkServer = networkServer;
 
 		ArrowControlInterface arrowControlInterface = new ArrowControlInterface();
+		MiscControlInterface miscControlInterface = new MiscControlInterface();
+		
 		mGameField.addKeyListener(arrowControlInterface);
+		mGameField.addKeyListener(miscControlInterface);
 
 		LocalPlayer player1 = new LocalPlayer(arrowControlInterface);
 		NetworkRemotePlayer player2 = new NetworkRemotePlayer();
@@ -93,6 +103,7 @@ public class GameManager {
 		MultiplayerGameSession gameSession = new MultiplayerGameSession(Type.NETWORK_SERVER, player1, player2, 0);
 		registerAsServerListener(gameSession);
 		mGameSession = gameSession;
+		mGameSession.setMiscControlInterface(miscControlInterface);
 	}
 
 	public void startNetworkClientMultiplayerGame(GameField gameField, NetworkClient networkClient)
@@ -105,7 +116,10 @@ public class GameManager {
 		mNetworkClient = networkClient;
 
 		ArrowControlInterface arrowControlInterface = new ArrowControlInterface();
+		MiscControlInterface miscControlInterface = new MiscControlInterface();
+		
 		mGameField.addKeyListener(arrowControlInterface);
+		mGameField.addKeyListener(miscControlInterface);
 
 		NetworkLocalPlayer player1 = new NetworkLocalPlayer(arrowControlInterface, networkClient);
 		Player player2 = new DummyPlayer();
@@ -113,6 +127,7 @@ public class GameManager {
 		MultiplayerGameSession gameSession = new MultiplayerGameSession(Type.NETWORK_CLIENT, player1, player2, 0);
 		registerAsClientListener(gameSession);
 		mGameSession = gameSession;
+		mGameSession.setMiscControlInterface(miscControlInterface);
 	}
 
 	public void registerAsServerListener(MultiplayerGameSession gameSession) {

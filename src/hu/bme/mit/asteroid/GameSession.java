@@ -1,19 +1,22 @@
 package hu.bme.mit.asteroid;
 
-import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.logging.Logger;
-
+import hu.bme.mit.asteroid.control.ControlEvent;
+import hu.bme.mit.asteroid.control.ControlInterface;
+import hu.bme.mit.asteroid.control.MiscControlInterface;
 import hu.bme.mit.asteroid.model.Asteroid;
 import hu.bme.mit.asteroid.model.SpaceShip;
 import hu.bme.mit.asteroid.player.Player;
+
+import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Logger;
 
 /**
  * Egy játékmenetet reprezentáló osztály. A játékmenet egy játék elindításától
  * kezdve GameOver-ig, vagy valamilyen hibáig tart, bele tartozik a pályák
  * közötti átmenet is.
  */
-public abstract class GameSession {
+public abstract class GameSession implements ControlInterface.Callback {
 
 	public enum State {
 		LEVEL_STARTING, LEVEL_COMPLETE, GAME_OVER, RUNNING, PAUSED, STOPPED, ERROR
@@ -23,12 +26,17 @@ public abstract class GameSession {
 	protected GameRunner mGameRunner;
 	protected Player mPlayer1;
 	protected State mState;
+	protected State mOldState;
 	protected int mLevelID;
 
 	public GameSession(Player player, int levelID) {
 		mPlayer1 = player;
 		mLevelID = levelID;
 		mState = State.LEVEL_STARTING;
+	}
+	
+	public void setMiscControlInterface(MiscControlInterface miscControlInterface) {
+		miscControlInterface.setCallback(this);
 	}
 
 	public synchronized void start() {
@@ -65,6 +73,24 @@ public abstract class GameSession {
 			}
 		}
 		mState = State.STOPPED;
+	}
+
+	@Override
+	public void control(ControlEvent event) {
+		switch (event.getType()) {
+		case INVERT_PAUSE:
+			if (mState != State.PAUSED) {
+				mOldState = mState;
+				pause();
+			} else {
+				start();
+				mState = mOldState;
+			}
+			break;
+
+		default:
+			break;
+		}
 	}
 
 	public void updateGameState(GameState newGameState) {

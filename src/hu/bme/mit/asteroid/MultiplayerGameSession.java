@@ -50,6 +50,27 @@ public class MultiplayerGameSession extends GameSession {
 	}
 
 	@Override
+	public void control(ControlEvent event) {
+		switch (event.getType()) {
+		case INVERT_PAUSE:
+			switch (mType) {
+			case NETWORK_CLIENT:
+			case NETWORK_SERVER:
+				return;
+
+			default:
+				super.control(event);
+				break;
+			}
+			break;
+
+		default:
+			super.control(event);
+			break;
+		}
+	}
+
+	@Override
 	protected GameRunner newGameRunner() {
 		switch (mType) {
 		case NETWORK_CLIENT:
