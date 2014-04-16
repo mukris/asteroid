@@ -31,6 +31,8 @@ public abstract class GameSession implements ControlInterface.Callback {
 	protected State mOldState;
 	protected int mLevelID;
 
+	protected final Logger logger = Logger.getLogger(this.getClass().getName());
+
 	public GameSession(Player player, int levelID) {
 		mPlayer1 = player;
 		mLevelID = levelID;
@@ -106,7 +108,6 @@ public abstract class GameSession implements ControlInterface.Callback {
 			mGameRunner = newGameRunner();
 			mGameRunner.start();
 		} else {
-			Logger logger = Logger.getLogger(this.getClass().getName());
 			logger.severe("startGameRunner hibás állapot...(fixme)");
 		}
 	}
@@ -120,19 +121,15 @@ public abstract class GameSession implements ControlInterface.Callback {
 	 */
 	protected class GameRunner extends Thread {
 
-		private AtomicBoolean mRunning;
+		private AtomicBoolean mRunning = new AtomicBoolean(true);
 		private long mLastTime;
-
-		public GameRunner() {
-			mRunning.set(true);
-		}
 
 		@Override
 		public void run() {
 			long currentTime, timeDelta;
 			mLastTime = System.currentTimeMillis();
-			try {
-				while (true) {
+			while (true) {
+				try {
 					if (!mRunning.get()) {
 						synchronized (this) {
 							wait();
@@ -150,14 +147,16 @@ public abstract class GameSession implements ControlInterface.Callback {
 							setLastTime(currentTime);
 						}
 					}
+				} catch (InterruptedException e) {
+					return;
+				} catch (LevelFinishedException e) {
+					// TODO mit csinálunk ha vége a pályának
+					logger.info("Level finished");
+				} catch (GameOverException e) {
+					// TODO mit csinálunk GameOvernél..
+					logger.info("GameOver");
+					return;
 				}
-			} catch (InterruptedException e) {
-				return;
-			} catch (LevelFinishedException e) {
-				// TODO mit csinálunk ha vége a pályának
-			} catch (GameOverException e) {
-				// TODO mit csinálunk GameOvernél..
-				return;
 			}
 		}
 
@@ -204,6 +203,8 @@ public abstract class GameSession implements ControlInterface.Callback {
 			// spaceShip.setPosition(position);
 			// az új pozíció meghatározása a paraméterül kapott
 			// időkülönbség és a pillanatnyi sebesség, gyorsulás alapján
+			// spaceShip.setPosition(spaceShip.getPosition().add(new
+			// Vector2D(0.1f, 0)));
 		}
 
 		protected void calculateAsteroidPhysics(long timeDelta, long currentTime) throws LevelFinishedException {
