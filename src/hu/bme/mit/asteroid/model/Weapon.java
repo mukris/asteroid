@@ -6,7 +6,8 @@ package hu.bme.mit.asteroid.model;
 public abstract class Weapon extends DirectionalMovingSpaceObject implements Cloneable {
 
 	private static final int WEAPON_SIZE = 10;
-	protected long mShotAtTimeMillis = 0;
+	protected static final int LIFE_SPAN_MILLIS = 5000;
+	protected long mTimeMillisUntilDeath = 0;
 
 	public Weapon(Vector2D position, Vector2D speed) {
 		super(position, speed, speed.getDirection(), WEAPON_SIZE);
@@ -25,4 +26,13 @@ public abstract class Weapon extends DirectionalMovingSpaceObject implements Clo
 	 * @return True, ha még aktív, false ha nem.
 	 */
 	public abstract boolean isAlive(long currentTime);
+	
+	/**
+	 * Visszaadja a fegyver ismétlési idejét ezredmásodpercben. Folyamatos
+	 * tüzelés mellett az űrhajó ilyen gyakorisággal lő ki egy-egy újabb
+	 * lövedéket.
+	 * 
+	 * @return A fegyver ismétlési ideje ezredmásodpercben
+	 */
+	public abstract long getRepeatTime();
 }

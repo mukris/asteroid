@@ -1,5 +1,8 @@
 package hu.bme.mit.asteroid.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * A játékban szereplő űrhajót reprezentáló osztály
  */
@@ -9,6 +12,7 @@ public class SpaceShip extends DirectionalMovingSpaceObject {
 
 	private Vector2D mAcceleration = new Vector2D();
 	private Weapon mWeapon;
+	private List<Weapon> mWeapons;
 	private long mTimeMillisUntilVulnerable = 0;
 	private long mTimeMillisSinceLastShoot = 0;
 	private boolean mIsAccelerating = false;
@@ -26,7 +30,29 @@ public class SpaceShip extends DirectionalMovingSpaceObject {
 	 */
 	public SpaceShip(Vector2D position, int direction) {
 		super(position, new Vector2D(), direction, SPACESHIP_SIZE);
+		mWeapons = new ArrayList<>();
 		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * Tüzelés kezelése. A fizikai számítások ciklusában hívandó, kezeli a
+	 * fegyver ismétlési idejét.
+	 * 
+	 * @param timeDelta
+	 *            Az előző hívás óta eltelt idő ezredmásodpercben
+	 */
+	public void handleFiring(long timeDelta) {
+		long repeatTime = mWeapon.getRepeatTime();
+		if (isFiring() && mTimeMillisSinceLastShoot + timeDelta >= repeatTime) {
+			Weapon newWeapon = mWeapon.clone();
+			newWeapon.setDirection(getDirection());
+			newWeapon.setPosition(getPosition());
+			synchronized (mWeapons) {
+				mWeapons.add(newWeapon);
+			}
+			mTimeMillisSinceLastShoot %= repeatTime;
+		}
+		mTimeMillisSinceLastShoot += timeDelta;
 	}
 
 	/**
