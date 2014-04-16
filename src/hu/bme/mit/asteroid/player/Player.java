@@ -13,6 +13,10 @@ public abstract class Player implements ControlInterface.Callback {
 		private int mLives;
 		private int mPoints;
 
+		public State(int lives) {
+			mLives = lives;
+		}
+
 		public int getLives() {
 			return mLives;
 		}
@@ -46,6 +50,7 @@ public abstract class Player implements ControlInterface.Callback {
 		if (mControlInterface != null) {
 			mControlInterface.setCallback(this);
 		}
+		mState = new State(3);
 	}
 
 	public State getState() {
@@ -104,7 +109,7 @@ public abstract class Player implements ControlInterface.Callback {
 		case FIRE_STOP:
 			mSpaceShip.fireStop();
 			break;
-			
+
 		default:
 			break;
 		}
