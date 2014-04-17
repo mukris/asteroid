@@ -8,7 +8,7 @@ import hu.bme.mit.asteroid.exceptions.LevelNotExistsException;
 import hu.bme.mit.asteroid.exceptions.LevelNotUnlockedException;
 import hu.bme.mit.asteroid.gui.GameField;
 import hu.bme.mit.asteroid.network.NetworkClient;
-import hu.bme.mit.asteroid.network.NetworkListener;
+import hu.bme.mit.asteroid.network.NetworkDiscover;
 import hu.bme.mit.asteroid.network.NetworkServer;
 import hu.bme.mit.asteroid.player.DummyPlayer;
 import hu.bme.mit.asteroid.player.LocalPlayer;
@@ -22,33 +22,53 @@ import hu.bme.mit.asteroid.player.Player;
 public class GameManager {
 	private GameField mGameField;
 	private GameSession mGameSession;
-	private NetworkServer mNetworkServer;
-	private NetworkClient mNetworkClient;
-	private NetworkListener mNetworkListener;
+	private NetworkServer mNetworkServer = null;
+	private NetworkClient mNetworkClient = null;
+	private NetworkDiscover mNetworkDiscover = null;
 
 	private static GameManager sInstance = null;
 
-	private GameManager() {
+	public GameManager(GameField gameField) {
+		if (sInstance != null) {
+			throw new RuntimeException(
+					"GameManager has already been initialized. Use the getInstance() method to get the existing instance");
+		}
+		mGameField = gameField;
+		sInstance = this;
 	}
 
 	public static GameManager getInstance() {
 		if (sInstance == null) {
-			sInstance = new GameManager();
+			throw new RuntimeException("GameManager must be initialized first!");
 		}
 		return sInstance;
 	}
 
-	public void startSinglePlayerGame(int levelID, GameField gameField) throws NullPointerException,
-			LevelNotExistsException, LevelNotUnlockedException {
-		if (gameField == null) {
-			throw new NullPointerException();
+	public NetworkServer getNetworkServer() {
+		if (mNetworkServer == null) {
+			mNetworkServer = new NetworkServer();
 		}
+		return mNetworkServer;
+	}
 
-		mGameField = gameField;
+	public NetworkClient getNetworkClient() {
+		if (mNetworkClient == null) {
+			mNetworkClient = new NetworkClient();
+		}
+		return mNetworkClient;
+	}
 
+	public NetworkDiscover getNetworkDiscover() {
+		if (mNetworkDiscover == null) {
+			mNetworkDiscover = new NetworkDiscover();
+		}
+		return mNetworkDiscover;
+	}
+
+	public void startSinglePlayerGame(int levelID) throws LevelNotExistsException, LevelNotUnlockedException {
 		ArrowControlInterface controlInterface = new ArrowControlInterface();
 		MiscControlInterface miscControlInterface = new MiscControlInterface();
-		
+
 		mGameField.addKeyListener(controlInterface);
 		mGameField.addKeyListener(miscControlInterface);
 
@@ -56,15 +76,10 @@ public class GameManager {
 
 		mGameSession = new SingleplayerGameSession(player, levelID);
 		mGameSession.setMiscControlInterface(miscControlInterface);
+		mGameSession.start();
 	}
 
-	public void startLocalMultiplayerGame(GameField gameField) throws NullPointerException, LevelNotExistsException {
-		if (gameField == null) {
-			throw new NullPointerException();
-		}
-
-		mGameField = gameField;
-
+	public void startLocalMultiplayerGame() throws LevelNotExistsException {
 		ArrowControlInterface arrowControlInterface = new ArrowControlInterface();
 		WADControlInterface wadControlInterface = new WADControlInterface();
 		MiscControlInterface miscControlInterface = new MiscControlInterface();
@@ -78,56 +93,43 @@ public class GameManager {
 
 		mGameSession = new MultiplayerGameSession(Type.LOCAL, player1, player2, 0);
 		mGameSession.setMiscControlInterface(miscControlInterface);
+		mGameSession.start();
 	}
 
-	public void startNetworkServerMultiplayerGame(GameField gameField, NetworkServer networkServer)
-			throws NullPointerException, LevelNotExistsException {
-		if (gameField == null || networkServer == null) {
-			throw new NullPointerException();
-		}
-
-		mGameField = gameField;
-		mNetworkServer = networkServer;
-
+	public void startNetworkServerMultiplayerGame() throws LevelNotExistsException {
 		ArrowControlInterface arrowControlInterface = new ArrowControlInterface();
 		MiscControlInterface miscControlInterface = new MiscControlInterface();
-		
+
 		mGameField.addKeyListener(arrowControlInterface);
 		mGameField.addKeyListener(miscControlInterface);
 
 		LocalPlayer player1 = new LocalPlayer(arrowControlInterface);
 		NetworkRemotePlayer player2 = new NetworkRemotePlayer();
 
-		networkServer.addReceiveListener(player2);
+		mNetworkServer.addReceiveListener(player2);
 
 		MultiplayerGameSession gameSession = new MultiplayerGameSession(Type.NETWORK_SERVER, player1, player2, 0);
 		registerAsServerListener(gameSession);
 		mGameSession = gameSession;
 		mGameSession.setMiscControlInterface(miscControlInterface);
+		mGameSession.start();
 	}
 
-	public void startNetworkClientMultiplayerGame(GameField gameField, NetworkClient networkClient)
-			throws NullPointerException, LevelNotExistsException {
-		if (gameField == null || networkClient == null) {
-			throw new NullPointerException();
-		}
-
-		mGameField = gameField;
-		mNetworkClient = networkClient;
-
+	public void startNetworkClientMultiplayerGame() throws LevelNotExistsException {
 		ArrowControlInterface arrowControlInterface = new ArrowControlInterface();
 		MiscControlInterface miscControlInterface = new MiscControlInterface();
-		
+
 		mGameField.addKeyListener(arrowControlInterface);
 		mGameField.addKeyListener(miscControlInterface);
 
-		NetworkLocalPlayer player1 = new NetworkLocalPlayer(arrowControlInterface, networkClient);
+		NetworkLocalPlayer player1 = new NetworkLocalPlayer(arrowControlInterface, mNetworkClient);
 		Player player2 = new DummyPlayer();
 
 		MultiplayerGameSession gameSession = new MultiplayerGameSession(Type.NETWORK_CLIENT, player1, player2, 0);
 		registerAsClientListener(gameSession);
 		mGameSession = gameSession;
 		mGameSession.setMiscControlInterface(miscControlInterface);
+		mGameSession.start();
 	}
 
 	public void registerAsServerListener(MultiplayerGameSession gameSession) {
