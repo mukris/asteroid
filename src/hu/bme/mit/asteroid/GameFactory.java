@@ -2,6 +2,8 @@ package hu.bme.mit.asteroid;
 
 import hu.bme.mit.asteroid.exceptions.LevelNotExistsException;
 import hu.bme.mit.asteroid.exceptions.LevelNotUnlockedException;
+import hu.bme.mit.asteroid.model.SpaceShip;
+import hu.bme.mit.asteroid.model.Vector2D;
 import hu.bme.mit.asteroid.player.Player;
 
 import java.util.ArrayList;
@@ -26,6 +28,15 @@ public class GameFactory {
 	}
 
 	/**
+	 * Visszaadja, hogy hány pálya van a játékban
+	 * 
+	 * @return A pályák száma
+	 */
+	public static int getLevelCount() {
+		return sLevels.size();
+	}
+
+	/**
 	 * Új játéktér létrehozása a megadott szinten egyjátékos módban
 	 * 
 	 * @param levelID
@@ -47,6 +58,7 @@ public class GameFactory {
 			throw new LevelNotUnlockedException();
 		}
 		// TODO initialize Player, SpaceShip...
+		player.setSpaceShip(new SpaceShip(new Vector2D(30, 30), 0));
 		GameState gameState = new GameState(player, null);
 		generateAsteroidPositions(gameState, sLevels.get(levelID));
 

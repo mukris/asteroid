@@ -1,6 +1,12 @@
 package hu.bme.mit.asteroid.gui;
 
+import hu.bme.mit.asteroid.GameManager;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 /**
  * A program főablaka
@@ -8,25 +14,27 @@ import javax.swing.JFrame;
 public class GameWindow extends JFrame {
 
 	private static final long serialVersionUID = -2774394870156151797L;
-	private GameModeSelector mGameModeSelector;
-	private LevelSelectorPanel mLevelSelectorPanel;
-	private Toplist mToplist;
 
 	public enum PanelId {
 		GAME_MODE_SELECTOR, LEVEL_SELECTOR, NETWORK_PANEL, SERVER_PANEL, CLIENT_PANEL, GAME_FIELD, GET_NAME_PANEL, TOPLIST, ERROR_PANEL
 	}
+
+	private Map<PanelId, JPanel> mPanels = new HashMap<>();
+	private GameManager mGameManager;
 
 	public GameWindow() {
 		super("Asteroid Shooter");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 		initComponents();
+		mGameManager = new GameManager((GameField) mPanels.get(PanelId.GAME_FIELD));
 	}
 
 	private void initComponents() {
-		mGameModeSelector = new GameModeSelector(this);
-		mLevelSelectorPanel = new LevelSelectorPanel(this);
-		mToplist = new Toplist();
+		mPanels.put(PanelId.GAME_MODE_SELECTOR, new GameModeSelector(this));
+		mPanels.put(PanelId.LEVEL_SELECTOR, new LevelSelectorPanel(this));
+		mPanels.put(PanelId.GAME_FIELD, new GameField(this));
+		mPanels.put(PanelId.TOPLIST, new Toplist(this));
 		// TODO: többi panel osztályból példány létrehozása
 
 		showPanel(PanelId.GAME_MODE_SELECTOR);
@@ -38,39 +46,8 @@ public class GameWindow extends JFrame {
 	 * @param panelId
 	 */
 	public void showPanel(final PanelId panelId) {
-		// TODO: Többi panel osztály létrehozása, itt a hiányzó részek kitöltése
-		switch (panelId) {
-		case LEVEL_SELECTOR:
-			setContentPane(mLevelSelectorPanel);
-			break;
-
-		case NETWORK_PANEL:
-			break;
-
-		case SERVER_PANEL:
-			break;
-
-		case CLIENT_PANEL:
-			break;
-
-		case GAME_FIELD:
-			break;
-
-		case GET_NAME_PANEL:
-			break;
-
-		case TOPLIST:
-			setContentPane(mToplist);
-			break;
-
-		case ERROR_PANEL:
-			break;
-
-		case GAME_MODE_SELECTOR:
-		default:
-			setContentPane(mGameModeSelector);
-			break;
-		}
+		JPanel panel = mPanels.get(panelId);
+		setContentPane(panel);
 		validate();
 	}
 }
