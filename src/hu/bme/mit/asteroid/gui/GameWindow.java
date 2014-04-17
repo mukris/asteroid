@@ -48,6 +48,7 @@ public class GameWindow extends JFrame {
 	public void showPanel(final PanelId panelId) {
 		JPanel panel = mPanels.get(panelId);
 		setContentPane(panel);
+		panel.requestFocusInWindow();
 		validate();
 	}
 }

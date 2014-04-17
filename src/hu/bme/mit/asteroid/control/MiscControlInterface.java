@@ -6,7 +6,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 /**
- * A billentyűzet egyéb funkciós billentyűinek segítségével megvalósított {@link ControlInterface}.
+ * A billentyűzet egyéb funkciós billentyűinek segítségével megvalósított
+ * {@link ControlInterface}.
  */
 public class MiscControlInterface extends ControlInterface implements KeyListener {
 

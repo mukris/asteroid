@@ -55,4 +55,9 @@ public class GameField extends JPanel {
 					spaceShip.getRadius(), (int) (spaceShip.getRadius() * 1.5f));
 		}
 	}
+	
+	@Override
+	public boolean isFocusable() {
+		return true;
+	}
 }
