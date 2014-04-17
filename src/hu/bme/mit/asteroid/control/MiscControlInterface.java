@@ -18,20 +18,19 @@ public class MiscControlInterface extends ControlInterface implements KeyListene
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-
-	}
-
-	@Override
-	public void keyTyped(KeyEvent e) {
 		if (mCallback == null) {
 			return;
 		}
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_P:
 			mCallback.control(new ControlEvent(Type.INVERT_PAUSE));
-
+			break;
 		default:
 			break;
 		}
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
 	}
 }
