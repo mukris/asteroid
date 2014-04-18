@@ -96,11 +96,10 @@ public abstract class NetworkHelper<ReceiveType, SendType> {
 	@SuppressWarnings("hiding")
 	protected class ReceiverThread<ReceiveType> extends Thread {
 
-		private AtomicBoolean mRunning;
+		private AtomicBoolean mRunning = new AtomicBoolean(true);
 		private ArrayList<NetworkReceiveListener<ReceiveType>> mListeners;
 
 		public ReceiverThread(ArrayList<NetworkReceiveListener<ReceiveType>> listeners) {
-			mRunning.set(true);
 			mListeners = listeners;
 		}
 
@@ -143,9 +142,9 @@ public abstract class NetworkHelper<ReceiveType, SendType> {
 	}
 
 	protected void initCommunication() throws IOException {
-		mInput = new ObjectInputStream(mClientSocket.getInputStream());
 		mOutput = new ObjectOutputStream(mClientSocket.getOutputStream());
 		mOutput.flush();
+		mInput = new ObjectInputStream(mClientSocket.getInputStream());
 	}
 
 	/**
