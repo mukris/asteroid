@@ -18,6 +18,7 @@ public class MultiplayerGameSession extends GameSession {
 	public MultiplayerGameSession(Type type, Player player1, Player player2, int levelID)
 			throws LevelNotExistsException {
 		super(player1, levelID);
+		mType = type;
 		mPlayer2 = player2;
 		mGameState = GameFactory.createMultiplayerGame(levelID, player1, player2);
 	}
