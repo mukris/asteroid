@@ -12,31 +12,19 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
 /**
  * Az egyes pályák kiválasztását lehetővé tévő Panel
  */
-public class LevelSelectorPanel extends JPanel {
+public class LevelSelectorPanel extends GamePanel {
 	private static final long serialVersionUID = -8459751887544384881L;
 
-	private GameWindow mGameWindow;
 	private JButton mBtnToplist;
-	private JButton mBtnBack;
 	private List<JButton> mLevelButtons;
 	private ActionListener mLevelButtonListener;
 
 	public LevelSelectorPanel(GameWindow gameWindow) {
-		mGameWindow = gameWindow;
-
-		mBtnBack = new JButton("Vissza");
-		mBtnBack.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				mGameWindow.showPanel(PanelId.GAME_MODE_SELECTOR);
-			}
-		});
+		super(gameWindow);
 
 		mBtnToplist = new JButton("Toplista");
 		mBtnToplist.addActionListener(new ActionListener() {
@@ -48,7 +36,7 @@ public class LevelSelectorPanel extends JPanel {
 		});
 
 		add(mBtnToplist);
-		add(mBtnBack);
+		add(getBackButton(PanelId.GAME_MODE_SELECTOR));
 
 		mLevelButtonListener = new ActionListener() {
 

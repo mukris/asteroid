@@ -84,6 +84,8 @@ public class GameFactory {
 			throw new LevelNotExistsException();
 		}
 		// TODO initialize Players, SpaceShips...
+		player1.setSpaceShip(new SpaceShip(new Vector2D(30, 30), 0));
+		player2.setSpaceShip(new SpaceShip(new Vector2D(100, 100), 0));
 		GameState gameState = new GameState(player1, player2);
 		generateAsteroidPositions(gameState, sLevels.get(levelID));
 

@@ -6,16 +6,13 @@ import hu.bme.mit.asteroid.model.SpaceShip;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import javax.swing.JPanel;
-
 /**
  * A játék grafikus megjelenítését végző osztály
  */
-public class GameField extends JPanel {
+public class GameField extends GamePanel {
 
 	private static final long serialVersionUID = 6958968330216408636L;
 
-	private GameWindow mGameWindow;
 	private GameState mGameState;
 	private SpaceShipPainter mSpaceshipPainter;
 	private AsteroidPainter mAsteroidPainter;
@@ -23,7 +20,7 @@ public class GameField extends JPanel {
 	private PowerupPainter mPowerupPainter;
 
 	public GameField(GameWindow gameWindow) {
-		mGameWindow = gameWindow;
+		super(gameWindow);
 		// TODO Painterek létrehozása, inicializálása
 	}
 
