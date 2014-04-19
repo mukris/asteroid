@@ -6,13 +6,15 @@ import hu.bme.mit.asteroid.model.SpaceShip;
 import hu.bme.mit.asteroid.model.Weapon;
 import hu.bme.mit.asteroid.player.Player;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * A játék midenkori aktuális állapotát tároló osztály
  */
-public class GameState {
-
+public class GameState implements Serializable {
+	private static final long serialVersionUID = -6065362868807499848L;
+	
 	private Player.State mPlayer1State;
 	private SpaceShip mSpaceShip1;
 
@@ -42,31 +44,83 @@ public class GameState {
 	 * 
 	 * @param newGameState
 	 */
-	public synchronized void update(GameState newGameState) {
-		// TODO adatok frissítése
+	public void update(GameState newGameState) {
+		synchronized (mPlayer1State) {
+			mPlayer1State = newGameState.mPlayer1State;
+		}
+		synchronized (mSpaceShip1) {
+			mSpaceShip1 = newGameState.mSpaceShip1;
+		}
+		if (mPlayer2State != null) {
+			synchronized (mPlayer2State) {
+				mPlayer2State = newGameState.mPlayer2State;
+			}
+		}
+		if (mSpaceShip2 != null) {
+			synchronized (mSpaceShip2) {
+				mSpaceShip2 = newGameState.mSpaceShip2;
+			}
+		}
+		synchronized (mAsteroids) {
+			mAsteroids = newGameState.mAsteroids;
+		}
+		synchronized (mWeapons) {
+			mWeapons = newGameState.mWeapons;
+		}
+		synchronized (mPowerups) {
+			mPowerups = newGameState.mPowerups;
+		}
 	}
 
 	public boolean isMultiplayer() {
 		return (mPlayer2State != null);
 	}
-	
+
+	public Player.State getPlayer1State() {
+		synchronized (mPlayer1State) {
+			return mPlayer1State;
+		}
+	}
+
+	public Player.State getPlayer2State() {
+		if (mPlayer2State == null) {
+			return null;
+		}
+		synchronized (mPlayer2State) {
+			return mPlayer2State;
+		}
+	}
+
 	public SpaceShip getSpaceShip1() {
-		return mSpaceShip1;
+		synchronized (mSpaceShip1) {
+			return mSpaceShip1;
+		}
 	}
 
 	public SpaceShip getSpaceShip2() {
-		return mSpaceShip2;
+		if (mSpaceShip2 == null) {
+			return null;
+		}
+		synchronized (mSpaceShip2) {
+			return mSpaceShip2;
+		}
 	}
 
 	public ArrayList<Asteroid> getAsteroids() {
-		return mAsteroids;
+		synchronized (mAsteroids) {
+			return mAsteroids;
+		}
 	}
 
 	public ArrayList<Weapon> getWeapons() {
-		return mWeapons;
+		synchronized (mWeapons) {
+			return mWeapons;
+		}
 	}
 
 	public ArrayList<Powerup> getPowerups() {
-		return mPowerups;
+		synchronized (mPowerups) {
+			return mPowerups;
+		}
 	}
 }
