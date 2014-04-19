@@ -39,8 +39,10 @@ public class MultiplayerGameSession extends GameSession {
 				public void onDisconnect() {
 					// TODO
 					stop();
-					GameManager.getInstance().unregisterClientListener(MultiplayerGameSession.this);
-					GameManager.getInstance().unregisterServerListener(MultiplayerGameSession.this);
+					GameManager gameManager = GameManager.getInstance();
+					gameManager.unregisterClientListener(MultiplayerGameSession.this);
+					gameManager.unregisterServerListener(MultiplayerGameSession.this);
+					gameManager.onNetworkError();
 					mState = State.ERROR;
 				}
 
@@ -83,7 +85,7 @@ public class MultiplayerGameSession extends GameSession {
 
 		case NETWORK_SERVER:
 			return new ServerGameRunner();
-			
+
 		case LOCAL:
 		default:
 			return super.newGameRunner();

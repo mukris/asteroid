@@ -1,10 +1,13 @@
 package hu.bme.mit.asteroid.gui;
 
 import hu.bme.mit.asteroid.GameState;
+import hu.bme.mit.asteroid.gui.GameWindow.PanelId;
 import hu.bme.mit.asteroid.model.SpaceShip;
 
 import java.awt.Color;
 import java.awt.Graphics;
+
+import javax.swing.JOptionPane;
 
 /**
  * A játék grafikus megjelenítését végző osztály
@@ -41,6 +44,15 @@ public class GameField extends GamePanel {
 		repaint();
 	}
 
+	/**
+	 * Akkor hívódik, ha hálózati hiba történt
+	 */
+	public void onNetworkError() {
+		JOptionPane.showMessageDialog(this, "A hálózati kapcsolat megszakadt", "Hálózati hiba",
+				JOptionPane.ERROR_MESSAGE);
+		mGameWindow.showPanel(PanelId.GAME_MODE_SELECTOR);
+	}
+
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
@@ -52,7 +64,7 @@ public class GameField extends GamePanel {
 					spaceShip.getRadius(), (int) (spaceShip.getRadius() * 1.5f));
 		}
 	}
-	
+
 	@Override
 	public boolean isFocusable() {
 		return true;

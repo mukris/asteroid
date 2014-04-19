@@ -155,4 +155,8 @@ public class GameManager {
 	public void updateGameField(GameState gameState) {
 		mGameField.update(gameState);
 	}
+
+	public void onNetworkError() {
+		mGameField.onNetworkError();
+	}
 }
