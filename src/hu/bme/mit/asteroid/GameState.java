@@ -3,7 +3,6 @@ package hu.bme.mit.asteroid;
 import hu.bme.mit.asteroid.model.Asteroid;
 import hu.bme.mit.asteroid.model.Powerup;
 import hu.bme.mit.asteroid.model.SpaceShip;
-import hu.bme.mit.asteroid.model.Weapon;
 import hu.bme.mit.asteroid.player.Player;
 
 import java.io.Serializable;
@@ -14,7 +13,7 @@ import java.util.ArrayList;
  */
 public class GameState implements Serializable {
 	private static final long serialVersionUID = -6065362868807499848L;
-	
+
 	private Player.State mPlayer1State;
 	private SpaceShip mSpaceShip1;
 
@@ -22,7 +21,6 @@ public class GameState implements Serializable {
 	private SpaceShip mSpaceShip2 = null;
 
 	private ArrayList<Asteroid> mAsteroids;
-	private ArrayList<Weapon> mWeapons;
 	private ArrayList<Powerup> mPowerups;
 
 	public GameState(Player player1, Player player2) {
@@ -35,7 +33,6 @@ public class GameState implements Serializable {
 		}
 
 		mAsteroids = new ArrayList<>();
-		mWeapons = new ArrayList<>();
 		mPowerups = new ArrayList<>();
 	}
 
@@ -64,9 +61,6 @@ public class GameState implements Serializable {
 		synchronized (mAsteroids) {
 			mAsteroids = newGameState.mAsteroids;
 		}
-		synchronized (mWeapons) {
-			mWeapons = newGameState.mWeapons;
-		}
 		synchronized (mPowerups) {
 			mPowerups = newGameState.mPowerups;
 		}
@@ -74,6 +68,7 @@ public class GameState implements Serializable {
 
 	/**
 	 * Kétjátékos mód?
+	 * 
 	 * @return True ha igen, false ha nem
 	 */
 	public boolean isMultiplayer() {
@@ -113,12 +108,6 @@ public class GameState implements Serializable {
 	public ArrayList<Asteroid> getAsteroids() {
 		synchronized (mAsteroids) {
 			return mAsteroids;
-		}
-	}
-
-	public ArrayList<Weapon> getWeapons() {
-		synchronized (mWeapons) {
-			return mWeapons;
 		}
 	}
 
