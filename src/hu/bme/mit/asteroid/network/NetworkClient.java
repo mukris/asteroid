@@ -32,7 +32,7 @@ public class NetworkClient extends NetworkHelper<GameState, ControlEvent> {
 	public NetworkClient() {
 		mClientSocket = new Socket();
 	}
-	
+
 	public NetworkClient(NetworkClientListener listener) throws NullPointerException {
 		this();
 		addConnectionListener(listener);
@@ -87,6 +87,11 @@ public class NetworkClient extends NetworkHelper<GameState, ControlEvent> {
 	 * @return Sikeres küldés esetén true, egyébként false
 	 */
 	public boolean sendControlEvent(ControlEvent controlEvent) {
-		return send(controlEvent);
+		boolean success = send(controlEvent);
+
+		if (!success) {
+			disconnect();
+		}
+		return success;
 	}
 }

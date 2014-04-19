@@ -93,7 +93,12 @@ public class NetworkServer extends NetworkHelper<ControlEvent, GameState> {
 	 * @return Sikeres küldés esetén true, egyébként false
 	 */
 	public boolean sendGameState(GameState gameState) {
-		return super.send(gameState);
+		boolean success = super.send(gameState);
+		
+		if(!success){
+			disconnect();
+		}
+		return success;
 	}
 
 	private void onConnect() {
