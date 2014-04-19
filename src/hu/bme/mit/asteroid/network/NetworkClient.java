@@ -30,7 +30,6 @@ public class NetworkClient extends NetworkHelper<GameState, ControlEvent> {
 	}
 
 	public NetworkClient() {
-		mClientSocket = new Socket();
 	}
 
 	public NetworkClient(NetworkClientListener listener) throws NullPointerException {
@@ -62,6 +61,7 @@ public class NetworkClient extends NetworkHelper<GameState, ControlEvent> {
 	 */
 	public void connect(InetAddress address) throws IOException {
 		try {
+			mClientSocket = new Socket();
 			mClientSocket.connect(new InetSocketAddress(address, PORT), TIMEOUT);
 			initCommunication();
 
