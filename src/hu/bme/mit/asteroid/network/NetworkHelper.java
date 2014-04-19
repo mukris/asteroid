@@ -3,6 +3,7 @@ package hu.bme.mit.asteroid.network;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -110,21 +111,17 @@ public abstract class NetworkHelper<ReceiveType, SendType> {
 			}
 			while (mRunning.get()) {
 				try {
-					if (mInput.available() > 0) {
-						if (Thread.interrupted()) {
-							throw new InterruptedException();
-						}
-						@SuppressWarnings("unchecked")
-						ReceiveType readObject = (ReceiveType) mInput.readObject();
-						if (mListeners != null) {
-							synchronized (NetworkHelper.this.mReceiveListeners) {
-								for (NetworkReceiveListener<ReceiveType> listener : mListeners) {
-									listener.onReceive(readObject);
-								}
+					if (Thread.interrupted()) {
+						throw new InterruptedException();
+					}
+					@SuppressWarnings("unchecked")
+					ReceiveType readObject = (ReceiveType) mInput.readObject();
+					if (mListeners != null) {
+						synchronized (NetworkHelper.this.mReceiveListeners) {
+							for (NetworkReceiveListener<ReceiveType> listener : mListeners) {
+								listener.onReceive(readObject);
 							}
 						}
-					} else {
-						sleep(10);
 					}
 				} catch (InterruptedException e) {
 					return;
@@ -175,24 +172,33 @@ public abstract class NetworkHelper<ReceiveType, SendType> {
 	 * érdekben.
 	 */
 	protected void disconnect() {
-		try {
-			stopReceiving();
+		stopReceiving();
 
-			if (mInput != null)
-				mInput.close();
-			if (mOutput != null)
-				mOutput.close();
-			if (mClientSocket != null)
-				mClientSocket.close();
-			if (mConnectionListeners != null) {
-				synchronized (mConnectionListeners) {
-					for (NetworkConnectionListener listener : mConnectionListeners) {
-						listener.onDisconnect();
-					}
+		try {
+			mInput.close();
+		} catch (Exception e) {
+		} finally {
+			mInput = null;
+		}
+		try {
+			mOutput.close();
+		} catch (Exception e) {
+		} finally {
+			mOutput = null;
+		}
+		try {
+			mClientSocket.close();
+		} catch (Exception e) {
+		} finally {
+			mClientSocket = null;
+		}
+		try {
+			synchronized (mConnectionListeners) {
+				for (NetworkConnectionListener listener : mConnectionListeners) {
+					listener.onDisconnect();
 				}
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
 		}
 	}
 
@@ -208,6 +214,7 @@ public abstract class NetworkHelper<ReceiveType, SendType> {
 			return false;
 		}
 		try {
+			mOutput.reset();
 			mOutput.writeObject(data);
 			mOutput.flush();
 			return true;
