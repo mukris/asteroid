@@ -25,14 +25,16 @@ public abstract class GamePanel extends JPanel {
 	}
 
 	protected JButton getBackButton(final PanelId panelId) {
-		mBtnBack = new JButton("Vissza");
-		mBtnBack.addActionListener(new ActionListener() {
+		if (mBtnBack == null) {
+			mBtnBack = new JButton("Vissza");
+			mBtnBack.addActionListener(new ActionListener() {
 
-			@Override
-			public void actionPerformed(ActionEvent event) {
-				mGameWindow.showPanel(panelId);
-			}
-		});
+				@Override
+				public void actionPerformed(ActionEvent event) {
+					mGameWindow.showPanel(panelId);
+				}
+			});
+		}
 		return mBtnBack;
 	}
 
