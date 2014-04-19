@@ -28,6 +28,12 @@ public class GameManager {
 
 	private static GameManager sInstance = null;
 
+	/**
+	 * Konstruktor
+	 * 
+	 * @param gameField
+	 *            A játékmező
+	 */
 	public GameManager(GameField gameField) {
 		if (sInstance != null) {
 			throw new RuntimeException(
@@ -37,6 +43,11 @@ public class GameManager {
 		sInstance = this;
 	}
 
+	/**
+	 * A létező {@link GameManager} példány elkérése
+	 * 
+	 * @return A létező GameManager példány
+	 */
 	public static GameManager getInstance() {
 		if (sInstance == null) {
 			throw new RuntimeException("GameManager must be initialized first!");
@@ -65,6 +76,18 @@ public class GameManager {
 		return mNetworkDiscover;
 	}
 
+	/**
+	 * Játék indítása egyjátékos módban
+	 * 
+	 * @param levelID
+	 *            Az indítandó pálya száma
+	 * @throws LevelNotExistsException
+	 *             Akkor dobja, ha nincs a <code>levelID</code>-nak megfelelő
+	 *             számú pálya
+	 * @throws LevelNotUnlockedException
+	 *             Akkor dobja, ha a <code>levelID</code>-nak megfelelő számú
+	 *             pálya még nincs feloldva
+	 */
 	public void startSinglePlayerGame(int levelID) throws LevelNotExistsException, LevelNotUnlockedException {
 		ArrowControlInterface controlInterface = new ArrowControlInterface();
 		MiscControlInterface miscControlInterface = new MiscControlInterface();
@@ -79,6 +102,13 @@ public class GameManager {
 		mGameSession.start();
 	}
 
+	/**
+	 * Játék indítása helyi kétjátékos módban
+	 * 
+	 * @throws LevelNotExistsException
+	 *             Akkor dobja, ha nincs a <code>levelID</code>-nak megfelelő
+	 *             számú pálya
+	 */
 	public void startLocalMultiplayerGame() throws LevelNotExistsException {
 		ArrowControlInterface arrowControlInterface = new ArrowControlInterface();
 		WADControlInterface wadControlInterface = new WADControlInterface();
@@ -96,6 +126,13 @@ public class GameManager {
 		mGameSession.start();
 	}
 
+	/**
+	 * Játék indítása hálózati kétjátékos módban szerverként
+	 * 
+	 * @throws LevelNotExistsException
+	 *             Akkor dobja, ha nincs a <code>levelID</code>-nak megfelelő
+	 *             számú pálya
+	 */
 	public void startNetworkServerMultiplayerGame() throws LevelNotExistsException {
 		ArrowControlInterface arrowControlInterface = new ArrowControlInterface();
 		MiscControlInterface miscControlInterface = new MiscControlInterface();
@@ -115,6 +152,13 @@ public class GameManager {
 		mGameSession.start();
 	}
 
+	/**
+	 * Játék indítása hálózati kétjátékos módban kliensként
+	 * 
+	 * @throws LevelNotExistsException
+	 *             Akkor dobja, ha nincs a <code>levelID</code>-nak megfelelő
+	 *             számú pálya
+	 */
 	public void startNetworkClientMultiplayerGame() throws LevelNotExistsException {
 		ArrowControlInterface arrowControlInterface = new ArrowControlInterface();
 		MiscControlInterface miscControlInterface = new MiscControlInterface();
@@ -156,10 +200,18 @@ public class GameManager {
 		}
 	}
 
+	/**
+	 * A grafikai felület frissítése az új {@link GameState} alapján
+	 * 
+	 * @param gameState
+	 */
 	public void updateGameField(GameState gameState) {
 		mGameField.update(gameState);
 	}
 
+	/**
+	 * Hálózati hiba esetén a grafikus felőlet értesítése
+	 */
 	public void onNetworkError() {
 		mGameField.onNetworkError();
 	}

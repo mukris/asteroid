@@ -126,7 +126,7 @@ public abstract class NetworkHelper<ReceiveType, SendType> {
 				} catch (InterruptedException e) {
 					return;
 				} catch (Exception e) {
-					e.printStackTrace();
+					//e.printStackTrace();
 					System.err.println("Stopped receiving data from the network.");
 					disconnect();
 					return;

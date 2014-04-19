@@ -2,7 +2,6 @@ package hu.bme.mit.asteroid.network;
 
 import hu.bme.mit.asteroid.GameState;
 import hu.bme.mit.asteroid.control.ControlEvent;
-import hu.bme.mit.asteroid.network.NetworkHelper.NetworkConnectionListener;
 
 import java.io.IOException;
 import java.net.ServerSocket;

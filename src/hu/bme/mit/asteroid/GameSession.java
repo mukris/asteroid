@@ -21,6 +21,9 @@ import java.util.logging.Logger;
  */
 public abstract class GameSession implements ControlInterface.Callback {
 
+	/**
+	 * A játékmenet lehetséges állapotait reprezentáló enum
+	 */
 	public enum State {
 		LEVEL_STARTING, LEVEL_COMPLETE, GAME_OVER, RUNNING, PAUSED, STOPPED, ERROR
 	}
@@ -40,10 +43,18 @@ public abstract class GameSession implements ControlInterface.Callback {
 		mState = State.LEVEL_STARTING;
 	}
 
+	/**
+	 * A kiegészítő vezérlőparancsokra való feliratkozás (pl: pause mód)
+	 * 
+	 * @param miscControlInterface
+	 */
 	public void setMiscControlInterface(MiscControlInterface miscControlInterface) {
 		miscControlInterface.setCallback(this);
 	}
 
+	/**
+	 * A {@link GameRunner} indítása vagy újraindítása
+	 */
 	public synchronized void start() {
 		if (mState == State.PAUSED && mGameRunner != null) {
 			synchronized (mGameRunner) {
@@ -58,6 +69,10 @@ public abstract class GameSession implements ControlInterface.Callback {
 		mState = State.RUNNING;
 	}
 
+	/**
+	 * A {@link GameRunner} pillanatnyi megállítása. Újraindítani a
+	 * {@link #start()} ismételt meghívásával lehet.
+	 */
 	public synchronized void pause() {
 		if (mGameRunner != null) {
 			mGameRunner.setRunning(false);
@@ -65,6 +80,9 @@ public abstract class GameSession implements ControlInterface.Callback {
 		mState = State.PAUSED;
 	}
 
+	/**
+	 * A {@link GameRunner} leállítása és felszámolása
+	 */
 	public synchronized void stop() {
 		if (mGameRunner != null) {
 			synchronized (mGameRunner) {
@@ -98,12 +116,20 @@ public abstract class GameSession implements ControlInterface.Callback {
 		}
 	}
 
+	/**
+	 * A {@link GameState} frissítése az új adatok alapján
+	 * 
+	 * @param newGameState
+	 */
 	public void updateGameState(GameState newGameState) {
 		synchronized (mGameState) {
 			mGameState.update(newGameState);
 		}
 	}
 
+	/**
+	 * A {@link GameRunner} indítása
+	 */
 	protected void startGameRunner() {
 		if (mGameRunner == null || !mGameRunner.isAlive()) {
 			mGameRunner = newGameRunner();
@@ -113,6 +139,13 @@ public abstract class GameSession implements ControlInterface.Callback {
 		}
 	}
 
+	/**
+	 * Új {@link GameRunner} példányosítása. A leszármazott osztályok
+	 * felüldefiniálhatják, hogy speciális GameRunner leszármazottakat hozzanak
+	 * létre.
+	 * 
+	 * @return Egy új GameRunner példány
+	 */
 	protected GameRunner newGameRunner() {
 		return new GameRunner();
 	}
@@ -165,6 +198,15 @@ public abstract class GameSession implements ControlInterface.Callback {
 			mRunning.set(running);
 		}
 
+		/**
+		 * A legutolsó futás idejének kézi beállítása. Abban az esetben fontos,
+		 * amikor a játékot megállította a játékos, hiszen ha ezt az értéket nem
+		 * állítjuk át, egy pillanat alatt lezajlik minden olyan mozgás, ami a
+		 * szünet ideje alatt történt volna.
+		 * 
+		 * @param time
+		 *            A beállítandó idő (valószínűleg az aktuális rendszeridő)
+		 */
 		public void setLastTime(long time) {
 			mLastTime = time;
 		}
@@ -195,6 +237,19 @@ public abstract class GameSession implements ControlInterface.Callback {
 			// TODO mozgás, ütközésvizsgálat
 		}
 
+		/**
+		 * Az űrhajó modelljének fizikai számításait végző függvény
+		 * 
+		 * @param spaceShip
+		 *            Az űrhajó
+		 * @param timeDelta
+		 *            A függvény utolsó futtatása óta eltelt idő
+		 *            ezredmásodpercben
+		 * @param currentTime
+		 *            Az aktuális rendszeridő ezredmásodpercben
+		 * @throws GameOverException
+		 *             Abban az esetben, ha az űrhajó megsemmisült
+		 */
 		protected void calculateSpaceShipPhysics(SpaceShip spaceShip, long timeDelta, long currentTime)
 				throws GameOverException {
 			// FIXME: Bűvészkedés az alábbi (és hasonló) függvényekkel:
@@ -208,11 +263,24 @@ public abstract class GameSession implements ControlInterface.Callback {
 			spaceShip.setPosition(spaceShip.getPosition().add(new Vector2D(0.1f, 0)));
 		}
 
+		/**
+		 * Az aszteroidák fizikai számításait végző függvény
+		 * 
+		 * @param timeDelta
+		 *            A függvény utolsó futtatása óta eltelt idő
+		 *            ezredmásodpercben
+		 * @param currentTime
+		 *            Az aktuális rendszeridő ezredmásodpercben
+		 * @throws LevelFinishedException
+		 *             Abban az esetben, ha az adott pálya végére értünk,
+		 *             elfogytak az aszteroidák
+		 */
 		protected void calculateAsteroidPhysics(long timeDelta, long currentTime) throws LevelFinishedException {
 			ArrayList<Asteroid> asteroids = mGameState.getAsteroids();
 
 			if (asteroids.isEmpty()) {
-				// TODO: kommentet kiszedni, ha már vannak aszteroidák a GameState-ben
+				// TODO: kommentet kiszedni, ha már vannak aszteroidák a
+				// GameState-ben
 				// throw new LevelFinishedException();
 			}
 
@@ -225,10 +293,22 @@ public abstract class GameSession implements ControlInterface.Callback {
 			// TODO
 		}
 
+		/**
+		 * A fegyverek fizikai számításait végző függvény
+		 * 
+		 * @param timeDelta
+		 *            A függvény utolsó futtatása óta eltelt idő
+		 *            ezredmásodpercben
+		 * @param currentTime
+		 *            Az aktuális rendszeridő ezredmásodpercben
+		 */
 		protected void calculateWeaponPhysics(long timeDelta, long currentTime) {
 			// TODO
 		}
 
+		/**
+		 * A grafikus felület frissítése
+		 */
 		protected void updateGUI() {
 			GameManager.getInstance().updateGameField(mGameState);
 		}

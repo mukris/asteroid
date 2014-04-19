@@ -47,22 +47,48 @@ public class LevelDescriptor {
 		mNumAsteroidSmall = numAsteroidSmall;
 	}
 
+	/**
+	 * Fel van oldva?
+	 * 
+	 * @return True ha igen, false ha nem
+	 */
 	public boolean isUnlocked() {
 		return mIsUnlocked;
 	}
 
+	/**
+	 * Feloldott státusz beállítása
+	 * 
+	 * @param isUnlocked
+	 *            True ha igen, false ha nem
+	 */
 	public void setUnlocked(boolean isUnlocked) {
 		mIsUnlocked = isUnlocked;
 	}
 
+	/**
+	 * Nagy aszteroidák számának lekérdezése
+	 * 
+	 * @return Nagy aszteroidák száma
+	 */
 	public int getNumAsteroidLarge() {
 		return mNumAsteroidLarge;
 	}
 
+	/**
+	 * Közepes aszteroidák számának lekérdezése
+	 * 
+	 * @return Közepes aszteroidák száma
+	 */
 	public int getNumAsteroidMedium() {
 		return mNumAsteroidMedium;
 	}
 
+	/**
+	 * Kis aszteroidák számának lekérdezése
+	 * 
+	 * @return Kis aszteroidák száma
+	 */
 	public int getNumAsteroidSmall() {
 		return mNumAsteroidSmall;
 	}

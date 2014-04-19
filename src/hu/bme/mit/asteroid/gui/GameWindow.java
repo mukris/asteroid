@@ -6,21 +6,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 /**
  * A program főablaka
  */
 public class GameWindow extends JFrame {
-
 	private static final long serialVersionUID = -2774394870156151797L;
 
+	/**
+	 * A felhasználói felület paneljainak azonosítására szolgáló enum
+	 */
 	public enum PanelId {
 		GAME_MODE_SELECTOR, LEVEL_SELECTOR, MULTIPLAYER_PANEL, SERVER_PANEL, CLIENT_PANEL, GAME_FIELD, GET_NAME_PANEL, TOPLIST, ERROR_PANEL
 	}
 
 	private Map<PanelId, GamePanel> mPanels = new HashMap<>();
 	private GamePanel mCurrentPanel = null;
+	@SuppressWarnings("unused")
 	private GameManager mGameManager;
 
 	public GameWindow() {
@@ -39,7 +41,6 @@ public class GameWindow extends JFrame {
 		mPanels.put(PanelId.CLIENT_PANEL, new ClientPanel(this));
 		mPanels.put(PanelId.GAME_FIELD, new GameField(this));
 		mPanels.put(PanelId.TOPLIST, new Toplist(this));
-		// TODO: többi panel osztályból példány létrehozása
 
 		showPanel(PanelId.GAME_MODE_SELECTOR);
 	}
@@ -50,10 +51,10 @@ public class GameWindow extends JFrame {
 	 * @param panelId
 	 */
 	public void showPanel(final PanelId panelId) {
-		if(mCurrentPanel != null){
+		if (mCurrentPanel != null) {
 			mCurrentPanel.onHide();
 		}
-		
+
 		GamePanel newPanel = mPanels.get(panelId);
 		setContentPane(newPanel);
 		validate();

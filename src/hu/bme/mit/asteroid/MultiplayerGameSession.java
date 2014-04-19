@@ -8,8 +8,14 @@ import hu.bme.mit.asteroid.network.NetworkListener;
 import hu.bme.mit.asteroid.network.NetworkServer;
 import hu.bme.mit.asteroid.player.Player;
 
+/**
+ * A kétjátékos játék menetét irányító osztály
+ */
 public class MultiplayerGameSession extends GameSession {
 
+	/**
+	 * A kétjátékos játéktípusok
+	 */
 	public enum Type {
 		LOCAL, NETWORK_SERVER, NETWORK_CLIENT
 	}
@@ -31,6 +37,12 @@ public class MultiplayerGameSession extends GameSession {
 		}
 	}
 
+	/**
+	 * A {@link MultiplayerGameSession} egyetlen {@link NetworkListener}
+	 * páldányának elkérése
+	 * 
+	 * @return A NetworkListener példány
+	 */
 	public NetworkListener getNetworkListener() {
 		if (mNetworkListener == null) {
 			mNetworkListener = new NetworkListener() {

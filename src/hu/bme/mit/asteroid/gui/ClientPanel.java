@@ -10,6 +10,9 @@ import hu.bme.mit.asteroid.network.NetworkListener;
 import java.io.IOException;
 import java.net.InetAddress;
 
+/**
+ * Hálózati játéknál a játékhoz való csatlakozást elősegítő panel
+ */
 public class ClientPanel extends GamePanel {
 	private static final long serialVersionUID = 5038448698817588083L;
 

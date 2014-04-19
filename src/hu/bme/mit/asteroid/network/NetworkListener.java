@@ -8,6 +8,12 @@ import hu.bme.mit.asteroid.network.NetworkDiscover.NetworkDiscoverListener;
 import hu.bme.mit.asteroid.network.NetworkHelper.NetworkConnectionListener;
 import hu.bme.mit.asteroid.network.NetworkHelper.NetworkReceiveListener;
 
+/**
+ * Minden hálózattal kapcsolatos callback interfészt implementáló osztály. A
+ * felhasználás helyén elegendő csak a szükséges metódusokat felüldefiniálni,
+ * nem kell foglalkozni az interfész(ek) egyéb, az adott helyen szükségtelen
+ * függvényeivel.
+ */
 public class NetworkListener implements NetworkConnectionListener, NetworkDiscoverListener {
 
 	private final NetworkReceiveListener<GameState> mGameStateListener = new NetworkReceiveListener<GameState>() {
@@ -32,10 +38,20 @@ public class NetworkListener implements NetworkConnectionListener, NetworkDiscov
 	public void onDisconnect() {
 	}
 
-	public void onReceive(GameState data) {
+	/**
+	 * Akkor hívódik, ha új {@link GameState} objektum érkezett a szervertől.
+	 * 
+	 * @param gameState
+	 */
+	public void onReceive(GameState gameState) {
 	}
 
-	public void onReceive(ControlEvent data) {
+	/**
+	 * Akkor hívódik, ha új {@link ControlEvent} érkezett a klienstől.
+	 * 
+	 * @param event
+	 */
+	public void onReceive(ControlEvent event) {
 	}
 
 	@Override

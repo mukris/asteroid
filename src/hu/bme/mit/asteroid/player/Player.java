@@ -11,9 +11,12 @@ import java.io.Serializable;
  */
 public abstract class Player implements ControlInterface.Callback {
 
+	/**
+	 * A játékos állapotát tároló osztály
+	 */
 	public static class State implements Serializable {
 		private static final long serialVersionUID = 91447011759313932L;
-		
+
 		private int mLives;
 		private int mPoints;
 

@@ -1,5 +1,8 @@
 package hu.bme.mit.asteroid.model;
 
+/**
+ * A toplista egyik elemét jelképező osztály
+ */
 public class ToplistItem {
 	private final String mName;
 	private final int mPoints;

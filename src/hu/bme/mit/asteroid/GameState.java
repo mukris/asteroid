@@ -72,6 +72,10 @@ public class GameState implements Serializable {
 		}
 	}
 
+	/**
+	 * Kétjátékos mód?
+	 * @return True ha igen, false ha nem
+	 */
 	public boolean isMultiplayer() {
 		return (mPlayer2State != null);
 	}

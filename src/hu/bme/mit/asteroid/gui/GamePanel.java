@@ -24,6 +24,13 @@ public abstract class GamePanel extends JPanel {
 		mGameWindow = gameWindow;
 	}
 
+	/**
+	 * A panelokon megjelenő Vissza gomb példányosítása, működésének definiálása
+	 * 
+	 * @param panelId
+	 *            Melyik panelre lépjünk vissza?
+	 * @return A Vissza gomb
+	 */
 	protected JButton getBackButton(final PanelId panelId) {
 		if (mBtnBack == null) {
 			mBtnBack = new JButton("Vissza");
