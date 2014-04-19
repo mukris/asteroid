@@ -7,6 +7,7 @@ import hu.bme.mit.asteroid.exceptions.GameOverException;
 import hu.bme.mit.asteroid.exceptions.LevelFinishedException;
 import hu.bme.mit.asteroid.model.Asteroid;
 import hu.bme.mit.asteroid.model.SpaceShip;
+import hu.bme.mit.asteroid.model.Vector2D;
 import hu.bme.mit.asteroid.player.Player;
 
 import java.util.ArrayList;
@@ -203,15 +204,16 @@ public abstract class GameSession implements ControlInterface.Callback {
 			// spaceShip.setPosition(position);
 			// az új pozíció meghatározása a paraméterül kapott
 			// időkülönbség és a pillanatnyi sebesség, gyorsulás alapján
-			// spaceShip.setPosition(spaceShip.getPosition().add(new
-			// Vector2D(0.1f, 0)));
+			// valami ilyesmi...
+			spaceShip.setPosition(spaceShip.getPosition().add(new Vector2D(0.1f, 0)));
 		}
 
 		protected void calculateAsteroidPhysics(long timeDelta, long currentTime) throws LevelFinishedException {
 			ArrayList<Asteroid> asteroids = mGameState.getAsteroids();
 
 			if (asteroids.isEmpty()) {
-				throw new LevelFinishedException();
+				// TODO: kommentet kiszedni, ha már vannak aszteroidák a GameState-ben
+				// throw new LevelFinishedException();
 			}
 
 			for (Asteroid asteroid : asteroids) {
