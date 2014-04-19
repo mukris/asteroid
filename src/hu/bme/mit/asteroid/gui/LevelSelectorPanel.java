@@ -2,6 +2,7 @@ package hu.bme.mit.asteroid.gui;
 
 import hu.bme.mit.asteroid.GameFactory;
 import hu.bme.mit.asteroid.GameManager;
+import hu.bme.mit.asteroid.Storage;
 import hu.bme.mit.asteroid.exceptions.LevelNotLoadableException;
 import hu.bme.mit.asteroid.gui.GameWindow.PanelId;
 
@@ -17,7 +18,7 @@ import javax.swing.JOptionPane;
  * Az egyes pályák kiválasztását lehetővé tévő Panel
  */
 public class LevelSelectorPanel extends GamePanel {
-	private static final long serialVersionUID = -8459751887544384881L;
+	private static final long serialVersionUID = -3931243134452873491L;
 
 	private JButton mBtnToplist;
 	private List<JButton> mLevelButtons;
@@ -63,8 +64,22 @@ public class LevelSelectorPanel extends GamePanel {
 			mLevelButtons.add(button);
 			add(button);
 		}
-
-		// TODO Feloldatlan pályához tartozó gombok letiltása
+		updateLevelUnlockStatus();
 	}
 
+	@Override
+	protected void onShow() {
+		super.onShow();
+		updateLevelUnlockStatus();
+	}
+
+	/**
+	 * A pályák feloldottsági állapotának frissítése
+	 */
+	private void updateLevelUnlockStatus() {
+		int highestUnlockedLevel = Storage.getHighestUnlockedLevel();
+		for (int i = 0; i < mLevelButtons.size(); i++) {
+			mLevelButtons.get(i).setEnabled(i <= highestUnlockedLevel);
+		}
+	}
 }

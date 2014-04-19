@@ -25,6 +25,8 @@ public class GameFactory {
 		sLevels.add(new LevelDescriptor(0, 5, 0, true)); // első pálya feloldva
 		sLevels.add(new LevelDescriptor(1, 2, 0));
 		// TODO define levels, load unlocked level info from file
+
+		updateLevelUnlockStatus();
 	}
 
 	/**
@@ -54,6 +56,7 @@ public class GameFactory {
 		if (levelID < 0 || levelID > sLevels.size() - 1) {
 			throw new LevelNotExistsException();
 		}
+		updateLevelUnlockStatus();
 		if (!sLevels.get(levelID).isUnlocked()) {
 			throw new LevelNotUnlockedException();
 		}
@@ -105,5 +108,15 @@ public class GameFactory {
 		boolean isMultiplayer = gameState.isMultiplayer();
 		// TODO create Asteroids
 		// TODO randomize Asteroids' position, speed..
+	}
+
+	/**
+	 * A pályák feloldottsági állapotának frissítése
+	 */
+	private static void updateLevelUnlockStatus() {
+		for (int i = 0; i < sLevels.size(); i++) {
+			int highestUnlockedLevel = Storage.getHighestUnlockedLevel();
+			sLevels.get(i).setUnlocked(i <= highestUnlockedLevel);
+		}
 	}
 }

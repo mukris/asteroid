@@ -24,14 +24,13 @@ public class Storage {
 	}
 
 	/**
-	 * A pályák feloldottsági állapotának beolvasása
+	 * A legmagasabb sorszámú feloldott pálya számának beolvasása
 	 * 
-	 * @return
+	 * @return A legmagasabb sorszámú feloldott pálya száma
 	 */
-	public static ArrayList<Boolean> getLevelUnlocks() {
-		ArrayList<Boolean> unlocks = new ArrayList<>();
+	public static int getHighestUnlockedLevel() {
 		// TODO beolvasás fájlból
-		return unlocks;
+		return 0;
 	}
 
 	/**
