@@ -110,7 +110,7 @@ public class MultiplayerGameSession extends GameSession {
 	 */
 	private class ClientGameRunner extends GameRunner {
 		@Override
-		protected void calculatePhysics(long timeDelta, long currentTime) {
+		public void run() {
 			return;
 		}
 	}
