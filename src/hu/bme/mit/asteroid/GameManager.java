@@ -143,13 +143,17 @@ public class GameManager {
 	}
 
 	public void unregisterServerListener(MultiplayerGameSession gameSession) {
-		mNetworkServer.removeConnectionListener(gameSession.getNetworkListener());
-		mNetworkServer.removeReceiveListener(gameSession.getNetworkListener().asControlEventReceiver());
+		if (mNetworkServer != null) {
+			mNetworkServer.removeConnectionListener(gameSession.getNetworkListener());
+			mNetworkServer.removeReceiveListener(gameSession.getNetworkListener().asControlEventReceiver());
+		}
 	}
 
 	public void unregisterClientListener(MultiplayerGameSession gameSession) {
-		mNetworkClient.removeConnectionListener(gameSession.getNetworkListener());
-		mNetworkClient.removeReceiveListener(gameSession.getNetworkListener().asGameStateReceiver());
+		if (mNetworkClient != null) {
+			mNetworkClient.removeConnectionListener(gameSession.getNetworkListener());
+			mNetworkClient.removeReceiveListener(gameSession.getNetworkListener().asGameStateReceiver());
+		}
 	}
 
 	public void updateGameField(GameState gameState) {
