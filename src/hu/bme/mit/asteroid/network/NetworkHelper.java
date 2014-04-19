@@ -193,12 +193,17 @@ public abstract class NetworkHelper<ReceiveType, SendType> {
 			mClientSocket = null;
 		}
 		try {
+			ArrayList<NetworkConnectionListener> listeners = new ArrayList<>();
 			synchronized (mConnectionListeners) {
 				for (NetworkConnectionListener listener : mConnectionListeners) {
-					listener.onDisconnect();
+					listeners.add(listener);
 				}
 			}
+			for (NetworkConnectionListener listener : listeners) {
+				listener.onDisconnect();
+			}
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
