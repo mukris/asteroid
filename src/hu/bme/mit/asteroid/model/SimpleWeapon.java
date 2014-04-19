@@ -1,9 +1,16 @@
 package hu.bme.mit.asteroid.model;
 
+import java.io.Serializable;
+
 /**
  * Egyszerű fegyver...
  */
-public class SimpleWeapon extends Weapon {
+public class SimpleWeapon extends Weapon implements Serializable {
+	private static final long serialVersionUID = 8870101910767078105L;
+
+	public SimpleWeapon() {
+		super();
+	}
 
 	public SimpleWeapon(Vector2D position, Vector2D speed) {
 		super(position, speed);

@@ -4,12 +4,16 @@ import hu.bme.mit.asteroid.control.ControlEvent;
 import hu.bme.mit.asteroid.control.ControlInterface;
 import hu.bme.mit.asteroid.model.SpaceShip;
 
+import java.io.Serializable;
+
 /**
  * Egy játékost reprezentáló absztrakt osztály
  */
 public abstract class Player implements ControlInterface.Callback {
 
-	public static class State {
+	public static class State implements Serializable {
+		private static final long serialVersionUID = 91447011759313932L;
+		
 		private int mLives;
 		private int mPoints;
 

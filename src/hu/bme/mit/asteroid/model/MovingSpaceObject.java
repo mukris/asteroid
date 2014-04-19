@@ -1,15 +1,27 @@
 package hu.bme.mit.asteroid.model;
 
+import java.io.Serializable;
+
 /**
  * A játékban szereplő, grafikusan megjelenő mozgó objektumok közös absztrakt
  * őse.
  */
-public abstract class MovingSpaceObject extends SpaceObject {
+public abstract class MovingSpaceObject extends SpaceObject implements Serializable {
+	private static final long serialVersionUID = 1967192605124590747L;
 
 	/**
 	 * Az objektum sebessége
 	 */
 	private Vector2D mSpeed;
+
+	/**
+	 * Konstruktor
+	 * 
+	 * A pozíciót, a sebességet és az objektum sugarát is 0-ra állítja
+	 */
+	public MovingSpaceObject() {
+		this(new Vector2D());
+	}
 
 	/**
 	 * Konstruktor

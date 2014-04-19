@@ -1,12 +1,14 @@
 package hu.bme.mit.asteroid.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A játékban szereplő űrhajót reprezentáló osztály
  */
-public class SpaceShip extends DirectionalMovingSpaceObject {
+public class SpaceShip extends DirectionalMovingSpaceObject implements Serializable {
+	private static final long serialVersionUID = 4069378253211746610L;
 
 	private static final int SPACESHIP_SIZE = 50;
 
@@ -19,6 +21,15 @@ public class SpaceShip extends DirectionalMovingSpaceObject {
 	private boolean mIsTurningLeft = false;
 	private boolean mIsTurningRight = false;
 	private boolean mIsFiring = false;
+
+	/**
+	 * Konstruktor
+	 * 
+	 * Minden értéket 0-ra állít
+	 */
+	public SpaceShip() {
+		this(new Vector2D(), 0);
+	}
 
 	/**
 	 * Konstruktor

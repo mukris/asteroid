@@ -1,10 +1,13 @@
 package hu.bme.mit.asteroid.model;
 
+import java.io.Serializable;
+
 /**
  * Két dimenziós vektor
  */
-public class Vector2D {
-
+public class Vector2D implements Serializable {
+	private static final long serialVersionUID = -1514409621578105510L;
+	
 	private float mX;
 	private float mY;
 

@@ -1,10 +1,13 @@
 package hu.bme.mit.asteroid.model;
 
+import java.io.Serializable;
+
 /**
  * A játékban szereplő, grafikusan megjelenő mozgó és elfordulásra képes
  * objektumok közös absztrakt őse.
  */
-public abstract class DirectionalMovingSpaceObject extends MovingSpaceObject {
+public abstract class DirectionalMovingSpaceObject extends MovingSpaceObject implements Serializable {
+	private static final long serialVersionUID = -7508446254238554908L;
 
 	/**
 	 * <p>
@@ -19,6 +22,15 @@ public abstract class DirectionalMovingSpaceObject extends MovingSpaceObject {
 	 * </p>
 	 */
 	private int mDirection;
+
+	/**
+	 * Konstruktor
+	 * 
+	 * Minden értéket 0-ra állít
+	 */
+	public DirectionalMovingSpaceObject() {
+		this(new Vector2D(), new Vector2D(), 0, 0);
+	}
 
 	/**
 	 * Konstruktor

@@ -1,9 +1,12 @@
 package hu.bme.mit.asteroid.model;
 
+import java.io.Serializable;
+
 /**
  * A játékban szereplő, grafikusan megjelenő objektumok közös absztrakt őse.
  */
-public abstract class SpaceObject {
+public abstract class SpaceObject implements Serializable {
+	private static final long serialVersionUID = -3831949381019717002L;
 
 	/**
 	 * Az objektum pozíciója
@@ -14,6 +17,15 @@ public abstract class SpaceObject {
 	 * Az objektum sugara
 	 */
 	private int mRadius;
+
+	/**
+	 * Konstruktor
+	 * 
+	 * A pozíciót és az objektum sugarát 0-ra állítja
+	 */
+	public SpaceObject() {
+		this(new Vector2D());
+	}
 
 	/**
 	 * Konstruktor
