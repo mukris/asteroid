@@ -2,6 +2,8 @@ package hu.bme.mit.asteroid;
 
 import hu.bme.mit.asteroid.exceptions.LevelNotExistsException;
 import hu.bme.mit.asteroid.exceptions.LevelNotUnlockedException;
+import hu.bme.mit.asteroid.model.Asteroid;
+import hu.bme.mit.asteroid.model.Asteroid.Type;
 import hu.bme.mit.asteroid.model.SpaceShip;
 import hu.bme.mit.asteroid.model.Vector2D;
 import hu.bme.mit.asteroid.player.Player;
