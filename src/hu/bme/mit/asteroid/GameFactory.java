@@ -106,6 +106,11 @@ public class GameFactory {
 	 */
 	private static void generateAsteroidPositions(GameState gameState, LevelDescriptor levelDescriptor) {
 		boolean isMultiplayer = gameState.isMultiplayer();
+		
+		ArrayList<Asteroid> asteroids = gameState.getAsteroids();
+		for (int i = 0; i < levelDescriptor.getNumAsteroidLarge(); i++) {
+			asteroids.add(new Asteroid(Type.LARGE, new Vector2D(), new Vector2D())); 
+		}
 		// TODO create Asteroids
 		// TODO randomize Asteroids' position, speed..
 	}
