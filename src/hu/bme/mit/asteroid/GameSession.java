@@ -5,6 +5,8 @@ import hu.bme.mit.asteroid.control.ControlInterface;
 import hu.bme.mit.asteroid.control.MiscControlInterface;
 import hu.bme.mit.asteroid.exceptions.GameOverException;
 import hu.bme.mit.asteroid.exceptions.LevelFinishedException;
+import hu.bme.mit.asteroid.exceptions.LevelNotExistsException;
+import hu.bme.mit.asteroid.exceptions.LevelNotUnlockedException;
 import hu.bme.mit.asteroid.model.Asteroid;
 import hu.bme.mit.asteroid.model.SpaceShip;
 import hu.bme.mit.asteroid.model.Vector2D;
@@ -181,6 +183,9 @@ public abstract class GameSession implements ControlInterface.Callback {
 							wait();
 						}
 					} else {
+						if (GameSession.this.getState() == GameSession.State.LEVEL_COMPLETE) {
+							loadNextLevel();
+						}
 						synchronized (mGameState) {
 							currentTime = System.currentTimeMillis();
 							timeDelta = currentTime - mLastTime;
@@ -198,11 +203,28 @@ public abstract class GameSession implements ControlInterface.Callback {
 				} catch (LevelFinishedException e) {
 					// TODO mit csinálunk ha vége a pályának
 					logger.info("Level finished");
+					setState(GameSession.State.LEVEL_COMPLETE);
 				} catch (GameOverException e) {
 					// TODO mit csinálunk GameOvernél..
 					logger.info("GameOver");
+					setState(GameSession.State.GAME_OVER);
 					return;
 				}
+			}
+		}
+
+		protected void loadNextLevel() throws GameOverException {
+			mLevelID++;
+			Storage.setLevelUnlocked(mLevelID, true);
+
+			try {
+				GameState newGameState = GameFactory.createSingleplayerGame(mLevelID, mPlayer1);
+				mGameState.update(newGameState);
+			} catch (LevelNotExistsException e) {
+				throw new GameOverException();
+			} catch (LevelNotUnlockedException e) {
+				e.printStackTrace();
+				throw new GameOverException();
 			}
 		}
 
@@ -291,9 +313,7 @@ public abstract class GameSession implements ControlInterface.Callback {
 			ArrayList<Asteroid> asteroids = mGameState.getAsteroids();
 
 			if (asteroids.isEmpty()) {
-				// TODO: kommentet kiszedni, ha már vannak aszteroidák a
-				// GameState-ben
-				// throw new LevelFinishedException();
+				throw new LevelFinishedException();
 			}
 
 			for (Asteroid asteroid : asteroids) {

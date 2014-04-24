@@ -115,6 +115,16 @@ public class MultiplayerGameSession extends GameSession {
 			super.calculatePhysics(timeDelta, currentTime);
 			mNetworkServer.sendGameState(mGameState);
 		}
+
+		@Override
+		protected void loadNextLevel() throws GameOverException {
+			try {
+				GameState newGameState = GameFactory.createMultiplayerGame(mLevelID, mPlayer1, mPlayer2);
+				mGameState.update(newGameState);
+			} catch (LevelNotExistsException e) {
+				throw new GameOverException();
+			}
+		}
 	}
 
 	/**
