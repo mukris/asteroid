@@ -2,6 +2,9 @@ package hu.bme.mit.asteroid;
 
 import hu.bme.mit.asteroid.exceptions.LevelNotExistsException;
 import hu.bme.mit.asteroid.exceptions.LevelNotUnlockedException;
+import hu.bme.mit.asteroid.model.Asteroid;
+import hu.bme.mit.asteroid.model.Asteroid.Type;
+import hu.bme.mit.asteroid.model.SimpleWeapon;
 import hu.bme.mit.asteroid.model.SpaceShip;
 import hu.bme.mit.asteroid.model.Vector2D;
 import hu.bme.mit.asteroid.player.Player;
@@ -61,7 +64,7 @@ public class GameFactory {
 			throw new LevelNotUnlockedException();
 		}
 		// TODO initialize Player, SpaceShip...
-		player.setSpaceShip(new SpaceShip(new Vector2D(30, 30), 0));
+		player.setSpaceShip(new SpaceShip(new Vector2D(30, 30), 0, new SimpleWeapon()));
 		GameState gameState = new GameState(player, null);
 		generateAsteroidPositions(gameState, sLevels.get(levelID));
 
@@ -87,8 +90,8 @@ public class GameFactory {
 			throw new LevelNotExistsException();
 		}
 		// TODO initialize Players, SpaceShips...
-		player1.setSpaceShip(new SpaceShip(new Vector2D(30, 30), 0));
-		player2.setSpaceShip(new SpaceShip(new Vector2D(100, 100), 0));
+		player1.setSpaceShip(new SpaceShip(new Vector2D(30, 30), 0, new SimpleWeapon()));
+		player2.setSpaceShip(new SpaceShip(new Vector2D(100, 100), 0, new SimpleWeapon()));
 		GameState gameState = new GameState(player1, player2);
 		generateAsteroidPositions(gameState, sLevels.get(levelID));
 

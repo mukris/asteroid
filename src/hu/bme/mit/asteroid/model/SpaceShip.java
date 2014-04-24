@@ -28,7 +28,7 @@ public class SpaceShip extends DirectionalMovingSpaceObject implements Serializa
 	 * Minden értéket 0-ra állít
 	 */
 	public SpaceShip() {
-		this(new Vector2D(), 0);
+		this(new Vector2D(), 0, null);
 	}
 
 	/**
@@ -39,10 +39,12 @@ public class SpaceShip extends DirectionalMovingSpaceObject implements Serializa
 	 * @param direction
 	 *            Az űrhajó elfordulási iránya
 	 */
-	public SpaceShip(Vector2D position, int direction) {
+	public SpaceShip(Vector2D position, int direction, Weapon weapon) {
 		super(position, new Vector2D(), direction, SPACESHIP_SIZE);
 		mWeapons = new ArrayList<>();
-		// TODO Auto-generated constructor stub
+		mWeapon = weapon;
+		mWeapon.setPosition(position);
+		mWeapon.setDirection(direction);
 	}
 
 	/**
@@ -57,7 +59,7 @@ public class SpaceShip extends DirectionalMovingSpaceObject implements Serializa
 		if (isFiring() && mTimeMillisSinceLastShoot + timeDelta >= repeatTime) {
 			Weapon newWeapon = mWeapon.clone();
 			newWeapon.setDirection(getDirection());
-			newWeapon.setPosition(getPosition());
+			newWeapon.setPosition(getPosition().clone());
 			synchronized (mWeapons) {
 				mWeapons.add(newWeapon);
 			}
@@ -91,6 +93,12 @@ public class SpaceShip extends DirectionalMovingSpaceObject implements Serializa
 
 	public void setWeapon(Weapon weapon) {
 		mWeapon = weapon;
+	}
+
+	public List<Weapon> getWeapons() {
+		synchronized (mWeapons) {
+			return mWeapons;
+		}
 	}
 
 	/**

@@ -42,4 +42,10 @@ public abstract class Weapon extends DirectionalMovingSpaceObject implements Clo
 	 * @return A fegyver ismétlési ideje ezredmásodpercben
 	 */
 	public abstract long getRepeatTime();
+	
+	@Override
+	public void setDirection(int direction) {
+		super.setDirection(direction);
+		getSpeed().setDirection(direction);
+	}
 }

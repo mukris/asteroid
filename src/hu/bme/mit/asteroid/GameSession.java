@@ -8,9 +8,11 @@ import hu.bme.mit.asteroid.exceptions.LevelFinishedException;
 import hu.bme.mit.asteroid.model.Asteroid;
 import hu.bme.mit.asteroid.model.SpaceShip;
 import hu.bme.mit.asteroid.model.Vector2D;
+import hu.bme.mit.asteroid.model.Weapon;
 import hu.bme.mit.asteroid.player.Player;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
@@ -233,7 +235,12 @@ public abstract class GameSession implements ControlInterface.Callback {
 			if (mGameState.isMultiplayer()) {
 				calculateSpaceShipPhysics(mGameState.getSpaceShip2(), timeDelta, currentTime);
 			}
-			calculateWeaponPhysics(timeDelta, currentTime);
+
+			calculateWeaponPhysics(mGameState.getSpaceShip1(), timeDelta, currentTime);
+
+			if (mGameState.isMultiplayer()) {
+				calculateWeaponPhysics(mGameState.getSpaceShip2(), timeDelta, currentTime);
+			}
 			// TODO mozgás, ütközésvizsgálat
 		}
 
@@ -260,7 +267,14 @@ public abstract class GameSession implements ControlInterface.Callback {
 			// az új pozíció meghatározása a paraméterül kapott
 			// időkülönbség és a pillanatnyi sebesség, gyorsulás alapján
 			// valami ilyesmi...
-			spaceShip.setPosition(spaceShip.getPosition().add(new Vector2D(0.1f, 0)));
+			spaceShip.setPosition(spaceShip.getPosition().add(new Vector2D(0.5f, 0.5f)));
+			if (spaceShip.isTurningLeft()) {
+				spaceShip.setDirection((int) (spaceShip.getDirection() - timeDelta / 1000f * 360));
+			} else if (spaceShip.isTurningRight()) {
+				spaceShip.setDirection((int) (spaceShip.getDirection() + timeDelta / 1000f * 360));
+			}
+
+			spaceShip.handleFiring(timeDelta);
 		}
 
 		/**
@@ -296,13 +310,24 @@ public abstract class GameSession implements ControlInterface.Callback {
 		/**
 		 * A fegyverek fizikai számításait végző függvény
 		 * 
+		 * @param spaceShip
+		 *            Az űrhajó
 		 * @param timeDelta
 		 *            A függvény utolsó futtatása óta eltelt idő
 		 *            ezredmásodpercben
 		 * @param currentTime
 		 *            Az aktuális rendszeridő ezredmásodpercben
 		 */
-		protected void calculateWeaponPhysics(long timeDelta, long currentTime) {
+		protected void calculateWeaponPhysics(SpaceShip spaceShip, long timeDelta, long currentTime) {
+			List<Weapon> weapons = spaceShip.getWeapons();
+			synchronized (weapons) {
+				for (Weapon weapon : weapons) {
+					if (weapon.isAlive(currentTime)) {
+						Vector2D displacement = weapon.getSpeed().clone().multiply(timeDelta / 100f);
+						weapon.getPosition().add(displacement);
+					}
+				}
+			}
 			// TODO
 		}
 

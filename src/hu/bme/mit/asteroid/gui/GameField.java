@@ -3,6 +3,7 @@ package hu.bme.mit.asteroid.gui;
 import hu.bme.mit.asteroid.GameState;
 import hu.bme.mit.asteroid.gui.GameWindow.PanelId;
 import hu.bme.mit.asteroid.model.SpaceShip;
+import hu.bme.mit.asteroid.model.Weapon;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -62,6 +63,11 @@ public class GameField extends GamePanel {
 			g.setColor(Color.BLACK);
 			g.drawOval((int) spaceShip.getPosition().getX(), (int) spaceShip.getPosition().getY(),
 					spaceShip.getRadius(), (int) (spaceShip.getRadius() * 1.5f));
+
+			for (Weapon weapon : spaceShip.getWeapons()) {
+				g.drawOval((int) weapon.getPosition().getX(), (int) weapon.getPosition().getY(),
+						(int) weapon.getRadius(), (int) weapon.getRadius());
+			}
 		}
 	}
 
