@@ -82,4 +82,9 @@ public abstract class MovingSpaceObject extends SpaceObject implements Serializa
 	public void setSpeed(Vector2D speed) {
 		mSpeed = speed;
 	}
+	
+	//véletlen sebességet generál 0-maxSpeed tartományban
+	/*public void randomSpeedGenerator(float maxSpeed) {
+		mSpeed = (Vector2D)(Vector2D.multiply( Math.random() * maxSpeed));
+	}*/
 }
