@@ -55,7 +55,7 @@ public class MultiplayerGameSession extends GameSession {
 					gameManager.unregisterClientListener(MultiplayerGameSession.this);
 					gameManager.unregisterServerListener(MultiplayerGameSession.this);
 					gameManager.onNetworkError();
-					mState = State.ERROR;
+					setState(State.ERROR);
 				}
 
 				@Override

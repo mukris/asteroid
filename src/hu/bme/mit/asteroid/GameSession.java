@@ -52,11 +52,23 @@ public abstract class GameSession implements ControlInterface.Callback {
 		miscControlInterface.setCallback(this);
 	}
 
+	public State getState() {
+		synchronized (mState) {
+			return mState;
+		}
+	}
+
+	public void setState(State state) {
+		synchronized (mState) {
+			mState = state;
+		}
+	}
+
 	/**
 	 * A {@link GameRunner} indítása vagy újraindítása
 	 */
 	public synchronized void start() {
-		if (mState == State.PAUSED && mGameRunner != null) {
+		if (getState() == State.PAUSED && mGameRunner != null) {
 			synchronized (mGameRunner) {
 				mGameRunner.setLastTime(System.currentTimeMillis());
 				mGameRunner.setRunning(true);
@@ -66,7 +78,7 @@ public abstract class GameSession implements ControlInterface.Callback {
 			startGameRunner();
 		}
 
-		mState = State.RUNNING;
+		setState(State.RUNNING);
 	}
 
 	/**
@@ -77,7 +89,7 @@ public abstract class GameSession implements ControlInterface.Callback {
 		if (mGameRunner != null) {
 			mGameRunner.setRunning(false);
 		}
-		mState = State.PAUSED;
+		setState(State.PAUSED);
 	}
 
 	/**
@@ -95,19 +107,19 @@ public abstract class GameSession implements ControlInterface.Callback {
 				}
 			}
 		}
-		mState = State.STOPPED;
+		setState(State.STOPPED);
 	}
 
 	@Override
 	public void control(ControlEvent event) {
 		switch (event.getType()) {
 		case INVERT_PAUSE:
-			if (mState != State.PAUSED) {
-				mOldState = mState;
+			if (getState() != State.PAUSED) {
+				mOldState = getState();
 				pause();
 			} else {
 				start();
-				mState = mOldState;
+				setState(mOldState);
 			}
 			break;
 
