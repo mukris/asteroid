@@ -77,16 +77,21 @@ public class Vector2D implements Cloneable, Serializable {
 		mX = (float) (length * Math.cos(getDirection() * Math.PI / 180));
 		mY = (float) (length * Math.sin(getDirection() * Math.PI / 180));
 	}
-	
-	static float getDistance(Vector2D v1, Vector2D v2) {
-		return (float) Math.sqrt((v1.mX - v2.mX) * (v1.mX -v2.mX) + (v1.mY - v2.mY) * (v1.mY - v2.mY));
+
+	public float getDistance(Vector2D other) {
+		return getDistance(this, other);
 	}
-	
-	//véletlen koordinátát generál a megadott térrészben
-	//int mert a képpontok intek
-	//4 térrészben generál random pontot, a végén ebből a 4 térrészből választ egyet
-	//nincs jobb ötletem
-	
+
+	public static float getDistance(Vector2D v1, Vector2D v2) {
+		return (float) Math.sqrt((v1.mX - v2.mX) * (v1.mX - v2.mX) + (v1.mY - v2.mY) * (v1.mY - v2.mY));
+	}
+
+	// véletlen koordinátát generál a megadott térrészben
+	// int mert a képpontok intek
+	// 4 térrészben generál random pontot, a végén ebből a 4 térrészből választ
+	// egyet
+	// nincs jobb ötletem
+
 	public void randomPositionGenerator(int minDistance) {
 		int maxX = AsteroidGame.WINDOW_SIZE_X;
 		int maxY = AsteroidGame.WINDOW_SIZE_Y;
