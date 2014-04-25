@@ -215,7 +215,7 @@ public abstract class GameSession implements ControlInterface.Callback {
 
 		protected void loadNextLevel() throws GameOverException {
 			mLevelID++;
-			Storage.setLevelUnlocked(mLevelID, true);
+			Storage.getInstance().setLevelUnlocked(mLevelID);
 
 			try {
 				GameState newGameState = GameFactory.createSingleplayerGame(mLevelID, mPlayer1);

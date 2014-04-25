@@ -130,7 +130,7 @@ public class GameFactory {
 	 */
 	private static void updateLevelUnlockStatus() {
 		for (int i = 0; i < sLevels.size(); i++) {
-			int highestUnlockedLevel = Storage.getHighestUnlockedLevel();
+			int highestUnlockedLevel = Storage.getInstance().getHighestUnlockedLevel();
 			sLevels.get(i).setUnlocked(i <= highestUnlockedLevel);
 		}
 	}
