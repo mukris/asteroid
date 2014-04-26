@@ -32,6 +32,8 @@ public class GameField extends GamePanel {
 		super(gameWindow);
 		try {
 			mImageBackground = ImageIO.read(new File("res/space.jpg"));
+			Image imageSpaceship = ImageIO.read(new File("res/spaceship.png"));
+			mSpaceshipPainter = new SpaceShipPainter(imageSpaceship, imageSpaceship);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -67,18 +69,18 @@ public class GameField extends GamePanel {
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
-		// TODO háttér, aszteroidák, fegyverek, powerupok, űrhajók kirajzolása
+		// TODO aszteroidák, fegyverek, powerupok kirajzolása
 		g.drawImage(mImageBackground, 0, 0, null);
 		if (mGameState != null) {
 			SpaceShip spaceShip = mGameState.getSpaceShip1();
 			g.setColor(Color.WHITE);
-			g.drawOval((int) spaceShip.getPosition().getX(), (int) spaceShip.getPosition().getY(),
-					spaceShip.getRadius(), (int) (spaceShip.getRadius() * 1.5f));
 
 			for (Weapon weapon : spaceShip.getWeapons()) {
 				g.drawOval((int) weapon.getPosition().getX(), (int) weapon.getPosition().getY(),
 						(int) weapon.getRadius(), (int) weapon.getRadius());
 			}
+
+			mSpaceshipPainter.paint(g, spaceShip);
 		}
 	}
 
