@@ -215,6 +215,23 @@ public abstract class GameSession implements ControlInterface.Callback {
 			}
 		}
 
+		public void setRunning(boolean running) {
+			mRunning.set(running);
+		}
+
+		/**
+		 * A legutolsó futás idejének kézi beállítása. Abban az esetben fontos,
+		 * amikor a játékot megállította a játékos, hiszen ha ezt az értéket nem
+		 * állítjuk át, egy pillanat alatt lezajlik minden olyan mozgás, ami a
+		 * szünet ideje alatt történt volna.
+		 * 
+		 * @param time
+		 *            A beállítandó idő (valószínűleg az aktuális rendszeridő)
+		 */
+		public void setLastTime(long time) {
+			mLastTime = time;
+		}
+
 		/**
 		 * Új pálya betöltése
 		 * 
@@ -234,23 +251,6 @@ public abstract class GameSession implements ControlInterface.Callback {
 				e.printStackTrace();
 				throw new GameOverException();
 			}
-		}
-
-		public void setRunning(boolean running) {
-			mRunning.set(running);
-		}
-
-		/**
-		 * A legutolsó futás idejének kézi beállítása. Abban az esetben fontos,
-		 * amikor a játékot megállította a játékos, hiszen ha ezt az értéket nem
-		 * állítjuk át, egy pillanat alatt lezajlik minden olyan mozgás, ami a
-		 * szünet ideje alatt történt volna.
-		 * 
-		 * @param time
-		 *            A beállítandó idő (valószínűleg az aktuális rendszeridő)
-		 */
-		public void setLastTime(long time) {
-			mLastTime = time;
 		}
 
 		/**
