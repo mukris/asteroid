@@ -283,7 +283,6 @@ public abstract class GameSession implements ControlInterface.Callback {
 			if (mGameState.isMultiplayer()) {
 				calculateWeaponPhysics(mGameState.getSpaceShip2(), timeDelta, currentTime);
 			}
-			// TODO mozgás, ütközésvizsgálat
 		}
 
 		/**
@@ -333,18 +332,19 @@ public abstract class GameSession implements ControlInterface.Callback {
 		 */
 		protected void calculateAsteroidPhysics(long timeDelta, long currentTime) throws LevelFinishedException {
 			ArrayList<Asteroid> asteroids = mGameState.getAsteroids();
+			synchronized (asteroids) {
+				if (asteroids.isEmpty()) {
+					throw new LevelFinishedException();
+				}
 
-			if (asteroids.isEmpty()) {
-				throw new LevelFinishedException();
+				for (Asteroid asteroid : asteroids) {
+					// TODO: lásd fentebb...
+					// asteroid.getPosition();
+					// asteroid.getSpeed();
+					// asteroid.setPosition(position);
+				}
+				// TODO
 			}
-
-			for (Asteroid asteroid : asteroids) {
-				// TODO: lásd fentebb...
-				// asteroid.getPosition();
-				// asteroid.getSpeed();
-				// asteroid.setPosition(position);
-			}
-			// TODO
 		}
 
 		/**

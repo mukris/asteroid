@@ -63,7 +63,7 @@ public class GameFactory {
 		if (!sLevels.get(levelID).isUnlocked()) {
 			throw new LevelNotUnlockedException();
 		}
-		// TODO initialize Player, SpaceShip...
+		// TODO initialize SpaceShip...
 		player.setSpaceShip(new SpaceShip(new Vector2D(30, 30), 0, new SimpleWeapon()));
 		GameState gameState = new GameState(player, null);
 		generateAsteroidPositions(gameState, sLevels.get(levelID));
@@ -89,7 +89,7 @@ public class GameFactory {
 		if (levelID < 0 || levelID > sLevels.size() - 1) {
 			throw new LevelNotExistsException();
 		}
-		// TODO initialize Players, SpaceShips...
+		// TODO initialize SpaceShips...
 		player1.setSpaceShip(new SpaceShip(new Vector2D(30, 30), 0, new SimpleWeapon()));
 		player2.setSpaceShip(new SpaceShip(new Vector2D(100, 100), 0, new SimpleWeapon()));
 		GameState gameState = new GameState(player1, player2);
