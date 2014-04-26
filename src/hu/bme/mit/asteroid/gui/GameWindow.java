@@ -28,6 +28,7 @@ public class GameWindow extends JFrame {
 	public GameWindow() {
 		super("Asteroid Shooter");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setResizable(false);
 
 		initComponents();
 		mGameManager = new GameManager((GameField) mPanels.get(PanelId.GAME_FIELD));
