@@ -8,6 +8,7 @@ import hu.bme.mit.asteroid.exceptions.LevelFinishedException;
 import hu.bme.mit.asteroid.exceptions.LevelNotExistsException;
 import hu.bme.mit.asteroid.exceptions.LevelNotUnlockedException;
 import hu.bme.mit.asteroid.model.Asteroid;
+import hu.bme.mit.asteroid.model.Powerup;
 import hu.bme.mit.asteroid.model.SpaceShip;
 import hu.bme.mit.asteroid.model.Vector2D;
 import hu.bme.mit.asteroid.model.Weapon;
@@ -196,6 +197,7 @@ public abstract class GameSession implements ControlInterface.Callback {
 								continue;
 							}
 							calculatePhysics(timeDelta, currentTime);
+							checkCollisions();
 							updateGUI();
 							setLastTime(currentTime);
 						}
@@ -367,6 +369,84 @@ public abstract class GameSession implements ControlInterface.Callback {
 				}
 			}
 			// TODO
+		}
+
+		/**
+		 * Ütközések vizsgálata
+		 * 
+		 * @throws GameOverException
+		 *             Ha az űrhajó aszteroidával ütközött, és a {@link Player}
+		 *             -nek nincs már több élete, a játék véget ér.
+		 */
+		protected void checkCollisions() throws GameOverException {
+			checkWeapon2AsteroidCollision(mGameState.getSpaceShip1());
+			if (mGameState.isMultiplayer()) {
+				checkWeapon2AsteroidCollision(mGameState.getSpaceShip2());
+			}
+
+			checkSpaceship2AsteroidCollisions(mGameState.getSpaceShip1());
+			if (mGameState.isMultiplayer()) {
+				checkSpaceship2AsteroidCollisions(mGameState.getSpaceShip2());
+			}
+
+			checkSpaceship2PowerupCollision(mGameState.getSpaceShip1());
+			if (mGameState.isMultiplayer()) {
+				checkSpaceship2PowerupCollision(mGameState.getSpaceShip2());
+			}
+		}
+
+		/**
+		 * {@link SpaceShip} és {@link Asteroid}ák ütközésének ellenőrzése
+		 * 
+		 * @param spaceShip
+		 *            A vizsgált űrhajó
+		 * @throws GameOverException
+		 *             Ha az űrhajó aszteroidával ütközött, és a {@link Player}
+		 *             -nek nincs már több élete, a játék véget ér.
+		 */
+		protected void checkSpaceship2AsteroidCollisions(SpaceShip spaceShip) throws GameOverException {
+			ArrayList<Asteroid> asteroids = mGameState.getAsteroids();
+			synchronized (asteroids) {
+				for (Asteroid asteroid : asteroids) {
+					// TODO
+				}
+			}
+		}
+
+		/**
+		 * {@link SpaceShip} és {@link Powerup}ok ütközésének ellenőrzése
+		 * 
+		 * @param spaceShip
+		 *            A vizsgált űrhajó
+		 */
+		protected void checkSpaceship2PowerupCollision(SpaceShip spaceShip) {
+			ArrayList<Powerup> powerups = mGameState.getPowerups();
+			synchronized (powerups) {
+				for (Powerup powerup : powerups) {
+					// TODO
+				}
+			}
+		}
+
+		/**
+		 * A {@link SpaceShip} minden {@link Weapon}-jének és {@link Asteroid}ák
+		 * ütközésének ellenőrzése
+		 * 
+		 * @param spaceShip
+		 *            Az űrhajó, aminek a lövedékeit vizsgáljuk
+		 */
+		protected void checkWeapon2AsteroidCollision(SpaceShip spaceShip) {
+			List<Weapon> weapons = spaceShip.getWeapons();
+			ArrayList<Asteroid> asteroids = mGameState.getAsteroids();
+			synchronized (weapons) {
+				for (Weapon weapon : weapons) {
+					synchronized (asteroids) {
+						for (Asteroid asteroid : asteroids) {
+							//TODO
+						}
+					}
+				}
+			}
 		}
 
 		/**
