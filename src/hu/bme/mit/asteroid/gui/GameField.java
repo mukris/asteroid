@@ -7,7 +7,11 @@ import hu.bme.mit.asteroid.model.Weapon;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
 /**
@@ -22,9 +26,15 @@ public class GameField extends GamePanel {
 	private AsteroidPainter mAsteroidPainter;
 	private WeaponPainter mWeaponPainter;
 	private PowerupPainter mPowerupPainter;
+	private Image mImageBackground = null;
 
 	public GameField(GameWindow gameWindow) {
 		super(gameWindow);
+		try {
+			mImageBackground = ImageIO.read(new File("res/space.jpg"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		// TODO Painterek létrehozása, inicializálása
 	}
 
@@ -58,9 +68,10 @@ public class GameField extends GamePanel {
 	public void paint(Graphics g) {
 		super.paint(g);
 		// TODO háttér, aszteroidák, fegyverek, powerupok, űrhajók kirajzolása
+		g.drawImage(mImageBackground, 0, 0, null);
 		if (mGameState != null) {
 			SpaceShip spaceShip = mGameState.getSpaceShip1();
-			g.setColor(Color.BLACK);
+			g.setColor(Color.WHITE);
 			g.drawOval((int) spaceShip.getPosition().getX(), (int) spaceShip.getPosition().getY(),
 					spaceShip.getRadius(), (int) (spaceShip.getRadius() * 1.5f));
 

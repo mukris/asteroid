@@ -10,8 +10,8 @@ import javax.swing.SwingUtilities;
 
 public class AsteroidGame {
 	
-	public final static int WINDOW_SIZE_X = 300;
-	public final static int WINDOW_SIZE_Y = 300;
+	public final static int WINDOW_SIZE_X = 800;
+	public final static int WINDOW_SIZE_Y = 600;
 
 	public static void main(String[] args) {
 		// A grafikus felületet a Swing saját eseménykezelő szálán kell
@@ -27,7 +27,7 @@ public class AsteroidGame {
 
 	private static void showWindow() {
 		GameWindow gameWindow = new GameWindow();
-		gameWindow.setSize(WINDOW_SIZE_X, WINDOW_SIZE_Y); // FIXME
+		gameWindow.setSize(WINDOW_SIZE_X, WINDOW_SIZE_Y);
 		gameWindow.setVisible(true);
 	}
 }
