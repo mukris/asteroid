@@ -99,6 +99,6 @@ public abstract class SpaceObject implements Serializable {
 	 * @return True, ha igen, false, ha nem.
 	 */
 	public boolean checkCollision(SpaceObject other) {
-		return false; // FIXME
+		return (Vector2D.getDistance(mPosition, other.mPosition) < (mRadius + other.mRadius));
 	}
 }

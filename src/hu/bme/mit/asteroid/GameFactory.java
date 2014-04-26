@@ -112,8 +112,15 @@ public class GameFactory {
 		
 		ArrayList<Asteroid> asteroids = gameState.getAsteroids();
 		for (int i = 0; i < levelDescriptor.getNumAsteroidLarge(); i++) {
-			asteroids.add(new Asteroid(Type.LARGE, new Vector2D(), new Vector2D())); 
+			asteroids.add(new Asteroid(Type.LARGE, new Vector2D(), new Vector2D() )); 
 		}
+		for (int i = 0; i < levelDescriptor.getNumAsteroidMedium(); i++) {
+			asteroids.add(new Asteroid(Type.MEDIUM, new Vector2D(), new Vector2D() )); 
+		}
+		for (int i = 0; i < levelDescriptor.getNumAsteroidSmall(); i++) {
+			asteroids.add(new Asteroid(Type.SMALL, new Vector2D(), new Vector2D() )); 
+		}
+		
 		// TODO create Asteroids
 		// TODO randomize Asteroids' position, speed..
 	}
