@@ -27,7 +27,7 @@ public class GameFactory {
 		sLevels = new ArrayList<>();
 		sLevels.add(new LevelDescriptor(0, 5, 0, true)); // első pálya feloldva
 		sLevels.add(new LevelDescriptor(1, 2, 0));
-		// TODO define levels, load unlocked level info from file
+		// TODO define levels
 
 		updateLevelUnlockStatus();
 	}
@@ -121,7 +121,6 @@ public class GameFactory {
 			asteroids.add(new Asteroid(Type.SMALL, new Vector2D(), new Vector2D() )); 
 		}
 		
-		// TODO create Asteroids
 		// TODO randomize Asteroids' position, speed..
 	}
 

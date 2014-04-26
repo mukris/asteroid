@@ -213,6 +213,12 @@ public abstract class GameSession implements ControlInterface.Callback {
 			}
 		}
 
+		/**
+		 * Új pálya betöltése
+		 * 
+		 * @throws GameOverException
+		 *             Ha nincs több pálya, a játék véget ér
+		 */
 		protected void loadNextLevel() throws GameOverException {
 			mLevelID++;
 			Storage.getInstance().setLevelUnlocked(mLevelID);
