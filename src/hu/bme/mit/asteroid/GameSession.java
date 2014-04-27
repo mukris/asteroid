@@ -361,14 +361,21 @@ public abstract class GameSession implements ControlInterface.Callback {
 		protected void calculateWeaponPhysics(SpaceShip spaceShip, long timeDelta, long currentTime) {
 			List<Weapon> weapons = spaceShip.getWeapons();
 			synchronized (weapons) {
+				List<Weapon> deadWeapons = new ArrayList<>();
 				for (Weapon weapon : weapons) {
-					if (weapon.isAlive(currentTime)) {
+					weapon.decreaseTimeUntilDeath(timeDelta);
+					if (weapon.isAlive()) {
 						Vector2D displacement = weapon.getSpeed().clone().multiply(timeDelta / 100f);
 						weapon.getPosition().add(displacement);
+					} else {
+						deadWeapons.add(weapon);
 					}
 				}
+				// A lejárt szavatosságú fegyverek kiszedése a tömbből
+				for (Weapon deadWeapon : deadWeapons) {
+					weapons.remove(deadWeapon);
+				}
 			}
-			// TODO
 		}
 
 		/**

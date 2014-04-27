@@ -6,8 +6,8 @@ import java.io.Serializable;
  * Egyszerű fegyver...
  */
 public class SimpleWeapon extends Weapon implements Serializable {
-	private static final long serialVersionUID = -5555076858422220086L;
-
+	private static final long serialVersionUID = -8572824732369348348L;
+	
 	private static final float SPEED = 16f;
 
 	public SimpleWeapon() {
@@ -26,15 +26,7 @@ public class SimpleWeapon extends Weapon implements Serializable {
 	}
 
 	@Override
-	public boolean isAlive(long currentTime) {
-		// TODO lövedék élettartamának meghatározása (időkülönbség, ill sebesség
-		// alapján)
-		return true;
-	}
-
-	@Override
 	public long getRepeatTime() {
-		// FIXME pontos lövés ismétlési időköz beállítása
 		return 250;
 	}
 }
