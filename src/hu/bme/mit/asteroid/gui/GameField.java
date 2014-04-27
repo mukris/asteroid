@@ -7,7 +7,9 @@ import hu.bme.mit.asteroid.model.Weapon;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.geom.AffineTransform;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -28,6 +30,7 @@ public class GameField extends GamePanel {
 	private WeaponPainter mWeaponPainter;
 	private PowerupPainter mPowerupPainter;
 	private Image mImageBackground = null;
+	private AffineTransform mReverseYAxisTransform;
 
 	public GameField(GameWindow gameWindow) {
 		super(gameWindow);
@@ -38,6 +41,9 @@ public class GameField extends GamePanel {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+		mReverseYAxisTransform = new AffineTransform();
+
 		// TODO Painterek létrehozása, inicializálása
 	}
 
@@ -69,7 +75,9 @@ public class GameField extends GamePanel {
 
 	@Override
 	public void paint(Graphics g) {
-		super.paint(g);
+		Graphics2D g2 = (Graphics2D) g;
+		g2.setTransform(mReverseYAxisTransform);
+
 		// TODO aszteroidák, fegyverek, powerupok kirajzolása
 		g.drawImage(mImageBackground, 0, 0, null);
 		if (mGameState != null) {
@@ -96,6 +104,11 @@ public class GameField extends GamePanel {
 	@Override
 	protected void onShow() {
 		super.onShow();
+
+		mReverseYAxisTransform = new AffineTransform();
+		mReverseYAxisTransform.translate(0, getHeight() - 1);
+		mReverseYAxisTransform.scale(1, -1);
+
 		mSpaceshipPainter.setDimensions(getWidth(), getHeight());
 		// TODO painterek beállítása a játékmező méretének megfelelően
 	}
