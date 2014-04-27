@@ -4,8 +4,8 @@ import hu.bme.mit.asteroid.model.Weapon;
 
 import java.awt.Graphics;
 
-public class WeaponPainter {
-	
+public class WeaponPainter extends Painter {
+
 	// TODO a SpaceShipPainterhez hasonlóan...
 
 	public void paint(Graphics g, Weapon weapon) {

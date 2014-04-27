@@ -4,7 +4,7 @@ import hu.bme.mit.asteroid.model.Powerup;
 
 import java.awt.Graphics;
 
-public class PowerupPainter {
+public class PowerupPainter extends Painter {
 
 	// TODO a SpaceShipPainterhez hasonlóan...
 

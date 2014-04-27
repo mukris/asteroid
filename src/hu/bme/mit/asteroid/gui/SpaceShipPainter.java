@@ -13,7 +13,7 @@ import java.awt.image.BufferedImage;
 /**
  * A {@link SpaceShip} objektum állapotának megfelelő kirajzolását végző osztály
  */
-public class SpaceShipPainter {
+public class SpaceShipPainter extends Painter {
 
 	private final Image mDefaultImage;
 	private final Image mAcceleratingImage;
@@ -63,9 +63,10 @@ public class SpaceShipPainter {
 		// Eredeti kép kirajzolása megfelelően elforgatva a vászonra
 		g2.drawImage(spaceshipImage, transform, null);
 
-		// Az elforgatott kép kirajzolása megfelelő pozícióban
-		g.drawImage(bufferedImage, (int) (position.getX() - mImageOffsetHorizontal),
-				(int) (position.getY() - mImageOffsetVertical), null);
+		// Az elforgatott kép kirajzolása megfelelő pozícióban az esetleges
+		// átlapolódásokkal együtt
+		paintInternal(g, bufferedImage, position);
+
 		// Az elforgatáshoz használt vászon memóriaterületének felszabadítása
 		g2.dispose();
 	}

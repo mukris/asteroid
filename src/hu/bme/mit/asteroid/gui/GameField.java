@@ -88,4 +88,11 @@ public class GameField extends GamePanel {
 	public boolean isFocusable() {
 		return true;
 	}
+
+	@Override
+	protected void onShow() {
+		super.onShow();
+		mSpaceshipPainter.setDimensions(getWidth(), getHeight());
+		// TODO painterek beállítása a játékmező méretének megfelelően
+	}
 }
