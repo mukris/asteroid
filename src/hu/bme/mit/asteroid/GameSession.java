@@ -310,9 +310,9 @@ public abstract class GameSession implements ControlInterface.Callback {
 			// valami ilyesmi...
 			spaceShip.setPosition(spaceShip.getPosition().add(new Vector2D(0.5f, 0.5f)));
 			if (spaceShip.isTurningLeft()) {
-				spaceShip.setDirection((spaceShip.getDirection() - timeDelta / 1000f * Math.PI * 2));
-			} else if (spaceShip.isTurningRight()) {
 				spaceShip.setDirection((spaceShip.getDirection() + timeDelta / 1000f * Math.PI * 2));
+			} else if (spaceShip.isTurningRight()) {
+				spaceShip.setDirection((spaceShip.getDirection() - timeDelta / 1000f * Math.PI * 2));
 			}
 
 			spaceShip.handleFiring(timeDelta);

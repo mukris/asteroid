@@ -63,8 +63,11 @@ public class GameFactory {
 		if (!sLevels.get(levelID).isUnlocked()) {
 			throw new LevelNotUnlockedException();
 		}
-		// TODO initialize SpaceShip...
-		player.setSpaceShip(new SpaceShip(new Vector2D(30, 30), 0, new SimpleWeapon()));
+
+		SpaceShip spaceShip = new SpaceShip(
+				new Vector2D(AsteroidGame.WINDOW_SIZE_X / 2, AsteroidGame.WINDOW_SIZE_Y / 2), Math.PI / 2,
+				new SimpleWeapon());
+		player.setSpaceShip(spaceShip);
 		GameState gameState = new GameState(player, null);
 		generateAsteroidPositions(gameState, sLevels.get(levelID));
 
@@ -89,9 +92,14 @@ public class GameFactory {
 		if (levelID < 0 || levelID > sLevels.size() - 1) {
 			throw new LevelNotExistsException();
 		}
-		// TODO initialize SpaceShips...
-		player1.setSpaceShip(new SpaceShip(new Vector2D(30, 30), 0, new SimpleWeapon()));
-		player2.setSpaceShip(new SpaceShip(new Vector2D(100, 100), 0, new SimpleWeapon()));
+
+		SpaceShip spaceShip1 = new SpaceShip(new Vector2D(AsteroidGame.WINDOW_SIZE_X / 3,
+				AsteroidGame.WINDOW_SIZE_Y / 2), Math.PI / 2, new SimpleWeapon());
+		player1.setSpaceShip(spaceShip1);
+
+		SpaceShip spaceShip2 = new SpaceShip(new Vector2D(AsteroidGame.WINDOW_SIZE_X - AsteroidGame.WINDOW_SIZE_X / 3,
+				AsteroidGame.WINDOW_SIZE_Y / 2), Math.PI / 2, new SimpleWeapon());
+		player2.setSpaceShip(spaceShip2);
 		GameState gameState = new GameState(player1, player2);
 		generateAsteroidPositions(gameState, sLevels.get(levelID));
 
