@@ -15,7 +15,7 @@ public class SimpleWeapon extends Weapon implements Serializable {
 	}
 
 	public SimpleWeapon(Vector2D position) {
-		super(position, new Vector2D(SPEED, 0));
+		super(position, new Vector2D(SPEED, 0.0d));
 	}
 
 	@Override
