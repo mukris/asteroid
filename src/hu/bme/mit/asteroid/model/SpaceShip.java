@@ -8,7 +8,7 @@ import java.util.List;
  * A játékban szereplő űrhajót reprezentáló osztály
  */
 public class SpaceShip extends DirectionalMovingSpaceObject implements Serializable {
-	private static final long serialVersionUID = 4069378253211746610L;
+	private static final long serialVersionUID = -3082685416683514085L;
 
 	private static final int SPACESHIP_SIZE = 50;
 
@@ -39,7 +39,7 @@ public class SpaceShip extends DirectionalMovingSpaceObject implements Serializa
 	 * @param direction
 	 *            Az űrhajó elfordulási iránya
 	 */
-	public SpaceShip(Vector2D position, int direction, Weapon weapon) {
+	public SpaceShip(Vector2D position, double direction, Weapon weapon) {
 		super(position, new Vector2D(), direction, SPACESHIP_SIZE);
 		mWeapons = new ArrayList<>();
 		mWeapon = weapon;

@@ -59,7 +59,7 @@ public class SpaceShipPainter extends Painter {
 		AffineTransform transform = new AffineTransform();
 
 		// Elforgatás a kép középpontja körül transzformáció
-		transform.rotate(Math.toRadians(spaceShip.getDirection()), mImageOffsetHorizontal, mImageOffsetVertical);
+		transform.rotate(spaceShip.getDirection(), mImageOffsetHorizontal, mImageOffsetVertical);
 		// Eredeti kép kirajzolása megfelelően elforgatva a vászonra
 		g2.drawImage(spaceshipImage, transform, null);
 

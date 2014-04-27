@@ -8,8 +8,7 @@ import java.io.Serializable;
  * Két dimenziós vektor
  */
 public class Vector2D implements Cloneable, Serializable {
-	private static final long serialVersionUID = 2869327434602565264L;
-	public final static int minDistance = 30;
+	private static final long serialVersionUID = 7407514700895793824L;
 	
 	private float mX;
 	private float mY;
@@ -23,9 +22,9 @@ public class Vector2D implements Cloneable, Serializable {
 		mY = y;
 	}
 
-	public Vector2D(float length, int direction) {
-		mX = (float) (length * Math.cos(direction * Math.PI / 180));
-		mY = (float) (length * Math.sin(direction * Math.PI / 180));
+	public Vector2D(float length, double direction) {
+		mX = (float) (length * Math.cos(direction));
+		mY = (float) (length * Math.sin(direction));
 	}
 
 	@Override
@@ -60,13 +59,13 @@ public class Vector2D implements Cloneable, Serializable {
 		return this;
 	}
 
-	public int getDirection() {
-		return (int) (Math.atan2(mY, mX) * 180 / Math.PI);
+	public double getDirection() {
+		return Math.atan2(mY, mX);
 	}
 
-	public void setDirection(int direction) {
-		mX = (float) (getLength() * Math.cos(direction * Math.PI / 180));
-		mY = (float) (getLength() * Math.sin(direction * Math.PI / 180));
+	public void setDirection(double direction) {
+		mX = (float) (getLength() * Math.cos(direction));
+		mY = (float) (getLength() * Math.sin(direction));
 	}
 
 	public float getLength() {
@@ -74,8 +73,8 @@ public class Vector2D implements Cloneable, Serializable {
 	}
 
 	public void setLength(float length) {
-		mX = (float) (length * Math.cos(getDirection() * Math.PI / 180));
-		mY = (float) (length * Math.sin(getDirection() * Math.PI / 180));
+		mX = (float) (length * Math.cos(getDirection()));
+		mY = (float) (length * Math.sin(getDirection()));
 	}
 	
 	static float getDistance(Vector2D v1, Vector2D v2) {

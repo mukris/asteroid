@@ -310,9 +310,9 @@ public abstract class GameSession implements ControlInterface.Callback {
 			// valami ilyesmi...
 			spaceShip.setPosition(spaceShip.getPosition().add(new Vector2D(0.5f, 0.5f)));
 			if (spaceShip.isTurningLeft()) {
-				spaceShip.setDirection((int) (spaceShip.getDirection() - timeDelta / 1000f * 360));
+				spaceShip.setDirection((spaceShip.getDirection() - timeDelta / 1000f * Math.PI * 2));
 			} else if (spaceShip.isTurningRight()) {
-				spaceShip.setDirection((int) (spaceShip.getDirection() + timeDelta / 1000f * 360));
+				spaceShip.setDirection((spaceShip.getDirection() + timeDelta / 1000f * Math.PI * 2));
 			}
 
 			spaceShip.handleFiring(timeDelta);
@@ -442,7 +442,7 @@ public abstract class GameSession implements ControlInterface.Callback {
 				for (Weapon weapon : weapons) {
 					synchronized (asteroids) {
 						for (Asteroid asteroid : asteroids) {
-							//TODO
+							// TODO
 						}
 					}
 				}
