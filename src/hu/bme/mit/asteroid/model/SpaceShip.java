@@ -30,6 +30,7 @@ public class SpaceShip extends DirectionalMovingSpaceObject implements Serializa
 	 */
 	public SpaceShip() {
 		this(new Vector2D(), 0, null);
+
 	}
 
 	/**
@@ -42,6 +43,8 @@ public class SpaceShip extends DirectionalMovingSpaceObject implements Serializa
 	 */
 	public SpaceShip(Vector2D position, double direction, Weapon weapon) {
 		super(position, new Vector2D(), direction, SPACESHIP_SIZE);
+		mAcceleration.setLength(0.00001f);
+		mAcceleration.setDirection(direction);
 		mWeapons = new ArrayList<>();
 		mWeapon = weapon;
 		mWeapon.setPosition(position);
@@ -67,6 +70,12 @@ public class SpaceShip extends DirectionalMovingSpaceObject implements Serializa
 			mTimeMillisSinceLastShoot %= repeatTime;
 		}
 		mTimeMillisSinceLastShoot += timeDelta;
+	}
+
+	@Override
+	public void setDirection(double direction) {
+		super.setDirection(direction);
+		mAcceleration.setDirection(direction);
 	}
 
 	/**
