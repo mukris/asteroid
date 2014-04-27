@@ -315,6 +315,7 @@ public abstract class GameSession implements ControlInterface.Callback {
 				spaceShip.setDirection((spaceShip.getDirection() - timeDelta / 1000f * Math.PI * 2));
 			}
 
+			spaceShip.setUnvulnerableFor(spaceShip.getUnvulnerableFor() - timeDelta);
 			spaceShip.handleFiring(timeDelta);
 		}
 

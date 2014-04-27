@@ -11,6 +11,7 @@ public class SpaceShip extends DirectionalMovingSpaceObject implements Serializa
 	private static final long serialVersionUID = -3082685416683514085L;
 
 	private static final int SPACESHIP_SIZE = 50;
+	public static final int DEFAULT_UNVULNERABILITY_TIME = 5000;
 
 	private Vector2D mAcceleration = new Vector2D();
 	private Weapon mWeapon;
@@ -109,6 +110,15 @@ public class SpaceShip extends DirectionalMovingSpaceObject implements Serializa
 	 */
 	public boolean isVulnerable() {
 		return mTimeMillisUntilVulnerable == 0;
+	}
+
+	/**
+	 * Visszaadja, hogy mennyi ideig sebezhetetlen még az űrhajó
+	 * 
+	 * @return A sebezhetetlenségből hátralévő idő ezredmásodpercben
+	 */
+	public long getUnvulnerableFor() {
+		return mTimeMillisUntilVulnerable;
 	}
 
 	/**

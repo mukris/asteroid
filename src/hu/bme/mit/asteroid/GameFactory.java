@@ -67,6 +67,7 @@ public class GameFactory {
 		SpaceShip spaceShip = new SpaceShip(
 				new Vector2D(AsteroidGame.WINDOW_SIZE_X / 2, AsteroidGame.WINDOW_SIZE_Y / 2), Math.PI / 2,
 				new SimpleWeapon());
+		spaceShip.setUnvulnerableFor(SpaceShip.DEFAULT_UNVULNERABILITY_TIME);
 		player.setSpaceShip(spaceShip);
 		GameState gameState = new GameState(player, null);
 		generateAsteroidPositions(gameState, sLevels.get(levelID));
@@ -95,10 +96,12 @@ public class GameFactory {
 
 		SpaceShip spaceShip1 = new SpaceShip(new Vector2D(AsteroidGame.WINDOW_SIZE_X / 3,
 				AsteroidGame.WINDOW_SIZE_Y / 2), Math.PI / 2, new SimpleWeapon());
+		spaceShip1.setUnvulnerableFor(SpaceShip.DEFAULT_UNVULNERABILITY_TIME);
 		player1.setSpaceShip(spaceShip1);
 
 		SpaceShip spaceShip2 = new SpaceShip(new Vector2D(AsteroidGame.WINDOW_SIZE_X - AsteroidGame.WINDOW_SIZE_X / 3,
 				AsteroidGame.WINDOW_SIZE_Y / 2), Math.PI / 2, new SimpleWeapon());
+		spaceShip2.setUnvulnerableFor(SpaceShip.DEFAULT_UNVULNERABILITY_TIME);
 		player2.setSpaceShip(spaceShip2);
 		GameState gameState = new GameState(player1, player2);
 		generateAsteroidPositions(gameState, sLevels.get(levelID));
@@ -117,18 +120,18 @@ public class GameFactory {
 	 */
 	private static void generateAsteroidPositions(GameState gameState, LevelDescriptor levelDescriptor) {
 		boolean isMultiplayer = gameState.isMultiplayer();
-		
+
 		ArrayList<Asteroid> asteroids = gameState.getAsteroids();
 		for (int i = 0; i < levelDescriptor.getNumAsteroidLarge(); i++) {
-			asteroids.add(new Asteroid(Type.LARGE, new Vector2D(), new Vector2D() )); 
+			asteroids.add(new Asteroid(Type.LARGE, new Vector2D(), new Vector2D()));
 		}
 		for (int i = 0; i < levelDescriptor.getNumAsteroidMedium(); i++) {
-			asteroids.add(new Asteroid(Type.MEDIUM, new Vector2D(), new Vector2D() )); 
+			asteroids.add(new Asteroid(Type.MEDIUM, new Vector2D(), new Vector2D()));
 		}
 		for (int i = 0; i < levelDescriptor.getNumAsteroidSmall(); i++) {
-			asteroids.add(new Asteroid(Type.SMALL, new Vector2D(), new Vector2D() )); 
+			asteroids.add(new Asteroid(Type.SMALL, new Vector2D(), new Vector2D()));
 		}
-		
+
 		// TODO randomize Asteroids' position, speed..
 	}
 

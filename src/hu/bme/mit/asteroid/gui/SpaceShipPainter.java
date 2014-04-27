@@ -46,6 +46,13 @@ public class SpaceShipPainter extends Painter {
 	 *            A kirajzolás alapjául szolgáló {@link SpaceShip}
 	 */
 	public void paint(Graphics g, SpaceShip spaceShip) {
+		// Ha nem sebezhető, akkor villog
+		if (!spaceShip.isVulnerable()) {
+			if (spaceShip.getUnvulnerableFor() % 200 > 100) {
+				return;
+			}
+		}
+
 		Vector2D position = spaceShip.getPosition();
 
 		// Megfelelő kép kiválasztása az alapján, hogy gyorsul-e az űrhajó
