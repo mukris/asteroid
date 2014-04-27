@@ -25,9 +25,18 @@ public class GameFactory {
 	 */
 	static {
 		sLevels = new ArrayList<>();
-		sLevels.add(new LevelDescriptor(0, 5, 0, true)); // első pálya feloldva
-		sLevels.add(new LevelDescriptor(1, 2, 0));
-		// TODO define levels
+		//sLevels.add(new LevelDescriptor(0, 5, 0, true)); // első pálya feloldva
+		sLevels.add(new LevelDescriptor(0, 0, 3, true)); // első pálya feloldva
+		sLevels.add(new LevelDescriptor(0, 1, 4));
+		sLevels.add(new LevelDescriptor(0, 3, 2));
+		sLevels.add(new LevelDescriptor(0, 6, 0));
+		sLevels.add(new LevelDescriptor(1, 4, 0));
+		sLevels.add(new LevelDescriptor(2, 4, 0));
+		sLevels.add(new LevelDescriptor(3, 4, 0));
+		sLevels.add(new LevelDescriptor(4, 0, 0));
+		sLevels.add(new LevelDescriptor(3, 0, 6));
+		sLevels.add(new LevelDescriptor(4, 4, 4));
+		// TODO define levels - 10 enought?
 
 		updateLevelUnlockStatus();
 	}
