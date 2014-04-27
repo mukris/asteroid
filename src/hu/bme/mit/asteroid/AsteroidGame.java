@@ -3,6 +3,8 @@ package hu.bme.mit.asteroid;
 import hu.bme.mit.asteroid.gui.GameWindow;
 
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  * A program belépési pontja
@@ -20,6 +22,10 @@ public class AsteroidGame {
 
 			@Override
 			public void run() {
+				try {
+                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+                }
 				showWindow();
 			}
 		});
