@@ -10,6 +10,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
@@ -75,9 +76,12 @@ public class GameField extends GamePanel {
 			SpaceShip spaceShip = mGameState.getSpaceShip1();
 			g.setColor(Color.WHITE);
 
-			for (Weapon weapon : spaceShip.getWeapons()) {
-				g.drawOval((int) weapon.getPosition().getX(), (int) weapon.getPosition().getY(),
-						(int) weapon.getRadius(), (int) weapon.getRadius());
+			List<Weapon> weapons = spaceShip.getWeapons();
+			synchronized (weapons) {
+				for (Weapon weapon : spaceShip.getWeapons()) {
+					g.drawOval((int) weapon.getPosition().getX(), (int) weapon.getPosition().getY(),
+							(int) weapon.getRadius(), (int) weapon.getRadius());
+				}
 			}
 
 			mSpaceshipPainter.paint(g, spaceShip);
