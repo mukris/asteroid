@@ -300,15 +300,17 @@ public abstract class GameSession implements ControlInterface.Callback {
 		 */
 		protected void calculateSpaceShipPhysics(SpaceShip spaceShip, long timeDelta, long currentTime)
 				throws GameOverException {
-			// FIXME: Bűvészkedés az alábbi (és hasonló) függvényekkel:
-			// spaceShip.getAcceleration();
-			// spaceShip.getSpeed();
-			// spaceShip.getPosition();
-			// spaceShip.setPosition(position);
-			// az új pozíció meghatározása a paraméterül kapott
-			// időkülönbség és a pillanatnyi sebesség, gyorsulás alapján
-			// valami ilyesmi...
-			spaceShip.setPosition(spaceShip.getPosition().add(new Vector2D(0.5f, 0.5f)));
+			spaceShip.getPosition().add(spaceShip.getSpeed().clone().multiply(timeDelta / 1000f));
+
+			if (spaceShip.isAccelerating()) {
+				Vector2D acceleration = spaceShip.getAcceleration();
+				if (acceleration.getLength() < 12f) {
+					acceleration.setLength(acceleration.getLength() + timeDelta);
+				}
+				
+				spaceShip.getSpeed().add(spaceShip.getAcceleration().clone().multiply(timeDelta / 100f));
+			}
+
 			if (spaceShip.isTurningLeft()) {
 				spaceShip.setDirection((spaceShip.getDirection() + timeDelta / 1000f * Math.PI * 2));
 			} else if (spaceShip.isTurningRight()) {
