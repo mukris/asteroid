@@ -1,7 +1,11 @@
 package hu.bme.mit.asteroid;
 
+import java.awt.Image;
+import java.io.File;
+
 import hu.bme.mit.asteroid.gui.GameWindow;
 
+import javax.imageio.ImageIO;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -11,7 +15,7 @@ import javax.swing.UnsupportedLookAndFeelException;
  */
 
 public class AsteroidGame {
-	
+
 	public final static int WINDOW_SIZE_X = 800;
 	public final static int WINDOW_SIZE_Y = 600;
 
@@ -23,9 +27,10 @@ public class AsteroidGame {
 			@Override
 			public void run() {
 				try {
-                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-                }
+					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+				} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+						| UnsupportedLookAndFeelException ex) {
+				}
 				showWindow();
 			}
 		});
@@ -34,6 +39,13 @@ public class AsteroidGame {
 	private static void showWindow() {
 		GameWindow gameWindow = new GameWindow();
 		gameWindow.setSize(WINDOW_SIZE_X, WINDOW_SIZE_Y);
+		
+		try {
+			Image icon = ImageIO.read(new File("res/spaceship.png"));
+			gameWindow.setIconImage(icon);
+		} catch (Exception e) {
+		}
+
 		gameWindow.setVisible(true);
 	}
 }
