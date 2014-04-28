@@ -8,9 +8,8 @@ import java.io.Serializable;
  * Két dimenziós vektor
  */
 public class Vector2D implements Cloneable, Serializable {
-	private static final long serialVersionUID = 2869327434602565264L;
-	public final static int minDistance = 30;
-	
+	private static final long serialVersionUID = -722132548760942968L;
+
 	private float mX;
 	private float mY;
 
@@ -97,43 +96,58 @@ public class Vector2D implements Cloneable, Serializable {
 		int maxY = AsteroidGame.WINDOW_SIZE_Y;
 		int centerX = maxX / 2;
 		int centerY = maxY / 2;
-		
+
 		int[] tmp_mX = new int[3];
 		int[] tmp_mY = new int[3];
-		
-			//felső rész X koordináta
-			tmp_mX[0] = (int)(Math.random() * maxX);
-			//felső rész Y koordináta
-			tmp_mY[0] = (int)(Math.random() * (centerY - minDistance));
-			
-			//bal oldal X koordináta
-			tmp_mX[1] = (int)(Math.random() * (centerX - minDistance));
-			//bal oldal Y koordináta
-			tmp_mY[1] = (int)(Math.random() * maxY);
-			
-			//jobb oldal X koordináta
-			tmp_mX[2] = (centerX + minDistance) + (int)(Math.random() * ((maxX - (centerX + minDistance)) + 1));
-			//jobb oldal Y koordináta
-			tmp_mY[2] = (int)(Math.random() * maxY);
-			
-			//alsó rész X koordináta
-			tmp_mX[3] = (int)(Math.random() * maxX);
-			//alsó rész Y koordináta
-			tmp_mY[3] = (centerY + minDistance) + (int)(Math.random() * ((maxY - (centerY + minDistance)) + 1));
-			
-			//0-4 generál egy egész számot, hogy kiválassza a térrészt
-			int i = (int)(Math.random() * 4);
-			
-			mX = (float) tmp_mX[i];
-			mY = (float) tmp_mY[i];
-	}
-	
-	
-	//véletlen irányt generál. az irány lehet a window bármely pontja
-	public void randomDirectionGenerator() {
-		mX = (float) (Math.random() * AsteroidGame.WINDOW_SIZE_X);
-		mY = (float) (Math.random() * AsteroidGame.WINDOW_SIZE_Y);
-	}
-	
 
+		// felső rész X koordináta
+		tmp_mX[0] = (int) (Math.random() * maxX);
+		// felső rész Y koordináta
+		tmp_mY[0] = (int) (Math.random() * (centerY - minDistance));
+
+		// bal oldal X koordináta
+		tmp_mX[1] = (int) (Math.random() * (centerX - minDistance));
+		// bal oldal Y koordináta
+		tmp_mY[1] = (int) (Math.random() * maxY);
+
+		// jobb oldal X koordináta
+		tmp_mX[2] = (centerX + minDistance) + (int) (Math.random() * ((maxX - (centerX + minDistance)) + 1));
+		// jobb oldal Y koordináta
+		tmp_mY[2] = (int) (Math.random() * maxY);
+
+		// alsó rész X koordináta
+		tmp_mX[3] = (int) (Math.random() * maxX);
+		// alsó rész Y koordináta
+		tmp_mY[3] = (centerY + minDistance) + (int) (Math.random() * ((maxY - (centerY + minDistance)) + 1));
+
+		// 0-4 generál egy egész számot, hogy kiválassza a térrészt
+		int i = (int) (Math.random() * 4);
+
+		mX = (float) tmp_mX[i];
+		mY = (float) tmp_mY[i];
+	}
+
+	/**
+	 * Véletlen irányt generál adott hosszúsággal
+	 * 
+	 * @param length
+	 *            A vektor kívánt hossza
+	 * @return Véletlen irányú vektor
+	 */
+	public static Vector2D generateRandomDirection(int length) {
+		return new Vector2D(length, (int) (Math.random() * 360));
+	}
+
+	/**
+	 * Véletlen hosszat generál az adott korlátok között
+	 * 
+	 * @param minLength
+	 *            Minimális hossz
+	 * @param maxLength
+	 *            Maximális hossz
+	 * @return Véletlen hosszúság érték
+	 */
+	public static float generateRandomLength(float minLength, float maxLength) {
+		return (float) (minLength + Math.random() * (maxLength - minLength));
+	}
 }
