@@ -13,7 +13,6 @@ public class WADControlInterface extends ControlInterface implements KeyListener
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO - is OK?
 		if (mCallback == null) {
 			return;
 		}
@@ -38,7 +37,6 @@ public class WADControlInterface extends ControlInterface implements KeyListener
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO - is OK?
 		if (mCallback == null) {
 			return;
 		}
@@ -62,5 +60,4 @@ public class WADControlInterface extends ControlInterface implements KeyListener
 	@Override
 	public void keyTyped(KeyEvent e) {
 	}
-
 }
