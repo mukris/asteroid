@@ -49,7 +49,6 @@ public class MultiplayerGameSession extends GameSession {
 
 				@Override
 				public void onDisconnect() {
-					// TODO
 					stop();
 					GameManager gameManager = GameManager.getInstance();
 					gameManager.unregisterClientListener(MultiplayerGameSession.this);

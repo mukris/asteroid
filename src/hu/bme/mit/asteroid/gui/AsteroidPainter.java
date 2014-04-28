@@ -4,7 +4,7 @@ import hu.bme.mit.asteroid.model.Asteroid;
 
 import java.awt.Graphics;
 
-public class AsteroidPainter {
+public class AsteroidPainter extends Painter {
 
 	// TODO a SpaceShipPainterhez hasonlóan...
 

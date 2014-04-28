@@ -8,7 +8,7 @@ import java.io.Serializable;
  * Két dimenziós vektor
  */
 public class Vector2D implements Cloneable, Serializable {
-	private static final long serialVersionUID = -722132548760942968L;
+	private static final long serialVersionUID = -2769884896580939707L;
 
 	private float mX;
 	private float mY;
@@ -22,9 +22,9 @@ public class Vector2D implements Cloneable, Serializable {
 		mY = y;
 	}
 
-	public Vector2D(float length, int direction) {
-		mX = (float) (length * Math.cos(direction * Math.PI / 180));
-		mY = (float) (length * Math.sin(direction * Math.PI / 180));
+	public Vector2D(float length, double direction) {
+		mX = (float) (length * Math.cos(direction));
+		mY = (float) (length * Math.sin(direction));
 	}
 
 	@Override
@@ -54,18 +54,33 @@ public class Vector2D implements Cloneable, Serializable {
 		return this;
 	}
 
+	public Vector2D inRange(int x, int y) {
+		if (mX > x) {
+			mX -= x;
+		} else if (mX < 0) {
+			mX += x;
+		}
+		if (mY > y) {
+			mY -= y;
+		} else if (mY < 0) {
+			mY += y;
+		}
+		return this;
+	}
+
 	public Vector2D multiply(float multiplier) {
 		setLength(getLength() * multiplier);
 		return this;
 	}
 
-	public int getDirection() {
-		return (int) (Math.atan2(mY, mX) * 180 / Math.PI);
+	public double getDirection() {
+		return Math.atan2(mY, mX);
 	}
 
-	public void setDirection(int direction) {
-		mX = (float) (getLength() * Math.cos(direction * Math.PI / 180));
-		mY = (float) (getLength() * Math.sin(direction * Math.PI / 180));
+	public void setDirection(double direction) {
+		final float length = getLength();
+		mX = (float) (length * Math.cos(direction));
+		mY = (float) (length * Math.sin(direction));
 	}
 
 	public float getLength() {
@@ -73,8 +88,9 @@ public class Vector2D implements Cloneable, Serializable {
 	}
 
 	public void setLength(float length) {
-		mX = (float) (length * Math.cos(getDirection() * Math.PI / 180));
-		mY = (float) (length * Math.sin(getDirection() * Math.PI / 180));
+		final double direction = getDirection();
+		mX = (float) (length * Math.cos(direction));
+		mY = (float) (length * Math.sin(direction));
 	}
 
 	public float getDistance(Vector2D other) {

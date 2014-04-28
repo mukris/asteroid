@@ -8,9 +8,10 @@ import java.util.List;
  * A játékban szereplő űrhajót reprezentáló osztály
  */
 public class SpaceShip extends DirectionalMovingSpaceObject implements Serializable {
-	private static final long serialVersionUID = 4069378253211746610L;
+	private static final long serialVersionUID = -3082685416683514085L;
 
 	private static final int SPACESHIP_SIZE = 50;
+	public static final int DEFAULT_UNVULNERABILITY_TIME = 5000;
 
 	private Vector2D mAcceleration = new Vector2D();
 	private Weapon mWeapon;
@@ -28,7 +29,8 @@ public class SpaceShip extends DirectionalMovingSpaceObject implements Serializa
 	 * Minden értéket 0-ra állít
 	 */
 	public SpaceShip() {
-		this(new Vector2D(), 0);
+		this(new Vector2D(), 0, null);
+
 	}
 
 	/**
@@ -39,10 +41,14 @@ public class SpaceShip extends DirectionalMovingSpaceObject implements Serializa
 	 * @param direction
 	 *            Az űrhajó elfordulási iránya
 	 */
-	public SpaceShip(Vector2D position, int direction) {
+	public SpaceShip(Vector2D position, double direction, Weapon weapon) {
 		super(position, new Vector2D(), direction, SPACESHIP_SIZE);
+		mAcceleration.setLength(0.00001f);
+		mAcceleration.setDirection(direction);
 		mWeapons = new ArrayList<>();
-		// TODO Auto-generated constructor stub
+		mWeapon = weapon;
+		mWeapon.setPosition(position);
+		mWeapon.setDirection(direction);
 	}
 
 	/**
@@ -57,13 +63,19 @@ public class SpaceShip extends DirectionalMovingSpaceObject implements Serializa
 		if (isFiring() && mTimeMillisSinceLastShoot + timeDelta >= repeatTime) {
 			Weapon newWeapon = mWeapon.clone();
 			newWeapon.setDirection(getDirection());
-			newWeapon.setPosition(getPosition());
+			newWeapon.setPosition(getPosition().clone());
 			synchronized (mWeapons) {
 				mWeapons.add(newWeapon);
 			}
 			mTimeMillisSinceLastShoot %= repeatTime;
 		}
 		mTimeMillisSinceLastShoot += timeDelta;
+	}
+
+	@Override
+	public void setDirection(double direction) {
+		super.setDirection(direction);
+		mAcceleration.setDirection(direction);
 	}
 
 	/**
@@ -93,6 +105,12 @@ public class SpaceShip extends DirectionalMovingSpaceObject implements Serializa
 		mWeapon = weapon;
 	}
 
+	public List<Weapon> getWeapons() {
+		synchronized (mWeapons) {
+			return mWeapons;
+		}
+	}
+
 	/**
 	 * Visszaadja, hogy sebezhető-e az űrhajó. Ha nem sebezhető, akkor képes
 	 * áthaladni egy aszteroida fölött.
@@ -101,6 +119,15 @@ public class SpaceShip extends DirectionalMovingSpaceObject implements Serializa
 	 */
 	public boolean isVulnerable() {
 		return mTimeMillisUntilVulnerable == 0;
+	}
+
+	/**
+	 * Visszaadja, hogy mennyi ideig sebezhetetlen még az űrhajó
+	 * 
+	 * @return A sebezhetetlenségből hátralévő idő ezredmásodpercben
+	 */
+	public long getUnvulnerableFor() {
+		return mTimeMillisUntilVulnerable;
 	}
 
 	/**

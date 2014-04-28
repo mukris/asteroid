@@ -44,7 +44,6 @@ public class ClientPanel extends GamePanel {
 			try {
 				mNetworkClient.connect(address);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		};

@@ -77,7 +77,7 @@ public class LevelSelectorPanel extends GamePanel {
 	 * A pályák feloldottsági állapotának frissítése
 	 */
 	private void updateLevelUnlockStatus() {
-		int highestUnlockedLevel = Storage.getHighestUnlockedLevel();
+		int highestUnlockedLevel = Storage.getInstance().getHighestUnlockedLevel();
 		for (int i = 0; i < mLevelButtons.size(); i++) {
 			mLevelButtons.get(i).setEnabled(i <= highestUnlockedLevel);
 		}

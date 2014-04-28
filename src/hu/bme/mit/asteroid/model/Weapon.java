@@ -6,7 +6,7 @@ import java.io.Serializable;
  * A játékban szereplő fegyvereket reprezentáló absztrakt osztály
  */
 public abstract class Weapon extends DirectionalMovingSpaceObject implements Cloneable, Serializable {
-	private static final long serialVersionUID = 5917566681686872998L;
+	private static final long serialVersionUID = -1604474174764776496L;
 	
 	private static final int WEAPON_SIZE = 10;
 	protected static final int LIFE_SPAN_MILLIS = 5000;
@@ -28,11 +28,11 @@ public abstract class Weapon extends DirectionalMovingSpaceObject implements Clo
 	 * segít a lövedék maximális élettartamát meghatározni, hogy egy kilőtt
 	 * lövedék ne keringjen a végtelenségig.
 	 * 
-	 * @param currentTime
-	 *            Az aktuális idő ms-ban
 	 * @return True, ha még aktív, false ha nem.
 	 */
-	public abstract boolean isAlive(long currentTime);
+	public boolean isAlive() {
+		return mTimeMillisUntilDeath > 0;
+	}
 
 	/**
 	 * Visszaadja a fegyver ismétlési idejét ezredmásodpercben. Folyamatos
@@ -42,4 +42,20 @@ public abstract class Weapon extends DirectionalMovingSpaceObject implements Clo
 	 * @return A fegyver ismétlési ideje ezredmásodpercben
 	 */
 	public abstract long getRepeatTime();
+
+	/**
+	 * A hátralévő élet időszámlálójának csökkentése
+	 * 
+	 * @param timeDelta
+	 *            Az eltelt idő ezredmásodpercben
+	 */
+	public void decreaseTimeUntilDeath(long timeDelta) {
+		mTimeMillisUntilDeath -= timeDelta;
+	}
+
+	@Override
+	public void setDirection(double direction) {
+		super.setDirection(direction);
+		getSpeed().setDirection(direction);
+	}
 }

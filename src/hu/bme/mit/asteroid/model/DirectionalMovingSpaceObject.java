@@ -7,21 +7,18 @@ import java.io.Serializable;
  * objektumok közös absztrakt őse.
  */
 public abstract class DirectionalMovingSpaceObject extends MovingSpaceObject implements Serializable {
-	private static final long serialVersionUID = -7508446254238554908L;
+	private static final long serialVersionUID = 8599243588419287806L;
 
 	/**
 	 * <p>
 	 * Az objektum elfordulási iránya fokban kifejezve
 	 * </p>
 	 * <p>
-	 * Érvényes értékek: 0-359
-	 * </p>
-	 * <p>
-	 * A 0 érték a felfele irányt jelenti, a számok az óramutató járásával
-	 * megegyező irányban nőnek
+	 * A 0 érték a jobbra irányt jelenti, a számok az óramutató járásával
+	 * ellenkező irányban nőnek
 	 * </p>
 	 */
-	private int mDirection;
+	private double mDirection;
 
 	/**
 	 * Konstruktor
@@ -44,7 +41,7 @@ public abstract class DirectionalMovingSpaceObject extends MovingSpaceObject imp
 	 * @param radius
 	 *            Az objektum sugara
 	 */
-	public DirectionalMovingSpaceObject(Vector2D position, Vector2D speed, int direction, int radius) {
+	public DirectionalMovingSpaceObject(Vector2D position, Vector2D speed, double direction, int radius) {
 		super(position, speed, radius);
 		mDirection = direction;
 	}
@@ -54,7 +51,7 @@ public abstract class DirectionalMovingSpaceObject extends MovingSpaceObject imp
 	 * 
 	 * @return Az objektum elfordulási iránya
 	 */
-	public int getDirection() {
+	public double getDirection() {
 		return mDirection;
 	}
 
@@ -64,8 +61,8 @@ public abstract class DirectionalMovingSpaceObject extends MovingSpaceObject imp
 	 * @param direction
 	 *            Az objektum új elfordulási iránya
 	 */
-	public void setDirection(int direction) {
-		mDirection = direction % 360;
+	public void setDirection(double direction) {
+		mDirection = direction;
 	}
 
 }

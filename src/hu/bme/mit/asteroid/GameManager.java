@@ -210,6 +210,20 @@ public class GameManager {
 	}
 
 	/**
+	 * A játék fizikai motorjának értesítése a játékmező méretéről
+	 * 
+	 * @param width
+	 *            A játékmező szélessége
+	 * @param height
+	 *            A játékmező magassága
+	 */
+	public void updateGameFieldDimensions(int width, int height) {
+		if (mGameSession != null) {
+			mGameSession.setDimensions(width, height);
+		}
+	}
+
+	/**
 	 * Hálózati hiba esetén a grafikus felőlet értesítése
 	 */
 	public void onNetworkError() {

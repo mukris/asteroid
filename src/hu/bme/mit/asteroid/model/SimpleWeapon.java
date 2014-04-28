@@ -6,33 +6,27 @@ import java.io.Serializable;
  * Egyszerű fegyver...
  */
 public class SimpleWeapon extends Weapon implements Serializable {
-	private static final long serialVersionUID = 8870101910767078105L;
+	private static final long serialVersionUID = -8572824732369348348L;
+	
+	private static final float SPEED = 16f;
 
 	public SimpleWeapon() {
-		super();
+		this(new Vector2D());
 	}
 
-	public SimpleWeapon(Vector2D position, Vector2D speed) {
-		super(position, speed);
+	public SimpleWeapon(Vector2D position) {
+		super(position, new Vector2D(SPEED, 0.0d));
 	}
 
 	@Override
 	public SimpleWeapon clone() {
-		SimpleWeapon clone = new SimpleWeapon(getPosition(), getSpeed());
+		SimpleWeapon clone = new SimpleWeapon(getPosition());
 		clone.mTimeMillisUntilDeath = LIFE_SPAN_MILLIS;
 		return clone;
 	}
 
 	@Override
-	public boolean isAlive(long currentTime) {
-		// TODO lövedék élettartamának meghatározása (időkülönbség, ill sebesség
-		// alapján)
-		return true;
-	}
-
-	@Override
 	public long getRepeatTime() {
-		// FIXME pontos lövés ismétlési időköz beállítása
-		return 0;
+		return 250;
 	}
 }

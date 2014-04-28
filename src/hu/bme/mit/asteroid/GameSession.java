@@ -8,11 +8,14 @@ import hu.bme.mit.asteroid.exceptions.LevelFinishedException;
 import hu.bme.mit.asteroid.exceptions.LevelNotExistsException;
 import hu.bme.mit.asteroid.exceptions.LevelNotUnlockedException;
 import hu.bme.mit.asteroid.model.Asteroid;
+import hu.bme.mit.asteroid.model.Powerup;
 import hu.bme.mit.asteroid.model.SpaceShip;
 import hu.bme.mit.asteroid.model.Vector2D;
+import hu.bme.mit.asteroid.model.Weapon;
 import hu.bme.mit.asteroid.player.Player;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
@@ -36,6 +39,9 @@ public abstract class GameSession implements ControlInterface.Callback {
 	protected State mState;
 	protected State mOldState;
 	protected int mLevelID;
+
+	protected int mWidth;
+	protected int mHeight;
 
 	protected final Logger logger = Logger.getLogger(this.getClass().getName());
 
@@ -64,6 +70,17 @@ public abstract class GameSession implements ControlInterface.Callback {
 		synchronized (mState) {
 			mState = state;
 		}
+	}
+
+	/**
+	 * A játékmező méretének beállítása a fizikai motor számításaihoz
+	 * 
+	 * @param width A játékmező szélessége
+	 * @param height A játékmező magassága
+	 */
+	public void setDimensions(int width, int height) {
+		mWidth = width;
+		mHeight = height;
 	}
 
 	/**
@@ -194,6 +211,7 @@ public abstract class GameSession implements ControlInterface.Callback {
 								continue;
 							}
 							calculatePhysics(timeDelta, currentTime);
+							checkCollisions();
 							updateGUI();
 							setLastTime(currentTime);
 						}
@@ -213,21 +231,6 @@ public abstract class GameSession implements ControlInterface.Callback {
 			}
 		}
 
-		protected void loadNextLevel() throws GameOverException {
-			mLevelID++;
-			Storage.setLevelUnlocked(mLevelID, true);
-
-			try {
-				GameState newGameState = GameFactory.createSingleplayerGame(mLevelID, mPlayer1);
-				mGameState.update(newGameState);
-			} catch (LevelNotExistsException e) {
-				throw new GameOverException();
-			} catch (LevelNotUnlockedException e) {
-				e.printStackTrace();
-				throw new GameOverException();
-			}
-		}
-
 		public void setRunning(boolean running) {
 			mRunning.set(running);
 		}
@@ -243,6 +246,27 @@ public abstract class GameSession implements ControlInterface.Callback {
 		 */
 		public void setLastTime(long time) {
 			mLastTime = time;
+		}
+
+		/**
+		 * Új pálya betöltése
+		 * 
+		 * @throws GameOverException
+		 *             Ha nincs több pálya, a játék véget ér
+		 */
+		protected void loadNextLevel() throws GameOverException {
+			mLevelID++;
+			Storage.getInstance().setLevelUnlocked(mLevelID);
+
+			try {
+				GameState newGameState = GameFactory.createSingleplayerGame(mLevelID, mPlayer1);
+				mGameState.update(newGameState);
+			} catch (LevelNotExistsException e) {
+				throw new GameOverException();
+			} catch (LevelNotUnlockedException e) {
+				e.printStackTrace();
+				throw new GameOverException();
+			}
 		}
 
 		/**
@@ -267,8 +291,12 @@ public abstract class GameSession implements ControlInterface.Callback {
 			if (mGameState.isMultiplayer()) {
 				calculateSpaceShipPhysics(mGameState.getSpaceShip2(), timeDelta, currentTime);
 			}
-			calculateWeaponPhysics(timeDelta, currentTime);
-			// TODO mozgás, ütközésvizsgálat
+
+			calculateWeaponPhysics(mGameState.getSpaceShip1(), timeDelta, currentTime);
+
+			if (mGameState.isMultiplayer()) {
+				calculateWeaponPhysics(mGameState.getSpaceShip2(), timeDelta, currentTime);
+			}
 		}
 
 		/**
@@ -286,15 +314,25 @@ public abstract class GameSession implements ControlInterface.Callback {
 		 */
 		protected void calculateSpaceShipPhysics(SpaceShip spaceShip, long timeDelta, long currentTime)
 				throws GameOverException {
-			// FIXME: Bűvészkedés az alábbi (és hasonló) függvényekkel:
-			// spaceShip.getAcceleration();
-			// spaceShip.getSpeed();
-			// spaceShip.getPosition();
-			// spaceShip.setPosition(position);
-			// az új pozíció meghatározása a paraméterül kapott
-			// időkülönbség és a pillanatnyi sebesség, gyorsulás alapján
-			// valami ilyesmi...
-			spaceShip.setPosition(spaceShip.getPosition().add(new Vector2D(0.1f, 0)));
+			spaceShip.getPosition().add(spaceShip.getSpeed().clone().multiply(timeDelta / 1000f)).inRange(mWidth, mHeight);
+
+			if (spaceShip.isAccelerating()) {
+				Vector2D acceleration = spaceShip.getAcceleration();
+				if (acceleration.getLength() < 12f) {
+					acceleration.setLength(acceleration.getLength() + timeDelta);
+				}
+
+				spaceShip.getSpeed().add(spaceShip.getAcceleration().clone().multiply(timeDelta / 100f));
+			}
+
+			if (spaceShip.isTurningLeft()) {
+				spaceShip.setDirection((spaceShip.getDirection() + timeDelta / 1000f * Math.PI * 2));
+			} else if (spaceShip.isTurningRight()) {
+				spaceShip.setDirection((spaceShip.getDirection() - timeDelta / 1000f * Math.PI * 2));
+			}
+
+			spaceShip.setUnvulnerableFor(spaceShip.getUnvulnerableFor() - timeDelta);
+			spaceShip.handleFiring(timeDelta);
 		}
 
 		/**
@@ -311,31 +349,128 @@ public abstract class GameSession implements ControlInterface.Callback {
 		 */
 		protected void calculateAsteroidPhysics(long timeDelta, long currentTime) throws LevelFinishedException {
 			ArrayList<Asteroid> asteroids = mGameState.getAsteroids();
+			synchronized (asteroids) {
+				if (asteroids.isEmpty()) {
+					throw new LevelFinishedException();
+				}
 
-			if (asteroids.isEmpty()) {
-				throw new LevelFinishedException();
+				for (Asteroid asteroid : asteroids) {
+					// TODO: lásd fentebb...
+					// asteroid.getPosition();
+					// asteroid.getSpeed();
+					// asteroid.setPosition(position);
+				}
+				// TODO
 			}
-
-			for (Asteroid asteroid : asteroids) {
-				// TODO: lásd fentebb...
-				// asteroid.getPosition();
-				// asteroid.getSpeed();
-				// asteroid.setPosition(position);
-			}
-			// TODO
 		}
 
 		/**
 		 * A fegyverek fizikai számításait végző függvény
 		 * 
+		 * @param spaceShip
+		 *            Az űrhajó
 		 * @param timeDelta
 		 *            A függvény utolsó futtatása óta eltelt idő
 		 *            ezredmásodpercben
 		 * @param currentTime
 		 *            Az aktuális rendszeridő ezredmásodpercben
 		 */
-		protected void calculateWeaponPhysics(long timeDelta, long currentTime) {
-			// TODO
+		protected void calculateWeaponPhysics(SpaceShip spaceShip, long timeDelta, long currentTime) {
+			List<Weapon> weapons = spaceShip.getWeapons();
+			synchronized (weapons) {
+				List<Weapon> deadWeapons = new ArrayList<>();
+				for (Weapon weapon : weapons) {
+					weapon.decreaseTimeUntilDeath(timeDelta);
+					if (weapon.isAlive()) {
+						Vector2D displacement = weapon.getSpeed().clone().multiply(timeDelta / 100f);
+						weapon.getPosition().add(displacement);
+					} else {
+						deadWeapons.add(weapon);
+					}
+				}
+				// A lejárt szavatosságú fegyverek kiszedése a tömbből
+				for (Weapon deadWeapon : deadWeapons) {
+					weapons.remove(deadWeapon);
+				}
+			}
+		}
+
+		/**
+		 * Ütközések vizsgálata
+		 * 
+		 * @throws GameOverException
+		 *             Ha az űrhajó aszteroidával ütközött, és a {@link Player}
+		 *             -nek nincs már több élete, a játék véget ér.
+		 */
+		protected void checkCollisions() throws GameOverException {
+			checkWeapon2AsteroidCollision(mGameState.getSpaceShip1());
+			if (mGameState.isMultiplayer()) {
+				checkWeapon2AsteroidCollision(mGameState.getSpaceShip2());
+			}
+
+			checkSpaceship2AsteroidCollisions(mGameState.getSpaceShip1());
+			if (mGameState.isMultiplayer()) {
+				checkSpaceship2AsteroidCollisions(mGameState.getSpaceShip2());
+			}
+
+			checkSpaceship2PowerupCollision(mGameState.getSpaceShip1());
+			if (mGameState.isMultiplayer()) {
+				checkSpaceship2PowerupCollision(mGameState.getSpaceShip2());
+			}
+		}
+
+		/**
+		 * {@link SpaceShip} és {@link Asteroid}ák ütközésének ellenőrzése
+		 * 
+		 * @param spaceShip
+		 *            A vizsgált űrhajó
+		 * @throws GameOverException
+		 *             Ha az űrhajó aszteroidával ütközött, és a {@link Player}
+		 *             -nek nincs már több élete, a játék véget ér.
+		 */
+		protected void checkSpaceship2AsteroidCollisions(SpaceShip spaceShip) throws GameOverException {
+			ArrayList<Asteroid> asteroids = mGameState.getAsteroids();
+			synchronized (asteroids) {
+				for (Asteroid asteroid : asteroids) {
+					// TODO
+				}
+			}
+		}
+
+		/**
+		 * {@link SpaceShip} és {@link Powerup}ok ütközésének ellenőrzése
+		 * 
+		 * @param spaceShip
+		 *            A vizsgált űrhajó
+		 */
+		protected void checkSpaceship2PowerupCollision(SpaceShip spaceShip) {
+			ArrayList<Powerup> powerups = mGameState.getPowerups();
+			synchronized (powerups) {
+				for (Powerup powerup : powerups) {
+					// TODO
+				}
+			}
+		}
+
+		/**
+		 * A {@link SpaceShip} minden {@link Weapon}-jének és {@link Asteroid}ák
+		 * ütközésének ellenőrzése
+		 * 
+		 * @param spaceShip
+		 *            Az űrhajó, aminek a lövedékeit vizsgáljuk
+		 */
+		protected void checkWeapon2AsteroidCollision(SpaceShip spaceShip) {
+			List<Weapon> weapons = spaceShip.getWeapons();
+			ArrayList<Asteroid> asteroids = mGameState.getAsteroids();
+			synchronized (weapons) {
+				for (Weapon weapon : weapons) {
+					synchronized (asteroids) {
+						for (Asteroid asteroid : asteroids) {
+							// TODO
+						}
+					}
+				}
+			}
 		}
 
 		/**
