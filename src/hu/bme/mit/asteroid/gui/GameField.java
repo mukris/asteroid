@@ -1,5 +1,6 @@
 package hu.bme.mit.asteroid.gui;
 
+import hu.bme.mit.asteroid.GameManager;
 import hu.bme.mit.asteroid.GameState;
 import hu.bme.mit.asteroid.gui.GameWindow.PanelId;
 import hu.bme.mit.asteroid.model.SpaceShip;
@@ -109,7 +110,10 @@ public class GameField extends GamePanel {
 		mReverseYAxisTransform.translate(0, getHeight() - 1);
 		mReverseYAxisTransform.scale(1, -1);
 
-		mSpaceshipPainter.setDimensions(getWidth(), getHeight());
+		final int width = getWidth();
+		final int height = getHeight();
+		GameManager.getInstance().updateGameFieldDimensions(width, height);
+		mSpaceshipPainter.setDimensions(width, height);
 		// TODO painterek beállítása a játékmező méretének megfelelően
 	}
 }

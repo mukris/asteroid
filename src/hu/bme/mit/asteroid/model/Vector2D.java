@@ -54,6 +54,20 @@ public class Vector2D implements Cloneable, Serializable {
 		return this;
 	}
 
+	public Vector2D inRange(int x, int y) {
+		if (mX > x) {
+			mX -= x;
+		} else if (mX < 0) {
+			mX += x;
+		}
+		if (mY > y) {
+			mY -= y;
+		} else if (mY < 0) {
+			mY += y;
+		}
+		return this;
+	}
+
 	public Vector2D multiply(float multiplier) {
 		setLength(getLength() * multiplier);
 		return this;

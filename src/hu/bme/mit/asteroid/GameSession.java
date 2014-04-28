@@ -40,6 +40,9 @@ public abstract class GameSession implements ControlInterface.Callback {
 	protected State mOldState;
 	protected int mLevelID;
 
+	protected int mWidth;
+	protected int mHeight;
+
 	protected final Logger logger = Logger.getLogger(this.getClass().getName());
 
 	public GameSession(Player player, int levelID) {
@@ -67,6 +70,17 @@ public abstract class GameSession implements ControlInterface.Callback {
 		synchronized (mState) {
 			mState = state;
 		}
+	}
+
+	/**
+	 * A játékmező méretének beállítása a fizikai motor számításaihoz
+	 * 
+	 * @param width A játékmező szélessége
+	 * @param height A játékmező magassága
+	 */
+	public void setDimensions(int width, int height) {
+		mWidth = width;
+		mHeight = height;
 	}
 
 	/**
@@ -300,14 +314,14 @@ public abstract class GameSession implements ControlInterface.Callback {
 		 */
 		protected void calculateSpaceShipPhysics(SpaceShip spaceShip, long timeDelta, long currentTime)
 				throws GameOverException {
-			spaceShip.getPosition().add(spaceShip.getSpeed().clone().multiply(timeDelta / 1000f));
+			spaceShip.getPosition().add(spaceShip.getSpeed().clone().multiply(timeDelta / 1000f)).inRange(mWidth, mHeight);
 
 			if (spaceShip.isAccelerating()) {
 				Vector2D acceleration = spaceShip.getAcceleration();
 				if (acceleration.getLength() < 12f) {
 					acceleration.setLength(acceleration.getLength() + timeDelta);
 				}
-				
+
 				spaceShip.getSpeed().add(spaceShip.getAcceleration().clone().multiply(timeDelta / 100f));
 			}
 
