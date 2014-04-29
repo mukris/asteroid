@@ -127,18 +127,27 @@ public class GameFactory {
 	 * @param levelDescriptor
 	 *            A pályát leíró objektum
 	 */
-	private static void generateAsteroidPositions(GameState gameState, LevelDescriptor levelDescriptor) {
+	private static void generateAsteroidPositions(GameState gameState,
+			LevelDescriptor levelDescriptor) {
 		boolean isMultiplayer = gameState.isMultiplayer();
 
 		ArrayList<Asteroid> asteroids = gameState.getAsteroids();
 		for (int i = 0; i < levelDescriptor.getNumAsteroidLarge(); i++) {
-			asteroids.add(new Asteroid(Type.LARGE, new Vector2D(), new Vector2D()));
+
+			asteroids.add(new Asteroid(Type.LARGE, Vector2D
+					.generateRandomPosition(Asteroid.ASTEROID_MIN_DISTANCE),
+					Vector2D.generateRandomDirection(Vector2D.generateRandomLength(Asteroid.ASTEROID_SPEED_LARGE_MIN, Asteroid.ASTEROID_SPEED_LARGE_MAX))));
 		}
 		for (int i = 0; i < levelDescriptor.getNumAsteroidMedium(); i++) {
-			asteroids.add(new Asteroid(Type.MEDIUM, new Vector2D(), new Vector2D()));
+			asteroids.add(new Asteroid(Type.MEDIUM, Vector2D
+					.generateRandomPosition(Asteroid.ASTEROID_MIN_DISTANCE),
+					Vector2D.generateRandomDirection(Vector2D.generateRandomLength(Asteroid.ASTEROID_SPEED_MEDIUM_MIN, Asteroid.ASTEROID_SPEED_MEDIUM_MAX))));
 		}
+		
 		for (int i = 0; i < levelDescriptor.getNumAsteroidSmall(); i++) {
-			asteroids.add(new Asteroid(Type.SMALL, new Vector2D(), new Vector2D()));
+			asteroids.add(new Asteroid(Type.SMALL, Vector2D
+					.generateRandomPosition(Asteroid.ASTEROID_MIN_DISTANCE),
+					Vector2D.generateRandomDirection(Vector2D.generateRandomLength(Asteroid.ASTEROID_SPEED_SMALL_MIN, Asteroid.ASTEROID_SPEED_SMALL_MAX))));
 		}
 
 		// TODO randomize Asteroids' position, speed..

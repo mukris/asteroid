@@ -114,40 +114,18 @@ public class Vector2D implements Cloneable, Serializable {
 	// egyet
 	// nincs jobb ötletem
 
-	public void randomPositionGenerator(int minDistance) {
-		int maxX = AsteroidGame.WINDOW_SIZE_X;
-		int maxY = AsteroidGame.WINDOW_SIZE_Y;
-		int centerX = maxX / 2;
-		int centerY = maxY / 2;
+	public static Vector2D generateRandomPosition(float minDistance) {
+		float maxX = AsteroidGame.WINDOW_SIZE_X;
+		float maxY = AsteroidGame.WINDOW_SIZE_Y;
+		Vector2D randomVector = new Vector2D();
+		Vector2D centerVector = new Vector2D (AsteroidGame.WINDOW_SIZE_X / 2 , AsteroidGame.WINDOW_SIZE_Y / 2);
 
-		int[] tmp_mX = new int[3];
-		int[] tmp_mY = new int[3];
+		do {
+			randomVector.setX((float)(Math.random() * maxX));
+			randomVector.setY((float)(Math.random() * maxY));
+		} while (getDistance(randomVector, centerVector) < minDistance);
 
-		// felső rész X koordináta
-		tmp_mX[0] = (int) (Math.random() * maxX);
-		// felső rész Y koordináta
-		tmp_mY[0] = (int) (Math.random() * (centerY - minDistance));
-
-		// bal oldal X koordináta
-		tmp_mX[1] = (int) (Math.random() * (centerX - minDistance));
-		// bal oldal Y koordináta
-		tmp_mY[1] = (int) (Math.random() * maxY);
-
-		// jobb oldal X koordináta
-		tmp_mX[2] = (centerX + minDistance) + (int) (Math.random() * ((maxX - (centerX + minDistance)) + 1));
-		// jobb oldal Y koordináta
-		tmp_mY[2] = (int) (Math.random() * maxY);
-
-		// alsó rész X koordináta
-		tmp_mX[3] = (int) (Math.random() * maxX);
-		// alsó rész Y koordináta
-		tmp_mY[3] = (centerY + minDistance) + (int) (Math.random() * ((maxY - (centerY + minDistance)) + 1));
-
-		// 0-4 generál egy egész számot, hogy kiválassza a térrészt
-		int i = (int) (Math.random() * 4);
-
-		mX = (float) tmp_mX[i];
-		mY = (float) tmp_mY[i];
+		return randomVector;
 	}
 
 	/**
@@ -157,8 +135,8 @@ public class Vector2D implements Cloneable, Serializable {
 	 *            A vektor kívánt hossza
 	 * @return Véletlen irányú vektor
 	 */
-	public static Vector2D generateRandomDirection(int length) {
-		return new Vector2D(length, (int) (Math.random() * 360));
+	public static Vector2D generateRandomDirection(float length) {
+		return new Vector2D(length, (float) (Math.random() * 360));
 	}
 
 	/**
@@ -173,4 +151,5 @@ public class Vector2D implements Cloneable, Serializable {
 	public static float generateRandomLength(float minLength, float maxLength) {
 		return (float) (minLength + Math.random() * (maxLength - minLength));
 	}
+	
 }

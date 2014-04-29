@@ -18,6 +18,32 @@ public class Asteroid extends MovingSpaceObject implements Serializable {
 	private static final int ASTEROID_SIZE_LARGE = 100;
 	private static final int ASTEROID_SIZE_MEDIUM = 50;
 	private static final int ASTEROID_SIZE_SMALL = 25;
+	
+
+	/**
+	 * Specifikációban megadott konstans sebességértékek
+	 * remélem itt jó helye lesz, ha nem rakjátok át
+	 */
+	public static final float ASTEROID_SPEED_LARGE_MIN = 2;
+	public static final float ASTEROID_SPEED_LARGE_MAX = 3;
+	public static final float ASTEROID_SPEED_MEDIUM_MIN = 4;
+	public static final float ASTEROID_SPEED_MEDIUM_MAX = 5;
+	public static final float ASTEROID_SPEED_SMALL_MIN = 6;
+	public static final float ASTEROID_SPEED_SMALL_MAX = 8;
+	
+	/**
+	 * Megadja hogy az aszteroidáknak minimum milyen távolságra kell lenniük a középponttól a generálásukkor
+	 */
+	public static final int ASTEROID_MIN_DISTANCE = 30;
+	
+	/**
+	 * Asztroida élete, lövés
+	 * Specifikáció szerint!
+	 */
+	public static final int ASTEROID_MAXHITS_LARGE = 3;
+	public static final int ASTEROID_MAXHITS_MEDIUM = 2;
+	public static final int ASTEROID_MAXHITS_SMALL = 1;
+
 
 	private Type mType;
 
@@ -39,20 +65,25 @@ public class Asteroid extends MovingSpaceObject implements Serializable {
 		super(position, speed);
 
 		int radius = 0;
+		int maxhits = 0;
 
 		switch (type) {
 		case LARGE:
 			radius = ASTEROID_SIZE_LARGE;
+			maxhits = ASTEROID_MAXHITS_LARGE;
 			break;
 		case MEDIUM:
 			radius = ASTEROID_SIZE_MEDIUM;
+			maxhits = ASTEROID_MAXHITS_MEDIUM;
 			break;
 		case SMALL:
 			radius = ASTEROID_SIZE_SMALL;
+			maxhits = ASTEROID_MAXHITS_SMALL;
 			break;
 		}
 
 		setRadius(radius);
+		setHitsLeft(maxhits);
 		mType = type;
 	}
 
