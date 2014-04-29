@@ -82,18 +82,34 @@ public class GameField extends GamePanel {
 		// TODO aszteroidák, fegyverek, powerupok kirajzolása
 		g.drawImage(mImageBackground, 0, 0, null);
 		if (mGameState != null) {
-			SpaceShip spaceShip = mGameState.getSpaceShip1();
+			final boolean isMultiplayer = mGameState.isMultiplayer();
+			SpaceShip spaceShip1 = mGameState.getSpaceShip1();
+			SpaceShip spaceShip2 = null;
+			if (isMultiplayer) {
+				spaceShip2 = mGameState.getSpaceShip2();
+			}
 			g.setColor(Color.WHITE);
 
-			List<Weapon> weapons = spaceShip.getWeapons();
-			synchronized (weapons) {
-				for (Weapon weapon : spaceShip.getWeapons()) {
+			List<Weapon> weapons1 = spaceShip1.getWeapons();
+			synchronized (weapons1) {
+				for (Weapon weapon : weapons1) {
 					g.drawOval((int) weapon.getPosition().getX(), (int) weapon.getPosition().getY(),
 							(int) weapon.getRadius(), (int) weapon.getRadius());
 				}
 			}
 
-			mSpaceshipPainter.paint(g, spaceShip);
+			if (isMultiplayer) {
+				List<Weapon> weapons2 = spaceShip2.getWeapons();
+				synchronized (weapons2) {
+					for (Weapon weapon : weapons2) {
+						g.drawOval((int) weapon.getPosition().getX(), (int) weapon.getPosition().getY(),
+								(int) weapon.getRadius(), (int) weapon.getRadius());
+					}
+				}
+				
+				mSpaceshipPainter.paint(g, spaceShip2);
+			}
+			mSpaceshipPainter.paint(g, spaceShip1);
 		}
 	}
 
