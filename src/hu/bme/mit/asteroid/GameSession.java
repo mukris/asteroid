@@ -75,8 +75,10 @@ public abstract class GameSession implements ControlInterface.Callback {
 	/**
 	 * A játékmező méretének beállítása a fizikai motor számításaihoz
 	 * 
-	 * @param width A játékmező szélessége
-	 * @param height A játékmező magassága
+	 * @param width
+	 *            A játékmező szélessége
+	 * @param height
+	 *            A játékmező magassága
 	 */
 	public void setDimensions(int width, int height) {
 		mWidth = width;
@@ -314,7 +316,8 @@ public abstract class GameSession implements ControlInterface.Callback {
 		 */
 		protected void calculateSpaceShipPhysics(SpaceShip spaceShip, long timeDelta, long currentTime)
 				throws GameOverException {
-			spaceShip.getPosition().add(spaceShip.getSpeed().clone().multiply(timeDelta / 1000f)).inRange(mWidth, mHeight);
+			spaceShip.getPosition().add(spaceShip.getSpeed().clone().multiply(timeDelta / 1000f))
+					.inRange(mWidth, mHeight);
 
 			if (spaceShip.isAccelerating()) {
 				Vector2D acceleration = spaceShip.getAcceleration();
@@ -355,12 +358,10 @@ public abstract class GameSession implements ControlInterface.Callback {
 				}
 
 				for (Asteroid asteroid : asteroids) {
-					// TODO: lásd fentebb...
-					// asteroid.getPosition();
-					// asteroid.getSpeed();
-					// asteroid.setPosition(position);
+					asteroid.getPosition().add(asteroid.getSpeed().clone().multiply(timeDelta / 1000f))
+							.inRange(mWidth, mHeight);
+
 				}
-				// TODO
 			}
 		}
 
@@ -383,7 +384,7 @@ public abstract class GameSession implements ControlInterface.Callback {
 					weapon.decreaseTimeUntilDeath(timeDelta);
 					if (weapon.isAlive()) {
 						Vector2D displacement = weapon.getSpeed().clone().multiply(timeDelta / 100f);
-						weapon.getPosition().add(displacement);
+						weapon.getPosition().add(displacement).inRange(mWidth, mHeight);
 					} else {
 						deadWeapons.add(weapon);
 					}
@@ -434,6 +435,7 @@ public abstract class GameSession implements ControlInterface.Callback {
 				for (Asteroid asteroid : asteroids) {
 					// TODO
 				}
+				// TODO a megsemmisült aszteroidák törlése
 			}
 		}
 
