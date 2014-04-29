@@ -67,6 +67,13 @@ public class Vector2D implements Cloneable, Serializable {
 		}
 		return this;
 	}
+	
+	public Vector2D limit(float maxLength){
+		if(getLength() > maxLength) {
+			setLength(maxLength);
+		}
+		return this;
+	}
 
 	public Vector2D multiply(float multiplier) {
 		setLength(getLength() * multiplier);

@@ -322,7 +322,7 @@ public abstract class GameSession implements ControlInterface.Callback {
 					acceleration.setLength(acceleration.getLength() + timeDelta);
 				}
 
-				spaceShip.getSpeed().add(spaceShip.getAcceleration().clone().multiply(timeDelta / 100f));
+				spaceShip.getSpeed().add(spaceShip.getAcceleration().clone().multiply(timeDelta / 100f)).limit(600f);
 			}
 
 			if (spaceShip.isTurningLeft()) {
