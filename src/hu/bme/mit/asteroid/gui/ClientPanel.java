@@ -7,14 +7,35 @@ import hu.bme.mit.asteroid.network.NetworkClient;
 import hu.bme.mit.asteroid.network.NetworkDiscover;
 import hu.bme.mit.asteroid.network.NetworkListener;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.InetAddress;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  * Hálózati játéknál a játékhoz való csatlakozást elősegítő panel
  */
 public class ClientPanel extends GamePanel {
-	private static final long serialVersionUID = 5038448698817588083L;
+	private static final long serialVersionUID = -4235684544731063205L;
+
+	private static final String PLACEHOLDER = "A szerver címe";
+
+	private JTextField mAddressEdit;
+	private JButton mBtnConnect;
+
+	private DefaultListModel<String> mAddresses;
+	private JList<String> mAddressList;
 
 	private NetworkDiscover mNetworkDiscover;
 	private NetworkClient mNetworkClient;
@@ -39,21 +60,84 @@ public class ClientPanel extends GamePanel {
 
 		@Override
 		public void onDiscover(InetAddress address, NetworkDiscover networkDiscover) {
-			logger.info("onDiscover");
-			// FIXME: nem kapcsolódunk egyből...
-			try {
-				mNetworkClient.connect(address);
-			} catch (IOException e) {
-				e.printStackTrace();
+			logger.info("onDiscover(" + address + ")");
+
+			mAddresses.addElement(address.toString().substring(1));
+			if (mAddressList.getSelectedValue() == null) {
+				mAddressList.setSelectedIndex(0);
 			}
+		};
+
+		public void onDiscoveredTimeout(InetAddress address) {
+			mAddresses.removeElement(address.toString().substring(1));
 		};
 	};
 
 	public ClientPanel(GameWindow gameWindow) {
 		super(gameWindow);
 
+		mAddressEdit = new JTextField(PLACEHOLDER, 16);
+		mAddressEdit.getDocument().addDocumentListener(new DocumentListener() {
+
+			@Override
+			public void removeUpdate(DocumentEvent event) {
+				modified();
+			}
+
+			@Override
+			public void insertUpdate(DocumentEvent event) {
+				modified();
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent event) {
+			}
+
+			private void modified() {
+				final String text = mAddressEdit.getText();
+				if (text.isEmpty() || text.equals(PLACEHOLDER)) {
+					mBtnConnect.setEnabled(false);
+				} else {
+					mBtnConnect.setEnabled(true);
+				}
+			}
+		});
+
+		mBtnConnect = new JButton("Csatlakozás");
+		mBtnConnect.setEnabled(false);
+		mBtnConnect.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				try {
+					InetAddress address = InetAddress.getByName(mAddressEdit.getText());
+					mNetworkClient.connect(address);
+				} catch (IOException e) {
+					logger.severe("Could not connect to host: " + e.getMessage());
+				}
+			}
+		});
+
+		mAddresses = new DefaultListModel<>();
+		mAddressList = new JList<>(mAddresses);
+		mAddressList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		mAddressList.setVisibleRowCount(5);
+		mAddressList.addListSelectionListener(new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				final String address = mAddressList.getSelectedValue();
+				mAddressEdit.setText((address != null) ? address : PLACEHOLDER);
+			}
+		});
+
+		JScrollPane listScrollPane = new JScrollPane(mAddressList);
+
+		// TODO: normális layout
+		add(mAddressEdit);
+		add(mBtnConnect);
+		add(listScrollPane);
 		add(getBackButton(PanelId.MULTIPLAYER_PANEL));
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
