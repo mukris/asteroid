@@ -8,6 +8,7 @@ import hu.bme.mit.asteroid.exceptions.LevelFinishedException;
 import hu.bme.mit.asteroid.exceptions.LevelNotExistsException;
 import hu.bme.mit.asteroid.exceptions.LevelNotUnlockedException;
 import hu.bme.mit.asteroid.model.Asteroid;
+import hu.bme.mit.asteroid.model.Asteroid.Type;
 import hu.bme.mit.asteroid.model.Powerup;
 import hu.bme.mit.asteroid.model.SpaceShip;
 import hu.bme.mit.asteroid.model.Vector2D;
@@ -433,9 +434,12 @@ public abstract class GameSession implements ControlInterface.Callback {
 			ArrayList<Asteroid> asteroids = mGameState.getAsteroids();
 			synchronized (asteroids) {
 				for (Asteroid asteroid : asteroids) {
-					// TODO
+					//TODO getting shit done :D
+					if((asteroid.checkCollision(spaceShip)) && (mGameState.getPlayer1State().getLives() == 0)) {
+					throw new GameOverException();
+					
+					}
 				}
-				// TODO a megsemmisÃ¼lt aszteroidÃ¡k tÃ¶rlÃ©se
 			}
 		}
 
@@ -449,7 +453,8 @@ public abstract class GameSession implements ControlInterface.Callback {
 			ArrayList<Powerup> powerups = mGameState.getPowerups();
 			synchronized (powerups) {
 				for (Powerup powerup : powerups) {
-					// TODO
+					//TODO powerup type tól függõen meghívni amit csinál
+					powerup.checkCollision(spaceShip);
 				}
 			}
 		}
@@ -468,7 +473,24 @@ public abstract class GameSession implements ControlInterface.Callback {
 				for (Weapon weapon : weapons) {
 					synchronized (asteroids) {
 						for (Asteroid asteroid : asteroids) {
-							// TODO
+							if(asteroid.checkCollision(weapon) && (asteroid.getHitsLeft() > 1)) {
+								asteroid.setHitsLeft(asteroid.getHitsLeft() - 1);
+								weapon.decreaseTimeUntilDeath(Weapon.LIFE_SPAN_MILLIS); 	//HACK: ha a lövedék ütközik azonnal semmisüljön meg -> hátralevõ idejét csökkent
+							}
+							else {
+								if(asteroid.getType() == Type.LARGE){
+									new Asteroid(Type.MEDIUM, asteroid.getPosition(), Vector2D.generateRandomDirection(Vector2D.generateRandomLength(Asteroid.ASTEROID_SPEED_MEDIUM_MIN, Asteroid.ASTEROID_SPEED_MEDIUM_MAX)));
+									//TODO: megsemmisíteni a mostani aszteroidát, esetleg + new Asteroid...
+								}
+								else if (asteroid.getType() == Type.MEDIUM){
+									new Asteroid(Type.SMALL, asteroid.getPosition(), Vector2D.generateRandomDirection(Vector2D.generateRandomLength(Asteroid.ASTEROID_SPEED_SMALL_MIN, Asteroid.ASTEROID_SPEED_SMALL_MAX)));
+									//TODO: megsemmisíteni a mostani aszteroidát, esetleg + new Asteroid...
+								}
+								else if (asteroid.getType() == Type.SMALL){
+									//TODO: megsemmisíteni a mostani aszteroidát
+								}
+								weapon.decreaseTimeUntilDeath(Weapon.LIFE_SPAN_MILLIS);
+							}
 						}
 					}
 				}

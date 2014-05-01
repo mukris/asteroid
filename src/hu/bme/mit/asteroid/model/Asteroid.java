@@ -15,9 +15,9 @@ public class Asteroid extends MovingSpaceObject implements Serializable {
 		LARGE, MEDIUM, SMALL
 	};
 
-	private static final int ASTEROID_SIZE_LARGE = 100;
-	private static final int ASTEROID_SIZE_MEDIUM = 50;
-	private static final int ASTEROID_SIZE_SMALL = 25;
+	public static final int ASTEROID_SIZE_LARGE = 100;
+	public static final int ASTEROID_SIZE_MEDIUM = 50;
+	public static final int ASTEROID_SIZE_SMALL = 25;
 	
 
 	/**

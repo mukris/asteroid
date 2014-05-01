@@ -102,6 +102,13 @@ public abstract class SpaceObject implements Serializable {
 	public void setHitsLeft(int hitsleft) {
 		mHitsLeft = hitsleft;
 	}
+	
+	/**
+	 * @return az objektum (aszteroida) h·tralevı ÈletÈnek sz·ma
+	 */
+	public int getHitsLeft() {
+		return mHitsLeft;
+	}
 
 	/**
 	 * Ellen≈ërzi, hogy a vizsg√°lt objektum √ºtk√∂zik-e a param√©ter√ºl kapott m√°sik
