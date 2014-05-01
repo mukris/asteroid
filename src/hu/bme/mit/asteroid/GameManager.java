@@ -1,5 +1,7 @@
 package hu.bme.mit.asteroid;
 
+import hu.bme.mit.asteroid.GameSession.GameSessionListener;
+import hu.bme.mit.asteroid.GameSession.State;
 import hu.bme.mit.asteroid.MultiplayerGameSession.Type;
 import hu.bme.mit.asteroid.control.ArrowControlInterface;
 import hu.bme.mit.asteroid.control.MiscControlInterface;
@@ -7,6 +9,7 @@ import hu.bme.mit.asteroid.control.WADControlInterface;
 import hu.bme.mit.asteroid.exceptions.LevelNotExistsException;
 import hu.bme.mit.asteroid.exceptions.LevelNotUnlockedException;
 import hu.bme.mit.asteroid.gui.GameField;
+import hu.bme.mit.asteroid.model.ToplistItem;
 import hu.bme.mit.asteroid.network.NetworkClient;
 import hu.bme.mit.asteroid.network.NetworkDiscover;
 import hu.bme.mit.asteroid.network.NetworkServer;
@@ -16,10 +19,13 @@ import hu.bme.mit.asteroid.player.NetworkLocalPlayer;
 import hu.bme.mit.asteroid.player.NetworkRemotePlayer;
 import hu.bme.mit.asteroid.player.Player;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 /**
  * A játékmenetet irányító osztály
  */
-public class GameManager {
+public class GameManager implements GameSessionListener {
 	private GameField mGameField;
 	private GameSession mGameSession;
 	private NetworkServer mNetworkServer = null;
@@ -102,6 +108,7 @@ public class GameManager {
 		mGameSession = new SingleplayerGameSession(player, levelID);
 		mGameSession.setMiscControlInterface(miscControlInterface);
 		mGameSession.setDimensions(mGameFieldWidth, mGameFieldHeight);
+		mGameSession.addGameSessionListener(this);
 		mGameSession.start();
 	}
 
@@ -127,6 +134,7 @@ public class GameManager {
 		mGameSession = new MultiplayerGameSession(Type.LOCAL, player1, player2, 0);
 		mGameSession.setMiscControlInterface(miscControlInterface);
 		mGameSession.setDimensions(mGameFieldWidth, mGameFieldHeight);
+		mGameSession.addGameSessionListener(this);
 		mGameSession.start();
 	}
 
@@ -154,6 +162,7 @@ public class GameManager {
 		mGameSession = gameSession;
 		mGameSession.setMiscControlInterface(miscControlInterface);
 		mGameSession.setDimensions(mGameFieldWidth, mGameFieldHeight);
+		mGameSession.addGameSessionListener(this);
 		mGameSession.start();
 	}
 
@@ -179,6 +188,7 @@ public class GameManager {
 		mGameSession = gameSession;
 		mGameSession.setMiscControlInterface(miscControlInterface);
 		mGameSession.setDimensions(mGameFieldWidth, mGameFieldHeight);
+		mGameSession.addGameSessionListener(this);
 		mGameSession.start();
 	}
 
@@ -241,9 +251,50 @@ public class GameManager {
 	}
 
 	/**
-	 * Hálózati hiba esetén a grafikus felőlet értesítése
+	 * Hálózati hiba esetén a grafikus felület értesítése
 	 */
 	public void onNetworkError() {
 		mGameField.onNetworkError();
+	}
+
+	/**
+	 * Visszaadja, hogy a megadott pontszámmal felkerülhetünk-e a toplistára
+	 * 
+	 * @param points
+	 *            Az elért pontszám
+	 * @return True ha igen, false ha nem
+	 */
+	public boolean isEnoughForToplist(int points) {
+		ArrayList<ToplistItem> toplistItems = Storage.getInstance().getToplistItems();
+		Collections.sort(toplistItems);
+		return (toplistItems.get(0).getPoints() < points) ? true : false;
+	}
+
+	/**
+	 * Új toplista elem felvétele a pontszámnak megfelelő pozícióba
+	 * 
+	 * @param toplistItem
+	 *            Az új toplista elem
+	 */
+	public void addToplistItem(ToplistItem toplistItem) {
+		Storage storage = Storage.getInstance();
+		ArrayList<ToplistItem> toplistItems = storage.getToplistItems();
+		Collections.sort(toplistItems);
+		toplistItems.remove(0);
+		toplistItems.add(toplistItem);
+		Collections.sort(toplistItems);
+		storage.saveToplistItems(toplistItems);
+	}
+
+	@Override
+	public void onStateChange(State state) {
+		switch (state) {
+		case GAME_OVER:
+			mGameField.onGameOver();
+			break;
+
+		default:
+			break;
+		}
 	}
 }

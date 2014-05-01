@@ -4,6 +4,7 @@ import hu.bme.mit.asteroid.GameManager;
 import hu.bme.mit.asteroid.GameState;
 import hu.bme.mit.asteroid.gui.GameWindow.PanelId;
 import hu.bme.mit.asteroid.model.SpaceShip;
+import hu.bme.mit.asteroid.model.ToplistItem;
 import hu.bme.mit.asteroid.model.Weapon;
 
 import java.awt.Color;
@@ -106,7 +107,7 @@ public class GameField extends GamePanel {
 								(int) weapon.getRadius(), (int) weapon.getRadius());
 					}
 				}
-				
+
 				mSpaceshipPainter.paint(g, spaceShip2);
 			}
 			mSpaceshipPainter.paint(g, spaceShip1);
@@ -116,6 +117,27 @@ public class GameField extends GamePanel {
 	@Override
 	public boolean isFocusable() {
 		return true;
+	}
+
+	public void onGameOver() {
+		if (mGameState != null) {
+			if (!mGameState.isMultiplayer()) {
+				int points = mGameState.getPlayer1State().getPoints();
+				if (GameManager.getInstance().isEnoughForToplist(points)) {
+					String name = "";
+					do {
+						name = JOptionPane.showInputDialog(this, "Hogy hívnak?", "Felkerültél a toplistára",
+								JOptionPane.QUESTION_MESSAGE);
+					} while (name.isEmpty());
+
+					ToplistItem toplistItem = new ToplistItem(name, points);
+					GameManager.getInstance().addToplistItem(toplistItem);
+				}
+				mGameWindow.showPanel(PanelId.TOPLIST);
+			} else {
+				mGameWindow.showPanel(PanelId.GAME_MODE_SELECTOR);
+			}
+		}
 	}
 
 	@Override

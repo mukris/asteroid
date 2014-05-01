@@ -34,6 +34,20 @@ public abstract class GameSession implements ControlInterface.Callback {
 		LEVEL_STARTING, LEVEL_COMPLETE, GAME_OVER, RUNNING, PAUSED, STOPPED, ERROR
 	}
 
+	/**
+	 * A {@link GameSession} √°llapotv√°ltoz√°sait jelz≈ë interf√©sz
+	 */
+	public interface GameSessionListener {
+		/**
+		 * Akkor h√≠v√≥dik, ha megv√°ltozott a {@link GameSession} {@link State}-je
+		 * 
+		 * @param state
+		 *            Az √∫j √°llapot
+		 */
+		public void onStateChange(State state);
+	}
+
+	protected List<GameSessionListener> mListeners;
 	protected GameState mGameState;
 	protected GameRunner mGameRunner;
 	protected Player mPlayer1;
@@ -50,6 +64,7 @@ public abstract class GameSession implements ControlInterface.Callback {
 		mPlayer1 = player;
 		mLevelID = levelID;
 		mState = State.LEVEL_STARTING;
+		mListeners = new ArrayList<>();
 	}
 
 	/**
@@ -61,6 +76,20 @@ public abstract class GameSession implements ControlInterface.Callback {
 		miscControlInterface.setCallback(this);
 	}
 
+	public void addGameSessionListener(GameSessionListener listener) {
+		if (listener != null) {
+			synchronized (mListeners) {
+				mListeners.add(listener);
+			}
+		}
+	}
+	
+	public void removeGameSessionListener(GameSessionListener listener) {
+		synchronized (mListeners) {
+			mListeners.remove(listener);
+		}
+	}
+
 	public State getState() {
 		synchronized (mState) {
 			return mState;
@@ -70,6 +99,11 @@ public abstract class GameSession implements ControlInterface.Callback {
 	public void setState(State state) {
 		synchronized (mState) {
 			mState = state;
+			synchronized (mListeners) {
+				for (GameSessionListener listener : mListeners) {
+					listener.onStateChange(mState);
+				}
+			}
 		}
 	}
 
@@ -434,10 +468,10 @@ public abstract class GameSession implements ControlInterface.Callback {
 			ArrayList<Asteroid> asteroids = mGameState.getAsteroids();
 			synchronized (asteroids) {
 				for (Asteroid asteroid : asteroids) {
-					//TODO getting shit done :D
-					if((asteroid.checkCollision(spaceShip)) && (mGameState.getPlayer1State().getLives() == 0)) {
-					throw new GameOverException();
-					
+					// TODO getting shit done :D
+					if ((asteroid.checkCollision(spaceShip)) && (mGameState.getPlayer1State().getLives() == 0)) {
+						throw new GameOverException();
+
 					}
 				}
 			}
@@ -453,7 +487,7 @@ public abstract class GameSession implements ControlInterface.Callback {
 			ArrayList<Powerup> powerups = mGameState.getPowerups();
 			synchronized (powerups) {
 				for (Powerup powerup : powerups) {
-					//TODO powerup type tÛl f¸ggıen meghÌvni amit csin·l
+					// TODO powerup type tÔøΩl fÔøΩggÔøΩen meghÔøΩvni amit csinÔøΩl
 					powerup.checkCollision(spaceShip);
 				}
 			}
@@ -473,23 +507,32 @@ public abstract class GameSession implements ControlInterface.Callback {
 				for (Weapon weapon : weapons) {
 					synchronized (asteroids) {
 						for (Asteroid asteroid : asteroids) {
-							if(asteroid.checkCollision(weapon) && (asteroid.getHitsLeft() > 1)) {
+							if (asteroid.checkCollision(weapon) && (asteroid.getHitsLeft() > 1)) {
 								asteroid.setHitsLeft(asteroid.getHitsLeft() - 1);
-								weapon.decreaseTimeUntilDeath(Weapon.LIFE_SPAN_MILLIS); 	//HACK: ha a lˆvedÈk ¸tkˆzik azonnal semmis¸ljˆn meg -> h·tralevı idejÈt csˆkkent
-							}
-							else {
-								if(asteroid.getType() == Type.LARGE){
-									new Asteroid(Type.MEDIUM, asteroid.getPosition(), Vector2D.generateRandomDirection(Vector2D.generateRandomLength(Asteroid.ASTEROID_SPEED_MEDIUM_MIN, Asteroid.ASTEROID_SPEED_MEDIUM_MAX)));
-									//TODO: megsemmisÌteni a mostani aszteroid·t, esetleg + new Asteroid...
-								}
-								else if (asteroid.getType() == Type.MEDIUM){
-									new Asteroid(Type.SMALL, asteroid.getPosition(), Vector2D.generateRandomDirection(Vector2D.generateRandomLength(Asteroid.ASTEROID_SPEED_SMALL_MIN, Asteroid.ASTEROID_SPEED_SMALL_MAX)));
-									//TODO: megsemmisÌteni a mostani aszteroid·t, esetleg + new Asteroid...
-								}
-								else if (asteroid.getType() == Type.SMALL){
-									//TODO: megsemmisÌteni a mostani aszteroid·t
-								}
+								// HACK: ha a l√∂ved√©k √ºtk√∂zik, azonnal
+								// semmis√ºlj√∂n meg -> h√°tral√©v≈ë idej√©t
+								// cs√∂kkentj√ºk
 								weapon.decreaseTimeUntilDeath(Weapon.LIFE_SPAN_MILLIS);
+							} else {
+								if (asteroid.getType() == Type.LARGE) {
+									new Asteroid(Type.MEDIUM, asteroid.getPosition(),
+											Vector2D.generateRandomDirection(Vector2D.generateRandomLength(
+													Asteroid.ASTEROID_SPEED_MEDIUM_MIN,
+													Asteroid.ASTEROID_SPEED_MEDIUM_MAX)));
+									// TODO: megsemmisÔøΩteni a mostani
+									// aszteroidÔøΩt, esetleg + new Asteroid...
+								} else if (asteroid.getType() == Type.MEDIUM) {
+									new Asteroid(Type.SMALL, asteroid.getPosition(),
+											Vector2D.generateRandomDirection(Vector2D.generateRandomLength(
+													Asteroid.ASTEROID_SPEED_SMALL_MIN,
+													Asteroid.ASTEROID_SPEED_SMALL_MAX)));
+									// TODO: megsemmisÔøΩteni a mostani
+									// aszteroidÔøΩt, esetleg + new Asteroid...
+								} else if (asteroid.getType() == Type.SMALL) {
+									// TODO: megsemmisÔøΩteni a mostani
+									// aszteroidÔøΩt
+								}
+								// weapon.decreaseTimeUntilDeath(Weapon.LIFE_SPAN_MILLIS);
 							}
 						}
 					}
