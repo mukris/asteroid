@@ -106,8 +106,7 @@ public class Storage {
 		ArrayList<ToplistItem> toplistItems = new ArrayList<>();
 		for (int i = 0; i < TOPLIST_SIZE; i++) {
 			String name = mProperties.getProperty(mNkey + i);
-			String point = mProperties.getProperty(mSkey + i);
-			toplistItems.add(new ToplistItem(name, getIntProperty(mProperties, point)));
+			toplistItems.add(new ToplistItem(name, getIntProperty(mProperties, mSkey + i)));
 		}
 		return toplistItems;
 	}
