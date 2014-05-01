@@ -8,6 +8,7 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -36,11 +37,20 @@ public class NetworkDiscover {
 		 *            címe, vagy leállítható a további figyelés.
 		 */
 		public void onDiscover(InetAddress address, NetworkDiscover networkDiscover);
+
+		/**
+		 * Akkor hívódik, ha egy szerver már nem elérhető a hálózaton
+		 * 
+		 * @param address
+		 *            A lekapcsolódott szerver címe
+		 */
+		public void onDiscoveredTimeout(InetAddress address);
 	}
 
 	private ArrayList<NetworkDiscoverListener> mListeners;
 	private BroadcastSenderThread mSenderThread;
 	private BroadcastReceiverThread mReceiverThread;
+	private DiscoverWatchdogThread mDiscoverWatchdogThread;
 	private Map<InetAddress, Long> mAddresses;
 
 	public NetworkDiscover() {
@@ -105,6 +115,10 @@ public class NetworkDiscover {
 			mReceiverThread = new BroadcastReceiverThread(MAGIC_STRING, PORT);
 			mReceiverThread.start();
 		}
+		if (mDiscoverWatchdogThread == null || !mDiscoverWatchdogThread.isAlive()) {
+			mDiscoverWatchdogThread = new DiscoverWatchdogThread();
+			mDiscoverWatchdogThread.start();
+		}
 	}
 
 	/**
@@ -115,6 +129,13 @@ public class NetworkDiscover {
 			mReceiverThread.interrupt();
 			try {
 				mReceiverThread.join();
+			} catch (InterruptedException e) {
+			}
+		}
+		if (mDiscoverWatchdogThread != null && mDiscoverWatchdogThread.isAlive()) {
+			mDiscoverWatchdogThread.interrupt();
+			try {
+				mDiscoverWatchdogThread.join();
 			} catch (InterruptedException e) {
 			}
 		}
@@ -268,6 +289,40 @@ public class NetworkDiscover {
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
+				}
+			}
+		}
+	}
+
+	private class DiscoverWatchdogThread extends Thread {
+
+		@Override
+		public void run() {
+			List<InetAddress> toRemove = new ArrayList<>();
+			while (true) {
+				synchronized (mAddresses) {
+					for (Entry<InetAddress, Long> entry : mAddresses.entrySet()) {
+						if (entry.getValue() < System.currentTimeMillis() - TIMEOUT) {
+							InetAddress address = entry.getKey();
+							toRemove.add(address);
+						}
+					}
+					for (InetAddress inetAddress : toRemove) {
+						mAddresses.remove(inetAddress);
+					}
+				}
+				synchronized (mListeners) {
+					for (InetAddress inetAddress : toRemove) {
+						for (NetworkDiscoverListener listener : mListeners) {
+							listener.onDiscoveredTimeout(inetAddress);
+						}
+					}
+				}
+				toRemove.clear();
+				try {
+					sleep(500);
+				} catch (InterruptedException e) {
+					return;
 				}
 			}
 		}

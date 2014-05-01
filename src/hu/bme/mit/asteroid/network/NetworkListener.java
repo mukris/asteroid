@@ -58,6 +58,10 @@ public class NetworkListener implements NetworkConnectionListener, NetworkDiscov
 	public void onDiscover(InetAddress address, NetworkDiscover networkDiscover) {
 	}
 
+	@Override
+	public void onDiscoveredTimeout(InetAddress address) {
+	}
+
 	public final NetworkReceiveListener<GameState> asGameStateReceiver() {
 		return mGameStateListener;
 	}
