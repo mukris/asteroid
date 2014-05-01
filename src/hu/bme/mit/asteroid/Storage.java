@@ -15,39 +15,39 @@ import java.util.Properties;
 public class Storage {
 
 	private static final int TOPLIST_SIZE = 10;
+	private static final String KEY_NAMES = new String("toplist.Names.");
+	private static final String KEY_SCORES = new String("toplist.Scores.");
+	private static final String KEY_UNLOCKED = new String("level.HighestUnlocked");
+
 	private static Storage sInstance = null;
-	private static final File sFile = new File("config.xml");
-	private static FileInputStream sFileInputStream;
-	private static FileOutputStream sFileOutputStream;
-	private static Properties sDefaultProperties;
-	private static Properties mProperties;
-	private static final String mNkey = new String("toplist.Names.");
-	private static final String mSkey = new String("toplist.Score.");
-	private static final String mHkey = new String("level.HighestUnlocked");
+
+	private final File mFile = new File("config.xml");
+	private FileInputStream mFileInputStream;
+	private FileOutputStream mFileOutputStream;
+	private Properties mDefaultProperties = new Properties();
+	private Properties mProperties;
 
 	private Storage() {
-		sDefaultProperties = new Properties();
-		sDefaultProperties.setProperty(mHkey, "0");
+		mDefaultProperties.setProperty(KEY_UNLOCKED, "0");
 		for (int i = 0; i < TOPLIST_SIZE; i++) {
-			sDefaultProperties.setProperty(mNkey + i, "-empty-");
-			sDefaultProperties.setProperty(mSkey + i, "0");
+			mDefaultProperties.setProperty(KEY_NAMES + i, "-----");
+			mDefaultProperties.setProperty(KEY_SCORES + i, "0");
 		}
-		mProperties = new Properties(sDefaultProperties);
-		if (sFile.exists()) {
+		mProperties = new Properties(mDefaultProperties);
+		if (mFile.exists()) {
 			try {
-				sFileInputStream = new FileInputStream(sFile);
-				// sFileOutputStream = new FileOutputStream(sFile);
-				mProperties.loadFromXML(sFileInputStream);
+				mFileInputStream = new FileInputStream(mFile);
+				mProperties.loadFromXML(mFileInputStream);
 			} catch (Exception e) {
 				System.out.println("Cannot load from file.");
 				e.printStackTrace();
 			}
 		} else {
 			try {
-				sFile.createNewFile();
-				sFileInputStream = new FileInputStream(sFile);
-				sFileOutputStream = new FileOutputStream(sFile);
-				mProperties.storeToXML(sFileOutputStream, null);
+				mFile.createNewFile();
+				mFileInputStream = new FileInputStream(mFile);
+				mFileOutputStream = new FileOutputStream(mFile);
+				mProperties.storeToXML(mFileOutputStream, null);
 			} catch (Exception e) {
 				System.out.println("File creation failed.");
 				e.printStackTrace();
@@ -73,7 +73,7 @@ public class Storage {
 	 * @return A legmagasabb sorszámú feloldott pálya száma
 	 */
 	public int getHighestUnlockedLevel() {
-		return getIntProperty(mProperties, mHkey);
+		return getIntProperty(mProperties, KEY_UNLOCKED);
 	}
 
 	/**
@@ -85,11 +85,11 @@ public class Storage {
 	 *            True ha igen, false ha nem
 	 */
 	public void setLevelUnlocked(int levelID) {
-		if (levelID > getIntProperty(mProperties, mHkey)) {
-			mProperties.setProperty(mHkey, "" + levelID);
+		if (levelID > getIntProperty(mProperties, KEY_UNLOCKED)) {
+			mProperties.setProperty(KEY_UNLOCKED, "" + levelID);
 			try {
-				sFileOutputStream = new FileOutputStream(sFile);
-				mProperties.storeToXML(sFileOutputStream, null);
+				mFileOutputStream = new FileOutputStream(mFile);
+				mProperties.storeToXML(mFileOutputStream, null);
 			} catch (IOException e) {
 				System.out.println("Could not save file.");
 				e.printStackTrace();
@@ -105,8 +105,8 @@ public class Storage {
 	public ArrayList<ToplistItem> getToplistItems() {
 		ArrayList<ToplistItem> toplistItems = new ArrayList<>();
 		for (int i = 0; i < TOPLIST_SIZE; i++) {
-			String name = mProperties.getProperty(mNkey + i);
-			toplistItems.add(new ToplistItem(name, getIntProperty(mProperties, mSkey + i)));
+			String name = mProperties.getProperty(KEY_NAMES + i);
+			toplistItems.add(new ToplistItem(name, getIntProperty(mProperties, KEY_SCORES + i)));
 		}
 		return toplistItems;
 	}
@@ -119,13 +119,13 @@ public class Storage {
 	public void saveToplistItems(ArrayList<ToplistItem> items) {
 		for (int i = 0; i < TOPLIST_SIZE; i++) {
 			String name = items.get(i).getName();
-			mProperties.setProperty(mNkey + i, name);
+			mProperties.setProperty(KEY_NAMES + i, name);
 			String point = Integer.toString(items.get(i).getPoints());
-			mProperties.setProperty(mSkey + i, point);
+			mProperties.setProperty(KEY_SCORES + i, point);
 		}
 		try {
-			sFileOutputStream = new FileOutputStream(sFile);
-			mProperties.storeToXML(sFileOutputStream, null);
+			mFileOutputStream = new FileOutputStream(mFile);
+			mProperties.storeToXML(mFileOutputStream, null);
 		} catch (IOException e) {
 			System.out.println("Could not save file.");
 			e.printStackTrace();
@@ -144,6 +144,6 @@ public class Storage {
 	@Override
 	protected void finalize() throws Throwable {
 		super.finalize();
-		mProperties.storeToXML(sFileOutputStream, null);
+		mProperties.storeToXML(mFileOutputStream, null);
 	}
 }
