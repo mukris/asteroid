@@ -25,8 +25,8 @@ public class ClientPanel extends GamePanel {
 		public void onConnect() {
 			logger.info("onConnect");
 			try {
-				GameManager.getInstance().startNetworkClientMultiplayerGame();
 				mGameWindow.showPanel(PanelId.GAME_FIELD);
+				GameManager.getInstance().startNetworkClientMultiplayerGame();
 			} catch (LevelNotExistsException e) {
 				e.printStackTrace();
 			}

@@ -45,8 +45,8 @@ public class LevelSelectorPanel extends GamePanel {
 			public void actionPerformed(ActionEvent event) {
 				JButton button = (JButton) event.getSource();
 				try {
-					GameManager.getInstance().startSinglePlayerGame(Integer.parseInt(button.getText()) - 1);
 					mGameWindow.showPanel(PanelId.GAME_FIELD);
+					GameManager.getInstance().startSinglePlayerGame(Integer.parseInt(button.getText()) - 1);
 				} catch (NumberFormatException e) {
 					e.printStackTrace();
 				} catch (LevelNotLoadableException e) {

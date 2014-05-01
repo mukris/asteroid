@@ -27,8 +27,8 @@ public class MultiplayerPanel extends GamePanel {
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				try {
-					GameManager.getInstance().startLocalMultiplayerGame();
 					mGameWindow.showPanel(PanelId.GAME_FIELD);
+					GameManager.getInstance().startLocalMultiplayerGame();
 				} catch (LevelNotExistsException e) {
 					e.printStackTrace();
 				}

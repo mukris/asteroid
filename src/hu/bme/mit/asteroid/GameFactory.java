@@ -19,13 +19,14 @@ public class GameFactory {
 	 * A pályák általános leírását tartalmazó tömb
 	 */
 	private static ArrayList<LevelDescriptor> sLevels = null;
+	private static int mGameFieldWidth = 0;
+	private static int mGameFieldHeight = 0;
 
 	/**
 	 * Inicializálás
 	 */
 	static {
 		sLevels = new ArrayList<>();
-		//sLevels.add(new LevelDescriptor(0, 5, 0, true)); // első pálya feloldva
 		sLevels.add(new LevelDescriptor(0, 0, 3, true)); // első pálya feloldva
 		sLevels.add(new LevelDescriptor(0, 1, 4));
 		sLevels.add(new LevelDescriptor(0, 3, 2));
@@ -36,7 +37,6 @@ public class GameFactory {
 		sLevels.add(new LevelDescriptor(4, 0, 0));
 		sLevels.add(new LevelDescriptor(3, 0, 6));
 		sLevels.add(new LevelDescriptor(4, 4, 4));
-		// TODO define levels - 10 enought?
 
 		updateLevelUnlockStatus();
 	}
@@ -73,8 +73,9 @@ public class GameFactory {
 			throw new LevelNotUnlockedException();
 		}
 
-		SpaceShip spaceShip = new SpaceShip(
-				new Vector2D(AsteroidGame.WINDOW_SIZE_X / 2, AsteroidGame.WINDOW_SIZE_Y / 2), Math.PI / 2,
+		updateGameFieldDimensions();
+
+		SpaceShip spaceShip = new SpaceShip(new Vector2D(mGameFieldWidth / 2, mGameFieldHeight / 2), Math.PI / 2,
 				new SimpleWeapon());
 		spaceShip.setUnvulnerableFor(SpaceShip.DEFAULT_UNVULNERABILITY_TIME);
 		player.setSpaceShip(spaceShip);
@@ -103,13 +104,15 @@ public class GameFactory {
 			throw new LevelNotExistsException();
 		}
 
-		SpaceShip spaceShip1 = new SpaceShip(new Vector2D(AsteroidGame.WINDOW_SIZE_X / 3,
-				AsteroidGame.WINDOW_SIZE_Y / 2), Math.PI / 2, new SimpleWeapon());
+		updateGameFieldDimensions();
+
+		SpaceShip spaceShip1 = new SpaceShip(new Vector2D(mGameFieldWidth / 3, mGameFieldHeight / 2), Math.PI / 2,
+				new SimpleWeapon());
 		spaceShip1.setUnvulnerableFor(SpaceShip.DEFAULT_UNVULNERABILITY_TIME);
 		player1.setSpaceShip(spaceShip1);
 
-		SpaceShip spaceShip2 = new SpaceShip(new Vector2D(AsteroidGame.WINDOW_SIZE_X - AsteroidGame.WINDOW_SIZE_X / 3,
-				AsteroidGame.WINDOW_SIZE_Y / 2), Math.PI / 2, new SimpleWeapon());
+		SpaceShip spaceShip2 = new SpaceShip(new Vector2D(mGameFieldWidth - mGameFieldWidth / 3, mGameFieldHeight / 2),
+				Math.PI / 2, new SimpleWeapon());
 		spaceShip2.setUnvulnerableFor(SpaceShip.DEFAULT_UNVULNERABILITY_TIME);
 		player2.setSpaceShip(spaceShip2);
 		GameState gameState = new GameState(player1, player2);
@@ -127,30 +130,59 @@ public class GameFactory {
 	 * @param levelDescriptor
 	 *            A pályát leíró objektum
 	 */
-	private static void generateAsteroidPositions(GameState gameState,
-			LevelDescriptor levelDescriptor) {
-		boolean isMultiplayer = gameState.isMultiplayer();
-
+	private static void generateAsteroidPositions(GameState gameState, LevelDescriptor levelDescriptor) {
 		ArrayList<Asteroid> asteroids = gameState.getAsteroids();
-		for (int i = 0; i < levelDescriptor.getNumAsteroidLarge(); i++) {
+		synchronized (asteroids) {
+			for (int i = 0; i < levelDescriptor.getNumAsteroidLarge(); i++) {
+				asteroids.add(createNewRandomAsteroid(Type.LARGE));
+			}
+			for (int i = 0; i < levelDescriptor.getNumAsteroidMedium(); i++) {
+				asteroids.add(createNewRandomAsteroid(Type.MEDIUM));
+			}
+			for (int i = 0; i < levelDescriptor.getNumAsteroidSmall(); i++) {
+				asteroids.add(createNewRandomAsteroid(Type.SMALL));
+			}
+		}
+	}
 
-			asteroids.add(new Asteroid(Type.LARGE, Vector2D
-					.generateRandomPosition(Asteroid.ASTEROID_MIN_DISTANCE),
-					Vector2D.generateRandomDirection(Vector2D.generateRandomLength(Asteroid.ASTEROID_SPEED_LARGE_MIN, Asteroid.ASTEROID_SPEED_LARGE_MAX))));
-		}
-		for (int i = 0; i < levelDescriptor.getNumAsteroidMedium(); i++) {
-			asteroids.add(new Asteroid(Type.MEDIUM, Vector2D
-					.generateRandomPosition(Asteroid.ASTEROID_MIN_DISTANCE),
-					Vector2D.generateRandomDirection(Vector2D.generateRandomLength(Asteroid.ASTEROID_SPEED_MEDIUM_MIN, Asteroid.ASTEROID_SPEED_MEDIUM_MAX))));
-		}
-		
-		for (int i = 0; i < levelDescriptor.getNumAsteroidSmall(); i++) {
-			asteroids.add(new Asteroid(Type.SMALL, Vector2D
-					.generateRandomPosition(Asteroid.ASTEROID_MIN_DISTANCE),
-					Vector2D.generateRandomDirection(Vector2D.generateRandomLength(Asteroid.ASTEROID_SPEED_SMALL_MIN, Asteroid.ASTEROID_SPEED_SMALL_MAX))));
+	/**
+	 * Új {@link Asteroid} generálása véletlenszerű pozícióval és sebességgel
+	 * 
+	 * @param type
+	 *            Az aszteroida típusa
+	 * @return Új véletlenszerűen elhelyezett aszteroida
+	 */
+	private static Asteroid createNewRandomAsteroid(Asteroid.Type type) {
+		float minSpeed, maxSpeed;
+
+		switch (type) {
+		case LARGE:
+			maxSpeed = Asteroid.ASTEROID_SPEED_LARGE_MAX;
+			minSpeed = Asteroid.ASTEROID_SPEED_LARGE_MIN;
+			break;
+		case MEDIUM:
+			maxSpeed = Asteroid.ASTEROID_SPEED_MEDIUM_MAX;
+			minSpeed = Asteroid.ASTEROID_SPEED_MEDIUM_MIN;
+			break;
+		case SMALL:
+			maxSpeed = Asteroid.ASTEROID_SPEED_SMALL_MAX;
+			minSpeed = Asteroid.ASTEROID_SPEED_SMALL_MIN;
+			break;
+
+		default:
+			throw new RuntimeException();
 		}
 
-		// TODO randomize Asteroids' position, speed..
+		return new Asteroid(type, Vector2D.generateRandomPosition(mGameFieldWidth, mGameFieldHeight,
+				Asteroid.ASTEROID_MIN_DISTANCE), Vector2D.generateRandom(minSpeed, maxSpeed));
+	}
+
+	/**
+	 * Frissíti a játéktér méreteit
+	 */
+	private static void updateGameFieldDimensions() {
+		mGameFieldWidth = GameManager.getInstance().getGameFieldWidth();
+		mGameFieldHeight = GameManager.getInstance().getGameFieldHeight();
 	}
 
 	/**

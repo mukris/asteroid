@@ -26,6 +26,8 @@ public class GameManager {
 	private NetworkClient mNetworkClient = null;
 	private NetworkDiscover mNetworkDiscover = null;
 
+	private int mGameFieldWidth, mGameFieldHeight;
+
 	private static GameManager sInstance = null;
 
 	/**
@@ -99,6 +101,7 @@ public class GameManager {
 
 		mGameSession = new SingleplayerGameSession(player, levelID);
 		mGameSession.setMiscControlInterface(miscControlInterface);
+		mGameSession.setDimensions(mGameFieldWidth, mGameFieldHeight);
 		mGameSession.start();
 	}
 
@@ -123,6 +126,7 @@ public class GameManager {
 
 		mGameSession = new MultiplayerGameSession(Type.LOCAL, player1, player2, 0);
 		mGameSession.setMiscControlInterface(miscControlInterface);
+		mGameSession.setDimensions(mGameFieldWidth, mGameFieldHeight);
 		mGameSession.start();
 	}
 
@@ -149,6 +153,7 @@ public class GameManager {
 		registerAsServerListener(gameSession);
 		mGameSession = gameSession;
 		mGameSession.setMiscControlInterface(miscControlInterface);
+		mGameSession.setDimensions(mGameFieldWidth, mGameFieldHeight);
 		mGameSession.start();
 	}
 
@@ -173,6 +178,7 @@ public class GameManager {
 		registerAsClientListener(gameSession);
 		mGameSession = gameSession;
 		mGameSession.setMiscControlInterface(miscControlInterface);
+		mGameSession.setDimensions(mGameFieldWidth, mGameFieldHeight);
 		mGameSession.start();
 	}
 
@@ -218,9 +224,20 @@ public class GameManager {
 	 *            A játékmező magassága
 	 */
 	public void updateGameFieldDimensions(int width, int height) {
+		mGameFieldWidth = width;
+		mGameFieldHeight = height;
+
 		if (mGameSession != null) {
 			mGameSession.setDimensions(width, height);
 		}
+	}
+
+	public int getGameFieldWidth() {
+		return mGameFieldWidth;
+	}
+
+	public int getGameFieldHeight() {
+		return mGameFieldHeight;
 	}
 
 	/**

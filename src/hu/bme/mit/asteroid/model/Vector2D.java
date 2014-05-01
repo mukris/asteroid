@@ -1,14 +1,12 @@
 package hu.bme.mit.asteroid.model;
 
-import hu.bme.mit.asteroid.AsteroidGame;
-
 import java.io.Serializable;
 
 /**
  * Két dimenziós vektor
  */
 public class Vector2D implements Cloneable, Serializable {
-	private static final long serialVersionUID = 3385898139144094442L;
+	private static final long serialVersionUID = -1963281493081005939L;
 
 	private float mX;
 	private float mY;
@@ -67,9 +65,9 @@ public class Vector2D implements Cloneable, Serializable {
 		}
 		return this;
 	}
-	
-	public Vector2D limit(float maxLength){
-		if(getLength() > maxLength) {
+
+	public Vector2D limit(float maxLength) {
+		if (getLength() > maxLength) {
 			setLength(maxLength);
 		}
 		return this;
@@ -108,21 +106,29 @@ public class Vector2D implements Cloneable, Serializable {
 		return (float) Math.sqrt((v1.mX - v2.mX) * (v1.mX - v2.mX) + (v1.mY - v2.mY) * (v1.mY - v2.mY));
 	}
 
-	// véletlen koordinátát generál a megadott térrészben
-	// int mert a képpontok intek
-	// 4 térrészben generál random pontot, a végén ebből a 4 térrészből választ
-	// egyet
-	// nincs jobb ötletem
+	/**
+	 * Véletlen pozíció generálása a játékmezőn a középponttól bizonyos
+	 * távolságon kívül
+	 * 
+	 * @param maxX
+	 *            A vektor maximális X koordinátája
+	 * @param maxY
+	 *            A vektor maximális Y koordinátája
+	 * @param minDistance
+	 *            Minimális távolság a középponttól
+	 * @return Véletlen vektor
+	 */
+	public static Vector2D generateRandomPosition(int maxX, int maxY, float minDistance) {
+		if (maxX < 1 || maxY < 1) {
+			throw new IllegalArgumentException();
+		}
 
-	public static Vector2D generateRandomPosition(float minDistance) {
-		float maxX = AsteroidGame.WINDOW_SIZE_X;
-		float maxY = AsteroidGame.WINDOW_SIZE_Y;
+		final Vector2D centerVector = new Vector2D(maxX / 2, maxY / 2);
 		Vector2D randomVector = new Vector2D();
-		Vector2D centerVector = new Vector2D (AsteroidGame.WINDOW_SIZE_X / 2 , AsteroidGame.WINDOW_SIZE_Y / 2);
 
 		do {
-			randomVector.setX((float)(Math.random() * maxX));
-			randomVector.setY((float)(Math.random() * maxY));
+			randomVector.setX((float) (Math.random() * maxX));
+			randomVector.setY((float) (Math.random() * maxY));
 		} while (getDistance(randomVector, centerVector) < minDistance);
 
 		return randomVector;
@@ -151,5 +157,18 @@ public class Vector2D implements Cloneable, Serializable {
 	public static float generateRandomLength(float minLength, float maxLength) {
 		return (float) (minLength + Math.random() * (maxLength - minLength));
 	}
-	
+
+	/**
+	 * Véletlen irányú, megadott korlátok között véletlen hosszúságú vektort
+	 * generál
+	 * 
+	 * @param minLength
+	 *            Minimális hossz
+	 * @param maxLength
+	 *            Maximális hossz
+	 * @return Véletlen vektor
+	 */
+	public static Vector2D generateRandom(float minLength, float maxLength) {
+		return generateRandomDirection(generateRandomLength(minLength, maxLength));
+	}
 }

@@ -26,8 +26,8 @@ public class ServerPanel extends GamePanel {
 		@Override
 		public void onConnect() {
 			try {
-				GameManager.getInstance().startNetworkServerMultiplayerGame();
 				mGameWindow.showPanel(PanelId.GAME_FIELD);
+				GameManager.getInstance().startNetworkServerMultiplayerGame();
 			} catch (LevelNotExistsException e) {
 				e.printStackTrace();
 			}
