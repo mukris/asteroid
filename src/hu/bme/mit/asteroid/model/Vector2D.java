@@ -8,7 +8,7 @@ import java.io.Serializable;
  * Két dimenziós vektor
  */
 public class Vector2D implements Cloneable, Serializable {
-	private static final long serialVersionUID = -2769884896580939707L;
+	private static final long serialVersionUID = 3385898139144094442L;
 
 	private float mX;
 	private float mY;
@@ -136,7 +136,7 @@ public class Vector2D implements Cloneable, Serializable {
 	 * @return Véletlen irányú vektor
 	 */
 	public static Vector2D generateRandomDirection(float length) {
-		return new Vector2D(length, (float) (Math.random() * 360));
+		return new Vector2D(length, (float) (Math.random() * 2 * Math.PI));
 	}
 
 	/**
