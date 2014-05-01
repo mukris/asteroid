@@ -146,6 +146,8 @@ public class ClientPanel extends GamePanel {
 		logger.entering(this.getClass().getName(), "onShow()");
 
 		GameManager gameManager = GameManager.getInstance();
+		
+		mAddresses.clear();
 
 		mNetworkDiscover = gameManager.getNetworkDiscover();
 		mNetworkDiscover.addNetworkDiscoverListener(mNetworkListener);
