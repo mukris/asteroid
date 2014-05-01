@@ -4,7 +4,13 @@ import hu.bme.mit.asteroid.GameState;
 import hu.bme.mit.asteroid.control.ControlEvent;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.net.ServerSocket;
+import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
 
 /**
  * <p>
@@ -93,11 +99,33 @@ public class NetworkServer extends NetworkHelper<ControlEvent, GameState> {
 	 */
 	public boolean sendGameState(GameState gameState) {
 		boolean success = super.send(gameState);
-		
-		if(!success){
+
+		if (!success) {
 			disconnect();
 		}
 		return success;
+	}
+
+	/**
+	 * Visszaadja a számítógép összes ismert IP címét
+	 * 
+	 * @return Az IP címek listája
+	 */
+	public List<InetAddress> getOwnIPs() {
+		ArrayList<InetAddress> addresses = new ArrayList<>();
+		try {
+			Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();
+			while (e.hasMoreElements()) {
+				NetworkInterface n = (NetworkInterface) e.nextElement();
+				Enumeration<InetAddress> ee = n.getInetAddresses();
+				while (ee.hasMoreElements()) {
+					InetAddress address = (InetAddress) ee.nextElement();
+					addresses.add(address);
+				}
+			}
+		} catch (SocketException e) {
+		}
+		return addresses;
 	}
 
 	private void onConnect() {
