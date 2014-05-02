@@ -444,9 +444,9 @@ public abstract class GameSession implements ControlInterface.Callback {
 				checkWeapon2AsteroidCollision(mGameState.getSpaceShip2());
 			}
 
-			checkSpaceship2AsteroidCollisions(mGameState.getSpaceShip1());
+			checkSpaceship2AsteroidCollisions(mGameState.getSpaceShip1(), mGameState.getPlayer1State());
 			if (mGameState.isMultiplayer()) {
-				checkSpaceship2AsteroidCollisions(mGameState.getSpaceShip2());
+				checkSpaceship2AsteroidCollisions(mGameState.getSpaceShip2(), mGameState.getPlayer2State());
 			}
 
 			checkSpaceship2PowerupCollision(mGameState.getSpaceShip1(), mGameState.getPlayer1State());
@@ -464,14 +464,23 @@ public abstract class GameSession implements ControlInterface.Callback {
 		 *             Ha az űrhajó aszteroidával ütközött, és a {@link Player}
 		 *             -nek nincs már több élete, a játék véget ér.
 		 */
-		protected void checkSpaceship2AsteroidCollisions(SpaceShip spaceShip) throws GameOverException {
+		protected void checkSpaceship2AsteroidCollisions(SpaceShip spaceShip, Player.State state)
+				throws GameOverException {
 			ArrayList<Asteroid> asteroids = mGameState.getAsteroids();
 			synchronized (asteroids) {
 				for (Asteroid asteroid : asteroids) {
-					// TODO getting shit done :D
-					if ((asteroid.checkCollision(spaceShip)) && (mGameState.getPlayer1State().getLives() == 0)) {
-						throw new GameOverException();
-
+					if (asteroid.checkCollision(spaceShip) && spaceShip.isVulnerable()) {
+						synchronized (state) {
+							int lives = state.getLives();
+							if (--lives == 0) {
+								throw new GameOverException();
+							}
+							state.setLives(lives);
+						}
+						spaceShip.setUnvulnerableFor(SpaceShip.DEFAULT_UNVULNERABILITY_TIME);
+						// FIXME Aszteroida típustól függően más..
+						asteroids.remove(asteroid);
+						return;
 					}
 				}
 			}
