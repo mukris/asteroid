@@ -31,8 +31,10 @@ public class SpaceShipPainter extends Painter {
 	 *            Az űrhajó képe bekapcsolt rakétával
 	 */
 	public SpaceShipPainter(Image defaultImage, Image acceleratingImage) {
-		mDefaultImage = defaultImage;
-		mAcceleratingImage = acceleratingImage;
+		mDefaultImage = defaultImage.getScaledInstance(SpaceShip.RADIUS * 2, SpaceShip.RADIUS * 2,
+				Image.SCALE_SMOOTH);
+		mAcceleratingImage = acceleratingImage.getScaledInstance(SpaceShip.RADIUS * 2,
+				SpaceShip.RADIUS * 2, Image.SCALE_SMOOTH);
 		mImageOffsetHorizontal = mDefaultImage.getWidth(null) / 2;
 		mImageOffsetVertical = mDefaultImage.getHeight(null) / 2;
 	}
