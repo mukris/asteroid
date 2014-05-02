@@ -239,6 +239,7 @@ public abstract class GameSession implements ControlInterface.Callback {
 					} else {
 						if (GameSession.this.getState() == GameSession.State.LEVEL_COMPLETE) {
 							loadNextLevel();
+							setState(GameSession.State.LEVEL_STARTING);
 						}
 						synchronized (mGameState) {
 							currentTime = System.currentTimeMillis();
