@@ -6,8 +6,10 @@ import hu.bme.mit.asteroid.gui.GameWindow.PanelId;
 import hu.bme.mit.asteroid.model.SpaceShip;
 import hu.bme.mit.asteroid.model.ToplistItem;
 import hu.bme.mit.asteroid.model.Weapon;
+import hu.bme.mit.asteroid.player.Player;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -24,8 +26,8 @@ import javax.swing.JOptionPane;
  */
 public class GameField extends GamePanel {
 
-	private static final long serialVersionUID = 6958968330216408636L;
-
+	private static final int FONT_SIZE = 16;
+	private static final Font mFont = new Font("Serif", Font.PLAIN, FONT_SIZE);
 	private GameState mGameState;
 	private SpaceShipPainter mSpaceshipPainter;
 	private AsteroidPainter mAsteroidPainter;
@@ -78,6 +80,7 @@ public class GameField extends GamePanel {
 	@Override
 	public void paint(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
+		final AffineTransform originalTransform = g2.getTransform();
 		g2.setTransform(mReverseYAxisTransform);
 
 		// TODO aszteroidák, fegyverek, powerupok kirajzolása
@@ -111,6 +114,32 @@ public class GameField extends GamePanel {
 				mSpaceshipPainter.paint(g, spaceShip2);
 			}
 			mSpaceshipPainter.paint(g, spaceShip1);
+
+			g2.setTransform(originalTransform);
+			g2.setFont(mFont);
+			printStats(g2, mGameState.getPlayer1State(), 10, 10);
+			if (isMultiplayer) {
+				printStats(g2, mGameState.getPlayer2State(), getWidth() - 100, 10);
+			}
+		}
+	}
+
+	/**
+	 * Játékos státuszának kiírása
+	 * 
+	 * @param g
+	 *            A "vászon", ahova írunk
+	 * @param state
+	 *            A játékos {@link Player.State}-je
+	 * @param posX
+	 *            A kiírás bal koordinátája
+	 * @param posY
+	 *            A kíírás felső koordninátája
+	 */
+	private void printStats(Graphics g, Player.State state, int posX, int posY) {
+		synchronized (state) {
+			g.drawString("Lives: " + state.getLives(), posX, FONT_SIZE + posY);
+			g.drawString("Points: " + state.getPoints(), posX, FONT_SIZE * 2 + posY);
 		}
 	}
 
