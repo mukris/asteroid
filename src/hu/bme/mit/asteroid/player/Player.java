@@ -15,8 +15,8 @@ public abstract class Player implements ControlInterface.Callback {
 	 * A játékos állapotát tároló osztály
 	 */
 	public static class State implements Serializable {
-		private static final long serialVersionUID = 91447011759313932L;
-
+		private static final long serialVersionUID = 2256324488159584656L;
+		
 		private int mLives;
 		private int mPoints;
 
@@ -35,9 +35,13 @@ public abstract class Player implements ControlInterface.Callback {
 		public int getPoints() {
 			return mPoints;
 		}
-
+		
 		public void setPoints(int points) {
 			mPoints = points;
+		}
+
+		public void addPoints(int points) {
+			mPoints += points;
 		}
 	}
 

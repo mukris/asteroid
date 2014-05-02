@@ -83,7 +83,7 @@ public abstract class GameSession implements ControlInterface.Callback {
 			}
 		}
 	}
-	
+
 	public void removeGameSessionListener(GameSessionListener listener) {
 		synchronized (mListeners) {
 			mListeners.remove(listener);
@@ -260,7 +260,6 @@ public abstract class GameSession implements ControlInterface.Callback {
 					logger.info("Level finished");
 					setState(GameSession.State.LEVEL_COMPLETE);
 				} catch (GameOverException e) {
-					// TODO mit csinálunk GameOvernél..
 					logger.info("GameOver");
 					setState(GameSession.State.GAME_OVER);
 					return;
@@ -449,9 +448,9 @@ public abstract class GameSession implements ControlInterface.Callback {
 				checkSpaceship2AsteroidCollisions(mGameState.getSpaceShip2());
 			}
 
-			checkSpaceship2PowerupCollision(mGameState.getSpaceShip1());
+			checkSpaceship2PowerupCollision(mGameState.getSpaceShip1(), mGameState.getPlayer1State());
 			if (mGameState.isMultiplayer()) {
-				checkSpaceship2PowerupCollision(mGameState.getSpaceShip2());
+				checkSpaceship2PowerupCollision(mGameState.getSpaceShip2(), mGameState.getPlayer2State());
 			}
 		}
 
@@ -482,13 +481,31 @@ public abstract class GameSession implements ControlInterface.Callback {
 		 * 
 		 * @param spaceShip
 		 *            A vizsgált űrhajó
+		 * @param state
+		 *            A megfelelő játékos {@link Player.State}-je
 		 */
-		protected void checkSpaceship2PowerupCollision(SpaceShip spaceShip) {
+		protected void checkSpaceship2PowerupCollision(SpaceShip spaceShip, Player.State state) {
 			ArrayList<Powerup> powerups = mGameState.getPowerups();
 			synchronized (powerups) {
 				for (Powerup powerup : powerups) {
-					// TODO powerup type t�l f�gg�en megh�vni amit csin�l
-					powerup.checkCollision(spaceShip);
+					if (powerup.checkCollision(spaceShip)) {
+						switch (powerup.getType()) {
+						case PLUS_POINTS_SMALL:
+							state.addPoints(10);
+							break;
+						case PLUS_POINTS_LARGE:
+							state.addPoints(50);
+							break;
+						case UNVULNERABILITY:
+							spaceShip.setUnvulnerableFor(SpaceShip.DEFAULT_UNVULNERABILITY_TIME);
+							break;
+						case PLUS_LIFE:
+							state.setLives(state.getLives() + 1);
+							break;
+						}
+						powerups.remove(powerup);
+						return;
+					}
 				}
 			}
 		}
