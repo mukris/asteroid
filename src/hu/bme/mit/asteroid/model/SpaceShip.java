@@ -118,7 +118,7 @@ public class SpaceShip extends DirectionalMovingSpaceObject implements Serializa
 	 * @return True, ha sebezhető, false ha nem
 	 */
 	public boolean isVulnerable() {
-		return mTimeMillisUntilVulnerable == 0;
+		return mTimeMillisUntilVulnerable <= 0;
 	}
 
 	/**
