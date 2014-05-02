@@ -346,11 +346,8 @@ public abstract class GameSession implements ControlInterface.Callback {
 		 *            ezredmásodpercben
 		 * @param currentTime
 		 *            Az aktuális rendszeridő ezredmásodpercben
-		 * @throws GameOverException
-		 *             Abban az esetben, ha az űrhajó megsemmisült
 		 */
-		protected void calculateSpaceShipPhysics(SpaceShip spaceShip, long timeDelta, long currentTime)
-				throws GameOverException {
+		protected void calculateSpaceShipPhysics(SpaceShip spaceShip, long timeDelta, long currentTime) {
 			spaceShip.getPosition().add(spaceShip.getSpeed().clone().multiply(timeDelta / 1000f))
 					.inRange(mWidth, mHeight);
 
@@ -395,7 +392,6 @@ public abstract class GameSession implements ControlInterface.Callback {
 				for (Asteroid asteroid : asteroids) {
 					asteroid.getPosition().add(asteroid.getSpeed().clone().multiply(timeDelta / 1000f))
 							.inRange(mWidth, mHeight);
-
 				}
 			}
 		}
