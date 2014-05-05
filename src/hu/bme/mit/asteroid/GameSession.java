@@ -570,7 +570,7 @@ public abstract class GameSession implements ControlInterface.Callback {
 										break;
 									}
 									
-									Powerup possiblePowerup = Powerup.tryLuck(asteroid.getPosition());
+									Powerup possiblePowerup = Powerup.tryLuck(asteroid.getPosition().clone());
 									if(possiblePowerup != null){
 										synchronized (powerups) {
 											powerups.add(possiblePowerup);
