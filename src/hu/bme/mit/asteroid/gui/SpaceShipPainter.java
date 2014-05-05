@@ -15,8 +15,10 @@ import java.awt.image.BufferedImage;
  */
 public class SpaceShipPainter extends Painter {
 
-	private final Image mDefaultImage;
-	private final Image mAcceleratingImage;
+	private final Image mDefaultImage1;
+	private final Image mDefaultImage2;
+	private final Image mAcceleratingImage1;
+	private final Image mAcceleratingImage2;
 	private final int mImageOffsetHorizontal;
 	private final int mImageOffsetVertical;
 
@@ -30,13 +32,17 @@ public class SpaceShipPainter extends Painter {
 	 * @param acceleratingImage
 	 *            Az űrhajó képe bekapcsolt rakétával
 	 */
-	public SpaceShipPainter(Image defaultImage, Image acceleratingImage) {
-		mDefaultImage = defaultImage.getScaledInstance(SpaceShip.RADIUS * 2, SpaceShip.RADIUS * 2,
+	public SpaceShipPainter(Image defaultImage1, Image acceleratingImage1, Image defaultImage2, Image acceleratingImage2) {
+		mDefaultImage1 = defaultImage1
+				.getScaledInstance(SpaceShip.RADIUS * 2, SpaceShip.RADIUS * 2, Image.SCALE_SMOOTH);
+		mAcceleratingImage1 = acceleratingImage1.getScaledInstance(SpaceShip.RADIUS * 2, SpaceShip.RADIUS * 2,
 				Image.SCALE_SMOOTH);
-		mAcceleratingImage = acceleratingImage.getScaledInstance(SpaceShip.RADIUS * 2,
-				SpaceShip.RADIUS * 2, Image.SCALE_SMOOTH);
-		mImageOffsetHorizontal = mDefaultImage.getWidth(null) / 2;
-		mImageOffsetVertical = mDefaultImage.getHeight(null) / 2;
+		mDefaultImage2 = defaultImage2
+				.getScaledInstance(SpaceShip.RADIUS * 2, SpaceShip.RADIUS * 2, Image.SCALE_SMOOTH);
+		mAcceleratingImage2 = acceleratingImage2.getScaledInstance(SpaceShip.RADIUS * 2, SpaceShip.RADIUS * 2,
+				Image.SCALE_SMOOTH);
+		mImageOffsetHorizontal = mDefaultImage1.getWidth(null) / 2;
+		mImageOffsetVertical = mDefaultImage1.getHeight(null) / 2;
 	}
 
 	/**
@@ -47,7 +53,7 @@ public class SpaceShipPainter extends Painter {
 	 * @param spaceShip
 	 *            A kirajzolás alapjául szolgáló {@link SpaceShip}
 	 */
-	public void paint(Graphics g, SpaceShip spaceShip) {
+	public void paint(Graphics g, SpaceShip spaceShip, boolean isPlayerOne) {
 		// Ha nem sebezhető, akkor villog
 		if (!spaceShip.isVulnerable()) {
 			if (spaceShip.getUnvulnerableFor() % 200 > 100) {
@@ -58,7 +64,12 @@ public class SpaceShipPainter extends Painter {
 		Vector2D position = spaceShip.getPosition();
 
 		// Megfelelő kép kiválasztása az alapján, hogy gyorsul-e az űrhajó
-		Image spaceshipImage = (spaceShip.isAccelerating()) ? mAcceleratingImage : mDefaultImage;
+		Image spaceshipImage;
+		if (isPlayerOne) {
+			spaceshipImage = (spaceShip.isAccelerating()) ? mAcceleratingImage1 : mDefaultImage1;
+		} else {
+			spaceshipImage = (spaceShip.isAccelerating()) ? mAcceleratingImage2 : mDefaultImage2;
+		}
 
 		// Elforgatott kép kiszámolása
 		// Üres "vászon" létrehozása

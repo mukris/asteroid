@@ -3,6 +3,8 @@ package hu.bme.mit.asteroid.gui;
 import hu.bme.mit.asteroid.GameManager;
 import hu.bme.mit.asteroid.GameState;
 import hu.bme.mit.asteroid.gui.GameWindow.PanelId;
+import hu.bme.mit.asteroid.model.Asteroid;
+import hu.bme.mit.asteroid.model.Powerup;
 import hu.bme.mit.asteroid.model.SpaceShip;
 import hu.bme.mit.asteroid.model.ToplistItem;
 import hu.bme.mit.asteroid.model.Weapon;
@@ -25,6 +27,7 @@ import javax.swing.JOptionPane;
  * A játék grafikus megjelenítését végző osztály
  */
 public class GameField extends GamePanel {
+	private static final long serialVersionUID = 9104240694933170699L;
 
 	private static final int FONT_SIZE = 16;
 	private static final Font mFont = new Font("Serif", Font.PLAIN, FONT_SIZE);
@@ -40,8 +43,12 @@ public class GameField extends GamePanel {
 		super(gameWindow);
 		try {
 			mImageBackground = ImageIO.read(new File("res/space.jpg"));
-			Image imageSpaceship = ImageIO.read(new File("res/spaceship.png"));
-			mSpaceshipPainter = new SpaceShipPainter(imageSpaceship, imageSpaceship);
+			Image imageSpaceship1Default = ImageIO.read(new File("res/Spaceship_G_nofire.png"));
+			Image imageSpaceship1Acc = ImageIO.read(new File("res/Spaceship_G_fire.png"));
+			Image imageSpaceship2Default = ImageIO.read(new File("res/Spaceship_R_nofire.png"));
+			Image imageSpaceship2Acc = ImageIO.read(new File("res/Spaceship_R_fire.png"));
+			mSpaceshipPainter = new SpaceShipPainter(imageSpaceship1Default, imageSpaceship1Acc,
+					imageSpaceship2Default, imageSpaceship2Acc);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -94,11 +101,28 @@ public class GameField extends GamePanel {
 			}
 			g.setColor(Color.WHITE);
 
+			List<Asteroid> asteroids = mGameState.getAsteroids();
+			synchronized (asteroids) {
+				for (Asteroid asteroid : asteroids) {
+					g.drawOval((int) asteroid.getPosition().getX() - asteroid.getRadius(), (int) asteroid.getPosition()
+							.getY() - asteroid.getRadius(), (int) asteroid.getRadius() * 2,
+							(int) asteroid.getRadius() * 2);
+				}
+			}
+
+			List<Powerup> powerups = mGameState.getPowerups();
+			synchronized (powerups) {
+				for (Powerup powerup : powerups) {
+					g.drawRect((int) powerup.getPosition().getX() - powerup.getRadius(), (int) powerup.getPosition()
+							.getY() - powerup.getRadius(), (int) powerup.getRadius() * 2, (int) powerup.getRadius() * 2);
+				}
+			}
+
 			List<Weapon> weapons1 = spaceShip1.getWeapons();
 			synchronized (weapons1) {
 				for (Weapon weapon : weapons1) {
-					g.drawOval((int) weapon.getPosition().getX(), (int) weapon.getPosition().getY(),
-							(int) weapon.getRadius(), (int) weapon.getRadius());
+					g.drawOval((int) weapon.getPosition().getX() - weapon.getRadius(), (int) weapon.getPosition()
+							.getY() - weapon.getRadius(), (int) weapon.getRadius() * 2, (int) weapon.getRadius() * 2);
 				}
 			}
 
@@ -106,14 +130,15 @@ public class GameField extends GamePanel {
 				List<Weapon> weapons2 = spaceShip2.getWeapons();
 				synchronized (weapons2) {
 					for (Weapon weapon : weapons2) {
-						g.drawOval((int) weapon.getPosition().getX(), (int) weapon.getPosition().getY(),
-								(int) weapon.getRadius(), (int) weapon.getRadius());
+						g.drawOval((int) weapon.getPosition().getX() - weapon.getRadius(), (int) weapon.getPosition()
+								.getY() - weapon.getRadius(), (int) weapon.getRadius() * 2,
+								(int) weapon.getRadius() * 2);
 					}
 				}
 
-				mSpaceshipPainter.paint(g, spaceShip2);
+				mSpaceshipPainter.paint(g, spaceShip2, false);
 			}
-			mSpaceshipPainter.paint(g, spaceShip1);
+			mSpaceshipPainter.paint(g, spaceShip1, true);
 
 			g2.setTransform(originalTransform);
 			g2.setFont(mFont);
