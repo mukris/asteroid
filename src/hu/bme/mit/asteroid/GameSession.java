@@ -459,15 +459,14 @@ public abstract class GameSession implements ControlInterface.Callback {
 		 *             Ha az űrhajó aszteroidával ütközött, és a {@link Player}
 		 *             -nek nincs már több élete, a játék véget ér.
 		 */
-		protected void checkSpaceship2AsteroidCollisions(SpaceShip spaceShip,
-				Player.State state) throws GameOverException {
+		protected void checkSpaceship2AsteroidCollisions(SpaceShip spaceShip, Player.State state)
+				throws GameOverException {
 			ArrayList<Asteroid> asteroids = mGameState.getAsteroids();
 			ArrayList<Asteroid> toRemove = new ArrayList<>();
 			ArrayList<Asteroid> toAdd = new ArrayList<>();
 			synchronized (asteroids) {
 				for (Asteroid asteroid : asteroids) {
-					if (asteroid.checkCollision(spaceShip)
-							&& spaceShip.isVulnerable()) {
+					if (asteroid.checkCollision(spaceShip) && spaceShip.isVulnerable()) {
 						synchronized (state) {
 							int lives = state.getLives();
 							if (--lives == 0) {
@@ -475,32 +474,24 @@ public abstract class GameSession implements ControlInterface.Callback {
 							}
 							state.setLives(lives);
 						}
-						spaceShip
-								.setUnvulnerableFor(SpaceShip.DEFAULT_UNVULNERABILITY_TIME);
+						spaceShip.setUnvulnerableFor(SpaceShip.DEFAULT_UNVULNERABILITY_TIME);
 						switch (asteroid.getType()) {
 						case LARGE:
-							toAdd.add(new Asteroid(Type.MEDIUM, asteroid
-									.getPosition(), Vector2D.generateRandom(
-									Asteroid.ASTEROID_SPEED_MEDIUM_MIN,
-									Asteroid.ASTEROID_SPEED_MEDIUM_MAX)));
+							toAdd.add(new Asteroid(Type.MEDIUM, asteroid.getPosition().clone(), Vector2D
+									.generateRandom(Asteroid.ASTEROID_SPEED_MEDIUM_MIN,
+											Asteroid.ASTEROID_SPEED_MEDIUM_MAX)));
 
-							toAdd.add(new Asteroid(Type.MEDIUM, asteroid
-									.getPosition(), Vector2D.generateRandom(
-									Asteroid.ASTEROID_SPEED_MEDIUM_MIN,
-									Asteroid.ASTEROID_SPEED_MEDIUM_MAX)));
-
+							toAdd.add(new Asteroid(Type.MEDIUM, asteroid.getPosition().clone(), Vector2D
+									.generateRandom(Asteroid.ASTEROID_SPEED_MEDIUM_MIN,
+											Asteroid.ASTEROID_SPEED_MEDIUM_MAX)));
 							toRemove.add(asteroid);
 							break;
 
 						case MEDIUM:
-							toAdd.add(new Asteroid(Type.SMALL, asteroid
-									.getPosition(), Vector2D.generateRandom(
-									Asteroid.ASTEROID_SPEED_SMALL_MIN,
-									Asteroid.ASTEROID_SPEED_SMALL_MAX)));
-							toAdd.add(new Asteroid(Type.SMALL, asteroid
-									.getPosition(), Vector2D.generateRandom(
-									Asteroid.ASTEROID_SPEED_SMALL_MIN,
-									Asteroid.ASTEROID_SPEED_SMALL_MAX)));
+							toAdd.add(new Asteroid(Type.SMALL, asteroid.getPosition().clone(), Vector2D.generateRandom(
+									Asteroid.ASTEROID_SPEED_SMALL_MIN, Asteroid.ASTEROID_SPEED_SMALL_MAX)));
+							toAdd.add(new Asteroid(Type.SMALL, asteroid.getPosition().clone(), Vector2D.generateRandom(
+									Asteroid.ASTEROID_SPEED_SMALL_MIN, Asteroid.ASTEROID_SPEED_SMALL_MAX)));
 							toRemove.add(asteroid);
 							break;
 
@@ -517,7 +508,7 @@ public abstract class GameSession implements ControlInterface.Callback {
 				}
 				for (Asteroid asteroid : toAdd) {
 					asteroids.add(asteroid);
-					}
+				}
 			}
 			return;
 		}
@@ -593,7 +584,6 @@ public abstract class GameSession implements ControlInterface.Callback {
 										toAdd.add(new Asteroid(Type.MEDIUM, asteroid.getPosition().clone(), Vector2D
 												.generateRandom(Asteroid.ASTEROID_SPEED_MEDIUM_MIN,
 														Asteroid.ASTEROID_SPEED_MEDIUM_MAX)));
-										
 
 										toRemove.add(asteroid);
 										state.addPoints(100);
