@@ -435,9 +435,9 @@ public abstract class GameSession implements ControlInterface.Callback {
 		 *             -nek nincs már több élete, a játék véget ér.
 		 */
 		protected void checkCollisions() throws GameOverException {
-			checkWeapon2AsteroidCollision(mGameState.getSpaceShip1());
+			checkWeapon2AsteroidCollision(mGameState.getSpaceShip1(), mGameState.getPlayer1State());
 			if (mGameState.isMultiplayer()) {
-				checkWeapon2AsteroidCollision(mGameState.getSpaceShip2());
+				checkWeapon2AsteroidCollision(mGameState.getSpaceShip2(), mGameState.getPlayer2State());
 			}
 
 			checkSpaceship2AsteroidCollisions(mGameState.getSpaceShip1(), mGameState.getPlayer1State());
@@ -523,7 +523,7 @@ public abstract class GameSession implements ControlInterface.Callback {
 		 * @param spaceShip
 		 *            Az űrhajó, aminek a lövedékeit vizsgáljuk
 		 */
-		protected void checkWeapon2AsteroidCollision(SpaceShip spaceShip) {
+		protected void checkWeapon2AsteroidCollision(SpaceShip spaceShip, Player.State state) {
 			List<Weapon> weapons = spaceShip.getWeapons();
 			List<Powerup> powerups = mGameState.getPowerups();
 			ArrayList<Asteroid> asteroids = mGameState.getAsteroids();
@@ -553,6 +553,7 @@ public abstract class GameSession implements ControlInterface.Callback {
 														Asteroid.ASTEROID_SPEED_MEDIUM_MAX)));
 
 										toRemove.add(asteroid);
+										state.addPoints(100);
 										break;
 
 									case MEDIUM:
@@ -563,15 +564,17 @@ public abstract class GameSession implements ControlInterface.Callback {
 												.generateRandom(Asteroid.ASTEROID_SPEED_SMALL_MIN,
 														Asteroid.ASTEROID_SPEED_SMALL_MAX)));
 										toRemove.add(asteroid);
+										state.addPoints(40);
 										break;
 
 									case SMALL:
 										toRemove.add(asteroid);
+										state.addPoints(10);
 										break;
 									}
-									
+
 									Powerup possiblePowerup = Powerup.tryLuck(asteroid.getPosition().clone());
-									if(possiblePowerup != null){
+									if (possiblePowerup != null) {
 										synchronized (powerups) {
 											powerups.add(possiblePowerup);
 										}
