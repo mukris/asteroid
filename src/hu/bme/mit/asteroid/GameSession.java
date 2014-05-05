@@ -323,16 +323,7 @@ public abstract class GameSession implements ControlInterface.Callback {
 				GameOverException {
 			calculateAsteroidPhysics(timeDelta, currentTime);
 			calculateSpaceShipPhysics(mGameState.getSpaceShip1(), timeDelta, currentTime);
-
-			if (mGameState.isMultiplayer()) {
-				calculateSpaceShipPhysics(mGameState.getSpaceShip2(), timeDelta, currentTime);
-			}
-
 			calculateWeaponPhysics(mGameState.getSpaceShip1(), timeDelta, currentTime);
-
-			if (mGameState.isMultiplayer()) {
-				calculateWeaponPhysics(mGameState.getSpaceShip2(), timeDelta, currentTime);
-			}
 		}
 
 		/**
@@ -435,19 +426,8 @@ public abstract class GameSession implements ControlInterface.Callback {
 		 */
 		protected void checkCollisions() throws GameOverException {
 			checkWeapon2AsteroidCollision(mGameState.getSpaceShip1(), mGameState.getPlayer1State());
-			if (mGameState.isMultiplayer()) {
-				checkWeapon2AsteroidCollision(mGameState.getSpaceShip2(), mGameState.getPlayer2State());
-			}
-
 			checkSpaceship2AsteroidCollisions(mGameState.getSpaceShip1(), mGameState.getPlayer1State());
-			if (mGameState.isMultiplayer()) {
-				checkSpaceship2AsteroidCollisions(mGameState.getSpaceShip2(), mGameState.getPlayer2State());
-			}
-
 			checkSpaceship2PowerupCollision(mGameState.getSpaceShip1(), mGameState.getPlayer1State());
-			if (mGameState.isMultiplayer()) {
-				checkSpaceship2PowerupCollision(mGameState.getSpaceShip2(), mGameState.getPlayer2State());
-			}
 		}
 
 		/**

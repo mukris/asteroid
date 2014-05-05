@@ -99,25 +99,39 @@ public class MultiplayerGameSession extends GameSession {
 
 		case LOCAL:
 		default:
-			return super.newGameRunner();
+			return new MultiplayerGameRunner();
 		}
 	}
 
 	/**
-	 * A szerver oldalon a játékot futtató szál. Az állást elküldjük a
-	 * kliensnek.
+	 * A játék fizikáját és grafikáját két játékos esetén külön szálon ütemező
+	 * osztály
 	 */
-	private class ServerGameRunner extends GameRunner {
+	private class MultiplayerGameRunner extends GameRunner {
 		@Override
 		protected void calculatePhysics(long timeDelta, long currentTime) throws LevelFinishedException,
 				GameOverException {
-			super.calculatePhysics(timeDelta, currentTime);
-			mNetworkServer.sendGameState(mGameState);
+			calculateAsteroidPhysics(timeDelta, currentTime);
+			calculateSpaceShipPhysics(mGameState.getSpaceShip1(), timeDelta, currentTime);
+			calculateSpaceShipPhysics(mGameState.getSpaceShip2(), timeDelta, currentTime);
+			calculateWeaponPhysics(mGameState.getSpaceShip1(), timeDelta, currentTime);
+			calculateWeaponPhysics(mGameState.getSpaceShip2(), timeDelta, currentTime);
+		}
+
+		@Override
+		protected void checkCollisions() throws GameOverException {
+			checkWeapon2AsteroidCollision(mGameState.getSpaceShip1(), mGameState.getPlayer1State());
+			checkWeapon2AsteroidCollision(mGameState.getSpaceShip2(), mGameState.getPlayer2State());
+			checkSpaceship2AsteroidCollisions(mGameState.getSpaceShip1(), mGameState.getPlayer1State());
+			checkSpaceship2AsteroidCollisions(mGameState.getSpaceShip2(), mGameState.getPlayer2State());
+			checkSpaceship2PowerupCollision(mGameState.getSpaceShip1(), mGameState.getPlayer1State());
+			checkSpaceship2PowerupCollision(mGameState.getSpaceShip2(), mGameState.getPlayer2State());
 		}
 
 		@Override
 		protected void loadNextLevel() throws GameOverException {
 			try {
+				mLevelID++;
 				GameState newGameState = GameFactory.createMultiplayerGame(mLevelID, mPlayer1, mPlayer2);
 				mGameState.update(newGameState);
 			} catch (LevelNotExistsException e) {
@@ -127,9 +141,22 @@ public class MultiplayerGameSession extends GameSession {
 	}
 
 	/**
+	 * A szerver oldalon a játékot futtató szál. Az állást elküldjük a
+	 * kliensnek.
+	 */
+	private class ServerGameRunner extends MultiplayerGameRunner {
+		@Override
+		protected void calculatePhysics(long timeDelta, long currentTime) throws LevelFinishedException,
+				GameOverException {
+			super.calculatePhysics(timeDelta, currentTime);
+			mNetworkServer.sendGameState(mGameState);
+		}
+	}
+
+	/**
 	 * A kliens oldalon a játékot futtató szál. Itt nem számolunk fizikát.
 	 */
-	private class ClientGameRunner extends GameRunner {
+	private class ClientGameRunner extends MultiplayerGameRunner {
 		@Override
 		public void run() {
 			return;
