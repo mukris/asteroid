@@ -22,18 +22,18 @@ public class Asteroid extends MovingSpaceObject implements Serializable {
 	/**
 	 * Specifikációban megadott konstans sebességértékek
 	 */
-	public static final float ASTEROID_SPEED_LARGE_MIN = 2;
-	public static final float ASTEROID_SPEED_LARGE_MAX = 3;
-	public static final float ASTEROID_SPEED_MEDIUM_MIN = 4;
-	public static final float ASTEROID_SPEED_MEDIUM_MAX = 5;
-	public static final float ASTEROID_SPEED_SMALL_MIN = 6;
-	public static final float ASTEROID_SPEED_SMALL_MAX = 8;
+	public static final float ASTEROID_SPEED_LARGE_MIN = 20;
+	public static final float ASTEROID_SPEED_LARGE_MAX = 30;
+	public static final float ASTEROID_SPEED_MEDIUM_MIN = 50;
+	public static final float ASTEROID_SPEED_MEDIUM_MAX = 80;
+	public static final float ASTEROID_SPEED_SMALL_MIN = 100;
+	public static final float ASTEROID_SPEED_SMALL_MAX = 120;
 
 	/**
 	 * Megadja hogy az aszteroidáknak minimum milyen távolságra kell lenniük a
 	 * középponttól a generálásukkor
 	 */
-	public static final int ASTEROID_MIN_DISTANCE = 30;
+	public static final int ASTEROID_MIN_DISTANCE = 100;
 
 	/**
 	 * Asztroida élete, lövés Specifikáció szerint!
