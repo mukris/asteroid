@@ -522,6 +522,8 @@ public abstract class GameSession implements ControlInterface.Callback {
 		 * 
 		 * @param spaceShip
 		 *            Az űrhajó, aminek a lövedékeit vizsgáljuk
+		 * @param state
+		 *            A megfelelő játékos {@link Player.State}-je
 		 */
 		protected void checkWeapon2AsteroidCollision(SpaceShip spaceShip, Player.State state) {
 			List<Weapon> weapons = spaceShip.getWeapons();
