@@ -544,11 +544,11 @@ public abstract class GameSession implements ControlInterface.Callback {
 								} else {
 									switch (asteroid.getType()) {
 									case LARGE:
-										toAdd.add(new Asteroid(Type.MEDIUM, asteroid.getPosition(), Vector2D
+										toAdd.add(new Asteroid(Type.MEDIUM, asteroid.getPosition().clone(), Vector2D
 												.generateRandom(Asteroid.ASTEROID_SPEED_MEDIUM_MIN,
 														Asteroid.ASTEROID_SPEED_MEDIUM_MAX)));
 
-										toAdd.add(new Asteroid(Type.MEDIUM, asteroid.getPosition(), Vector2D
+										toAdd.add(new Asteroid(Type.MEDIUM, asteroid.getPosition().clone(), Vector2D
 												.generateRandom(Asteroid.ASTEROID_SPEED_MEDIUM_MIN,
 														Asteroid.ASTEROID_SPEED_MEDIUM_MAX)));
 
@@ -556,10 +556,10 @@ public abstract class GameSession implements ControlInterface.Callback {
 										break;
 
 									case MEDIUM:
-										toAdd.add(new Asteroid(Type.SMALL, asteroid.getPosition(), Vector2D
+										toAdd.add(new Asteroid(Type.SMALL, asteroid.getPosition().clone(), Vector2D
 												.generateRandom(Asteroid.ASTEROID_SPEED_SMALL_MIN,
 														Asteroid.ASTEROID_SPEED_SMALL_MAX)));
-										toAdd.add(new Asteroid(Type.SMALL, asteroid.getPosition(), Vector2D
+										toAdd.add(new Asteroid(Type.SMALL, asteroid.getPosition().clone(), Vector2D
 												.generateRandom(Asteroid.ASTEROID_SPEED_SMALL_MIN,
 														Asteroid.ASTEROID_SPEED_SMALL_MAX)));
 										toRemove.add(asteroid);
