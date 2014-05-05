@@ -525,40 +525,69 @@ public abstract class GameSession implements ControlInterface.Callback {
 		 */
 		protected void checkWeapon2AsteroidCollision(SpaceShip spaceShip) {
 			List<Weapon> weapons = spaceShip.getWeapons();
+			List<Powerup> powerups = mGameState.getPowerups();
 			ArrayList<Asteroid> asteroids = mGameState.getAsteroids();
+			ArrayList<Asteroid> toRemove = new ArrayList<>();
+			ArrayList<Asteroid> toAdd = new ArrayList<>();
 			synchronized (weapons) {
 				for (Weapon weapon : weapons) {
 					synchronized (asteroids) {
 						for (Asteroid asteroid : asteroids) {
-							if (asteroid.checkCollision(weapon) && (asteroid.getHitsLeft() > 1)) {
-								asteroid.setHitsLeft(asteroid.getHitsLeft() - 1);
+							if (asteroid.checkCollision(weapon) && weapon.isAlive()) {
 								// HACK: ha a lövedék ütközik, azonnal
 								// semmisüljön meg -> hátralévő idejét
 								// csökkentjük
 								weapon.decreaseTimeUntilDeath(Weapon.LIFE_SPAN_MILLIS);
-							} else {
-								if (asteroid.getType() == Type.LARGE) {
-									new Asteroid(Type.MEDIUM, asteroid.getPosition(),
-											Vector2D.generateRandomDirection(Vector2D.generateRandomLength(
-													Asteroid.ASTEROID_SPEED_MEDIUM_MIN,
-													Asteroid.ASTEROID_SPEED_MEDIUM_MAX)));
-									// TODO: megsemmis�teni a mostani
-									// aszteroid�t, esetleg + new Asteroid...
-								} else if (asteroid.getType() == Type.MEDIUM) {
-									new Asteroid(Type.SMALL, asteroid.getPosition(),
-											Vector2D.generateRandomDirection(Vector2D.generateRandomLength(
-													Asteroid.ASTEROID_SPEED_SMALL_MIN,
-													Asteroid.ASTEROID_SPEED_SMALL_MAX)));
-									// TODO: megsemmis�teni a mostani
-									// aszteroid�t, esetleg + new Asteroid...
-								} else if (asteroid.getType() == Type.SMALL) {
-									// TODO: megsemmis�teni a mostani
-									// aszteroid�t
+
+								if (asteroid.getHitsLeft() > 1) {
+									asteroid.setHitsLeft(asteroid.getHitsLeft() - 1);
+								} else {
+									switch (asteroid.getType()) {
+									case LARGE:
+										toAdd.add(new Asteroid(Type.MEDIUM, asteroid.getPosition(), Vector2D
+												.generateRandom(Asteroid.ASTEROID_SPEED_MEDIUM_MIN,
+														Asteroid.ASTEROID_SPEED_MEDIUM_MAX)));
+
+										toAdd.add(new Asteroid(Type.MEDIUM, asteroid.getPosition(), Vector2D
+												.generateRandom(Asteroid.ASTEROID_SPEED_MEDIUM_MIN,
+														Asteroid.ASTEROID_SPEED_MEDIUM_MAX)));
+
+										toRemove.add(asteroid);
+										break;
+
+									case MEDIUM:
+										toAdd.add(new Asteroid(Type.SMALL, asteroid.getPosition(), Vector2D
+												.generateRandom(Asteroid.ASTEROID_SPEED_SMALL_MIN,
+														Asteroid.ASTEROID_SPEED_SMALL_MAX)));
+										toAdd.add(new Asteroid(Type.SMALL, asteroid.getPosition(), Vector2D
+												.generateRandom(Asteroid.ASTEROID_SPEED_SMALL_MIN,
+														Asteroid.ASTEROID_SPEED_SMALL_MAX)));
+										toRemove.add(asteroid);
+										break;
+
+									case SMALL:
+										toRemove.add(asteroid);
+										break;
+									}
+									
+									Powerup possiblePowerup = Powerup.tryLuck(asteroid.getPosition());
+									if(possiblePowerup != null){
+										synchronized (powerups) {
+											powerups.add(possiblePowerup);
+										}
+									}
 								}
-								// weapon.decreaseTimeUntilDeath(Weapon.LIFE_SPAN_MILLIS);
 							}
 						}
 					}
+				}
+			}
+			synchronized (asteroids) {
+				for (Asteroid asteroid : toRemove) {
+					asteroids.remove(asteroid);
+				}
+				for (Asteroid asteroid : toAdd) {
+					asteroids.add(asteroid);
 				}
 			}
 		}
