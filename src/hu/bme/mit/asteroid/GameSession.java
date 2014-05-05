@@ -511,6 +511,14 @@ public abstract class GameSession implements ControlInterface.Callback {
 					}
 				}
 			}
+			synchronized (asteroids) {
+				for (Asteroid asteroid : toRemove) {
+					asteroids.remove(asteroid);
+				}
+				for (Asteroid asteroid : toAdd) {
+					asteroids.add(asteroid);
+					}
+			}
 			return;
 		}
 
