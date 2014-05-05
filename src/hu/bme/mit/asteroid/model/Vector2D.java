@@ -142,7 +142,7 @@ public class Vector2D implements Cloneable, Serializable {
 	 * @return Véletlen irányú vektor
 	 */
 	public static Vector2D generateRandomDirection(float length) {
-		return new Vector2D(length, (float) (Math.random() * 2 * Math.PI));
+		return new Vector2D(length, Math.random() * 2 * Math.PI);
 	}
 
 	/**
