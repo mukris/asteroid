@@ -496,13 +496,11 @@ public abstract class GameSession implements ControlInterface.Callback {
 							break;
 
 						case SMALL:
-							asteroids.remove(asteroid);
+							toRemove.add(asteroid);
 							break;
 						}
 					}
 				}
-			}
-			synchronized (asteroids) {
 				for (Asteroid asteroid : toRemove) {
 					asteroids.remove(asteroid);
 				}
@@ -510,7 +508,6 @@ public abstract class GameSession implements ControlInterface.Callback {
 					asteroids.add(asteroid);
 				}
 			}
-			return;
 		}
 
 		/**
