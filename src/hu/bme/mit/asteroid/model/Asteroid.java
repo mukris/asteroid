@@ -18,11 +18,9 @@ public class Asteroid extends MovingSpaceObject implements Serializable {
 	public static final int ASTEROID_SIZE_LARGE = 100;
 	public static final int ASTEROID_SIZE_MEDIUM = 50;
 	public static final int ASTEROID_SIZE_SMALL = 25;
-	
 
 	/**
-	 * Specifik·ciÛban megadott konstans sebessÈgÈrtÈkek
-	 * remÈlem itt jÛ helye lesz, ha nem rakj·tok ·t
+	 * Specifik√°ci√≥ban megadott konstans sebess√©g√©rt√©kek
 	 */
 	public static final float ASTEROID_SPEED_LARGE_MIN = 2;
 	public static final float ASTEROID_SPEED_LARGE_MAX = 3;
@@ -30,20 +28,19 @@ public class Asteroid extends MovingSpaceObject implements Serializable {
 	public static final float ASTEROID_SPEED_MEDIUM_MAX = 5;
 	public static final float ASTEROID_SPEED_SMALL_MIN = 6;
 	public static final float ASTEROID_SPEED_SMALL_MAX = 8;
-	
+
 	/**
-	 * Megadja hogy az aszteroid·knak minimum milyen t·vols·gra kell lenni¸k a kˆzÈpponttÛl a gener·l·sukkor
+	 * Megadja hogy az aszteroid√°knak minimum milyen t√°vols√°gra kell lenni√ºk a
+	 * k√∂z√©ppontt√≥l a gener√°l√°sukkor
 	 */
 	public static final int ASTEROID_MIN_DISTANCE = 30;
-	
+
 	/**
-	 * Asztroida Èlete, lˆvÈs
-	 * Specifik·ciÛ szerint!
+	 * Asztroida √©lete, l√∂v√©s Specifik√°ci√≥ szerint!
 	 */
 	public static final int ASTEROID_MAXHITS_LARGE = 3;
 	public static final int ASTEROID_MAXHITS_MEDIUM = 2;
 	public static final int ASTEROID_MAXHITS_SMALL = 1;
-
 
 	private Type mType;
 
