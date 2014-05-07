@@ -43,31 +43,29 @@ public class GameField extends GamePanel {
 		super(gameWindow);
 		try {
 			mImageBackground = ImageIO.read(new File("res/space_1.jpg"));
-			Image imageSpaceship1Default = ImageIO.read(new File("res/Spaceship_G_nofire.png"));
-			Image imageSpaceship1Acc = ImageIO.read(new File("res/Spaceship_G_fire.png"));
-			Image imageSpaceship2Default = ImageIO.read(new File("res/Spaceship_R_nofire.png"));
-			Image imageSpaceship2Acc = ImageIO.read(new File("res/Spaceship_R_fire.png"));
+			final Image imageSpaceship1Default = ImageIO.read(new File("res/Spaceship_G_nofire.png"));
+			final Image imageSpaceship1Acc = ImageIO.read(new File("res/Spaceship_G_fire.png"));
+			final Image imageSpaceship2Default = ImageIO.read(new File("res/Spaceship_R_nofire.png"));
+			final Image imageSpaceship2Acc = ImageIO.read(new File("res/Spaceship_R_fire.png"));
 			mSpaceshipPainter = new SpaceShipPainter(imageSpaceship1Default, imageSpaceship1Acc,
 					imageSpaceship2Default, imageSpaceship2Acc);
-			
-			Image imageAsteroidSmall = ImageIO.read(new File("res/asteroid_1.png"));
-			Image imageAsteroidMedium = ImageIO.read(new File("res/asteroid_2.png"));
-			Image imageAsteroidLarge = ImageIO.read(new File("res/asteroid_3.png"));
-			mAsteroidPainter = new AsteroidPainter(imageAsteroidSmall,imageAsteroidMedium,imageAsteroidLarge);
-			
-			Image imageWeapon = ImageIO.read(new File("res/weapon.png"));
+
+			final Image imageAsteroidSmall = ImageIO.read(new File("res/asteroid_1.png"));
+			final Image imageAsteroidMedium = ImageIO.read(new File("res/asteroid_2.png"));
+			final Image imageAsteroidLarge = ImageIO.read(new File("res/asteroid_3.png"));
+			mAsteroidPainter = new AsteroidPainter(imageAsteroidSmall, imageAsteroidMedium, imageAsteroidLarge);
+
+			final Image imageWeapon = ImageIO.read(new File("res/weapon.png"));
 			mWeaponPainter = new WeaponPainter(imageWeapon);
-			
-			Image imagePowerup = ImageIO.read(new File("res/powerup.png"));
+
+			final Image imagePowerup = ImageIO.read(new File("res/powerup.png"));
 			mPowerupPainter = new PowerupPainter(imagePowerup);
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 		mReverseYAxisTransform = new AffineTransform();
-
-		// TODO Painterek létrehozása, inicializálása
 	}
 
 	/**
@@ -102,7 +100,6 @@ public class GameField extends GamePanel {
 		final AffineTransform originalTransform = g2.getTransform();
 		g2.setTransform(mReverseYAxisTransform);
 
-		// TODO aszteroidák, fegyverek, powerupok kirajzolása
 		g.drawImage(mImageBackground, 0, 0, null);
 		if (mGameState != null) {
 			final boolean isMultiplayer = mGameState.isMultiplayer();
@@ -111,7 +108,6 @@ public class GameField extends GamePanel {
 			if (isMultiplayer) {
 				spaceShip2 = mGameState.getSpaceShip2();
 			}
-			g.setColor(Color.WHITE);
 
 			List<Asteroid> asteroids = mGameState.getAsteroids();
 			synchronized (asteroids) {
@@ -148,6 +144,7 @@ public class GameField extends GamePanel {
 
 			g2.setTransform(originalTransform);
 			g2.setFont(mFont);
+			g2.setColor(Color.WHITE);
 			printStats(g2, mGameState.getPlayer1State(), 10, 10);
 			if (isMultiplayer) {
 				printStats(g2, mGameState.getPlayer2State(), getWidth() - 100, 10);
@@ -212,6 +209,8 @@ public class GameField extends GamePanel {
 		final int height = getHeight();
 		GameManager.getInstance().updateGameFieldDimensions(width, height);
 		mSpaceshipPainter.setDimensions(width, height);
-		// TODO painterek beállítása a játékmező méretének megfelelően
+		mAsteroidPainter.setDimensions(width, height);
+		mWeaponPainter.setDimensions(width, height);
+		mPowerupPainter.setDimensions(width, height);
 	}
 }
