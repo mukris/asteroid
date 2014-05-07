@@ -185,7 +185,7 @@ public class GameField extends GamePanel {
 					do {
 						name = JOptionPane.showInputDialog(this, "Hogy hívnak?", "Felkerültél a toplistára",
 								JOptionPane.QUESTION_MESSAGE);
-					} while (name.isEmpty());
+					} while (name == null || name.isEmpty());
 
 					ToplistItem toplistItem = new ToplistItem(name, points);
 					GameManager.getInstance().addToplistItem(toplistItem);
