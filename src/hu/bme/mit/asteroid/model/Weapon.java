@@ -8,7 +8,7 @@ import java.io.Serializable;
 public abstract class Weapon extends DirectionalMovingSpaceObject implements Cloneable, Serializable {
 	private static final long serialVersionUID = -1604474174764776496L;
 	
-	private static final int WEAPON_SIZE = 10;
+	public static final int RADIUS = 10;
 	public static final int LIFE_SPAN_MILLIS = 5000;
 	protected long mTimeMillisUntilDeath = 0;
 
@@ -17,7 +17,7 @@ public abstract class Weapon extends DirectionalMovingSpaceObject implements Clo
 	}
 
 	public Weapon(Vector2D position, Vector2D speed) {
-		super(position, speed, speed.getDirection(), WEAPON_SIZE);
+		super(position, speed, speed.getDirection(), RADIUS);
 	}
 
 	@Override

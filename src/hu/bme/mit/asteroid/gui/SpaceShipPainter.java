@@ -41,6 +41,7 @@ public class SpaceShipPainter extends Painter {
 				.getScaledInstance(SpaceShip.RADIUS * 2, SpaceShip.RADIUS * 2, Image.SCALE_SMOOTH);
 		mAcceleratingImage2 = acceleratingImage2.getScaledInstance(SpaceShip.RADIUS * 2, SpaceShip.RADIUS * 2,
 				Image.SCALE_SMOOTH);
+		
 		mImageOffsetHorizontal = mDefaultImage1.getWidth(null) / 2;
 		mImageOffsetVertical = mDefaultImage1.getHeight(null) / 2;
 	}

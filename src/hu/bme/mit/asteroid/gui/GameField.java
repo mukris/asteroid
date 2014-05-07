@@ -42,13 +42,25 @@ public class GameField extends GamePanel {
 	public GameField(GameWindow gameWindow) {
 		super(gameWindow);
 		try {
-			mImageBackground = ImageIO.read(new File("res/space.jpg"));
+			mImageBackground = ImageIO.read(new File("res/space_1.jpg"));
 			Image imageSpaceship1Default = ImageIO.read(new File("res/Spaceship_G_nofire.png"));
 			Image imageSpaceship1Acc = ImageIO.read(new File("res/Spaceship_G_fire.png"));
 			Image imageSpaceship2Default = ImageIO.read(new File("res/Spaceship_R_nofire.png"));
 			Image imageSpaceship2Acc = ImageIO.read(new File("res/Spaceship_R_fire.png"));
 			mSpaceshipPainter = new SpaceShipPainter(imageSpaceship1Default, imageSpaceship1Acc,
 					imageSpaceship2Default, imageSpaceship2Acc);
+			
+			Image imageAsteroidSmall = ImageIO.read(new File("res/asteroid_1.png"));
+			Image imageAsteroidMedium = ImageIO.read(new File("res/asteroid_2.png"));
+			Image imageAsteroidLarge = ImageIO.read(new File("res/asteroid_3.png"));
+			mAsteroidPainter = new AsteroidPainter(imageAsteroidSmall,imageAsteroidMedium,imageAsteroidLarge);
+			
+			Image imageWeapon = ImageIO.read(new File("res/weapon.png"));
+			mWeaponPainter = new WeaponPainter(imageWeapon);
+			
+			Image imagePowerup = ImageIO.read(new File("res/powerup.png"));
+			mPowerupPainter = new PowerupPainter(imagePowerup);
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

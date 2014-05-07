@@ -15,9 +15,9 @@ public class Asteroid extends MovingSpaceObject implements Serializable {
 		LARGE, MEDIUM, SMALL
 	};
 
-	public static final int ASTEROID_SIZE_LARGE = 100;
-	public static final int ASTEROID_SIZE_MEDIUM = 50;
-	public static final int ASTEROID_SIZE_SMALL = 25;
+	public static final int RADIUS_LARGE = 100;
+	public static final int RADIUS_MEDIUM = 50;
+	public static final int RADIUS_SMALL = 25;
 
 	/**
 	 * Specifikációban megadott konstans sebességértékek
@@ -66,15 +66,15 @@ public class Asteroid extends MovingSpaceObject implements Serializable {
 
 		switch (type) {
 		case LARGE:
-			radius = ASTEROID_SIZE_LARGE;
+			radius = RADIUS_LARGE;
 			maxhits = ASTEROID_MAXHITS_LARGE;
 			break;
 		case MEDIUM:
-			radius = ASTEROID_SIZE_MEDIUM;
+			radius = RADIUS_MEDIUM;
 			maxhits = ASTEROID_MAXHITS_MEDIUM;
 			break;
 		case SMALL:
-			radius = ASTEROID_SIZE_SMALL;
+			radius = RADIUS_SMALL;
 			maxhits = ASTEROID_MAXHITS_SMALL;
 			break;
 		}
