@@ -116,25 +116,21 @@ public class GameField extends GamePanel {
 			List<Asteroid> asteroids = mGameState.getAsteroids();
 			synchronized (asteroids) {
 				for (Asteroid asteroid : asteroids) {
-					g.drawOval((int) asteroid.getPosition().getX() - asteroid.getRadius(), (int) asteroid.getPosition()
-							.getY() - asteroid.getRadius(), (int) asteroid.getRadius() * 2,
-							(int) asteroid.getRadius() * 2);
+					mAsteroidPainter.paint(g, asteroid);
 				}
 			}
 
 			List<Powerup> powerups = mGameState.getPowerups();
 			synchronized (powerups) {
 				for (Powerup powerup : powerups) {
-					g.drawRect((int) powerup.getPosition().getX() - powerup.getRadius(), (int) powerup.getPosition()
-							.getY() - powerup.getRadius(), (int) powerup.getRadius() * 2, (int) powerup.getRadius() * 2);
+					mPowerupPainter.paint(g, powerup);
 				}
 			}
 
 			List<Weapon> weapons1 = spaceShip1.getWeapons();
 			synchronized (weapons1) {
 				for (Weapon weapon : weapons1) {
-					g.drawOval((int) weapon.getPosition().getX() - weapon.getRadius(), (int) weapon.getPosition()
-							.getY() - weapon.getRadius(), (int) weapon.getRadius() * 2, (int) weapon.getRadius() * 2);
+					mWeaponPainter.paint(g, weapon);
 				}
 			}
 
@@ -142,9 +138,7 @@ public class GameField extends GamePanel {
 				List<Weapon> weapons2 = spaceShip2.getWeapons();
 				synchronized (weapons2) {
 					for (Weapon weapon : weapons2) {
-						g.drawOval((int) weapon.getPosition().getX() - weapon.getRadius(), (int) weapon.getPosition()
-								.getY() - weapon.getRadius(), (int) weapon.getRadius() * 2,
-								(int) weapon.getRadius() * 2);
+						mWeaponPainter.paint(g, weapon);
 					}
 				}
 

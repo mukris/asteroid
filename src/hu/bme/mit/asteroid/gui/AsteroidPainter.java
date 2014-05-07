@@ -1,11 +1,13 @@
 package hu.bme.mit.asteroid.gui;
 
+import hu.bme.mit.asteroid.GameState;
 import hu.bme.mit.asteroid.model.Asteroid;
 import hu.bme.mit.asteroid.model.SpaceShip;
 import hu.bme.mit.asteroid.model.Vector2D;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.util.List;
 
 public class AsteroidPainter extends Painter {
 
@@ -39,17 +41,18 @@ public class AsteroidPainter extends Painter {
 		Image smallAsteroidImage = mSmallImage;
 		Image mediumAsteroidImage = mMediumImage;
 		Image largeAsteroidImage = mLargeImage;
-		
+					
 		switch(asteroid.getType()) {
 			case SMALL: 
-				g.drawImage(smallAsteroidImage, (int) position.getX() + mSmallImageOffsetHorizontal, (int) position.getY() + mSmallImageOffsetVertical, null);
-			break;
+				g.drawImage(smallAsteroidImage, (int) position.getX() - mSmallImageOffsetHorizontal, (int) position.getY() - mSmallImageOffsetVertical, null);
+				break;
 			case MEDIUM: 
-				g.drawImage(mediumAsteroidImage, (int) position.getX() + mMediumImageOffsetHorizontal, (int) position.getY() + mMediumImageOffsetVertical, null);
-			break;
+				g.drawImage(mediumAsteroidImage, (int) position.getX() - mMediumImageOffsetHorizontal, (int) position.getY() - mMediumImageOffsetVertical, null);
+				break;
 			case LARGE: 
-				g.drawImage(largeAsteroidImage, (int) position.getX() + mLargeImageOffsetHorizontal, (int) position.getY() + mLargeImageOffsetVertical, null);
-			break;
+				g.drawImage(largeAsteroidImage, (int) position.getX() - mLargeImageOffsetHorizontal, (int) position.getY() - mLargeImageOffsetVertical, null);
+				break;	
 		}
+				
 	}
 }

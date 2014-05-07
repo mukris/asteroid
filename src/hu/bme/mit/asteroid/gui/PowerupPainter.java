@@ -25,8 +25,7 @@ public class PowerupPainter extends Painter {
 		
 		Image powerupImage = mImage;
 		
-		g.drawImage(powerupImage, (int) position.getX() + mImageOffsetHorizontal, (int) position.getY() + mImageOffsetVertical, null);
+		g.drawImage(powerupImage, (int) position.getX() - mImageOffsetHorizontal, (int) position.getY() - mImageOffsetVertical, null);
 		
 	}
-	
 }
