@@ -11,13 +11,13 @@ import javax.swing.JFrame;
  * A program főablaka
  */
 public class GameWindow extends JFrame {
-	private static final long serialVersionUID = -2774394870156151797L;
+	private static final long serialVersionUID = 8996973239562737076L;
 
 	/**
 	 * A felhasználói felület paneljainak azonosítására szolgáló enum
 	 */
 	public enum PanelId {
-		GAME_MODE_SELECTOR, LEVEL_SELECTOR, MULTIPLAYER_PANEL, SERVER_PANEL, CLIENT_PANEL, GAME_FIELD, GET_NAME_PANEL, TOPLIST, ERROR_PANEL
+		GAME_MODE_SELECTOR, LEVEL_SELECTOR, MULTIPLAYER_PANEL, SERVER_PANEL, CLIENT_PANEL, GAME_FIELD, TOPLIST
 	}
 
 	private Map<PanelId, GamePanel> mPanels = new HashMap<>();
