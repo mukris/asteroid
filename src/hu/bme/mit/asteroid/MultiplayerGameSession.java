@@ -151,6 +151,12 @@ public class MultiplayerGameSession extends GameSession {
 			super.calculatePhysics(timeDelta, currentTime);
 			mNetworkServer.sendGameState(mGameState);
 		}
+
+		@Override
+		protected void onGameOver() {
+			super.onGameOver();
+			mNetworkServer.sendGameState(mGameState);
+		}
 	}
 
 	/**
@@ -159,7 +165,18 @@ public class MultiplayerGameSession extends GameSession {
 	private class ClientGameRunner extends MultiplayerGameRunner {
 		@Override
 		public void run() {
-			return;
+			while (true) {
+				try {
+					setState(mGameState.getGameSessionState());
+					if (mGameState.getGameSessionState() == GameSession.State.GAME_OVER) {
+						return;
+					}
+
+					sleep(50);
+				} catch (InterruptedException e) {
+					return;
+				}
+			}
 		}
 	}
 }

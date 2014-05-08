@@ -1,5 +1,6 @@
 package hu.bme.mit.asteroid;
 
+import hu.bme.mit.asteroid.GameSession.State;
 import hu.bme.mit.asteroid.model.Asteroid;
 import hu.bme.mit.asteroid.model.Powerup;
 import hu.bme.mit.asteroid.model.SpaceShip;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
  * A játék midenkori aktuális állapotát tároló osztály
  */
 public class GameState implements Serializable {
-	private static final long serialVersionUID = -6065362868807499848L;
+	private static final long serialVersionUID = -390177286511682937L;
 
 	private Player.State mPlayer1State;
 	private SpaceShip mSpaceShip1;
@@ -22,6 +23,8 @@ public class GameState implements Serializable {
 
 	private ArrayList<Asteroid> mAsteroids;
 	private ArrayList<Powerup> mPowerups;
+
+	private GameSession.State mGameSessionState;
 
 	public GameState(Player player1, Player player2) {
 		mPlayer1State = player1.getState();
@@ -34,6 +37,8 @@ public class GameState implements Serializable {
 
 		mAsteroids = new ArrayList<>();
 		mPowerups = new ArrayList<>();
+
+		mGameSessionState = State.LEVEL_STARTING;
 	}
 
 	/**
@@ -63,6 +68,9 @@ public class GameState implements Serializable {
 		}
 		synchronized (mPowerups) {
 			mPowerups = newGameState.mPowerups;
+		}
+		synchronized (mGameSessionState) {
+			mGameSessionState = newGameState.mGameSessionState;
 		}
 	}
 
@@ -114,6 +122,16 @@ public class GameState implements Serializable {
 	public ArrayList<Powerup> getPowerups() {
 		synchronized (mPowerups) {
 			return mPowerups;
+		}
+	}
+
+	public GameSession.State getGameSessionState() {
+		return mGameSessionState;
+	}
+
+	public void setGameSessionState(GameSession.State state) {
+		synchronized (mGameSessionState) {
+			mGameSessionState = state;
 		}
 	}
 }

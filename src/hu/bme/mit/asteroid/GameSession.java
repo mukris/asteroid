@@ -99,6 +99,7 @@ public abstract class GameSession implements ControlInterface.Callback {
 	public void setState(State state) {
 		synchronized (mState) {
 			mState = state;
+			mGameState.setGameSessionState(mState);
 			synchronized (mListeners) {
 				for (GameSessionListener listener : mListeners) {
 					listener.onStateChange(mState);
@@ -262,6 +263,7 @@ public abstract class GameSession implements ControlInterface.Callback {
 				} catch (GameOverException e) {
 					logger.info("GameOver");
 					setState(GameSession.State.GAME_OVER);
+					onGameOver();
 					return;
 				}
 			}
@@ -610,6 +612,13 @@ public abstract class GameSession implements ControlInterface.Callback {
 		 */
 		protected void updateGUI() {
 			GameManager.getInstance().updateGameField(mGameState);
+		}
+
+		/**
+		 * GameOver esetén hívódik. A leszármazott osztályok is hasznát
+		 * vehetik...
+		 */
+		protected void onGameOver() {
 		}
 	}
 }
