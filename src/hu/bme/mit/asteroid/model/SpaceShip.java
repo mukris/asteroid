@@ -59,15 +59,15 @@ public class SpaceShip extends DirectionalMovingSpaceObject implements Serializa
 	 *            Az előző hívás óta eltelt idő ezredmásodpercben
 	 */
 	public void handleFiring(long timeDelta) {
-		long repeatTime = mWeapon.getRepeatTime();
-		if (isFiring() && mTimeMillisSinceLastShoot + timeDelta >= repeatTime) {
+		final long repeatTime = mWeapon.getRepeatTime();
+		if (isFiring() && (mTimeMillisSinceLastShoot + timeDelta) >= repeatTime) {
 			Weapon newWeapon = mWeapon.clone();
 			newWeapon.setDirection(getDirection());
 			newWeapon.setPosition(getPosition().clone());
 			synchronized (mWeapons) {
 				mWeapons.add(newWeapon);
 			}
-			mTimeMillisSinceLastShoot %= repeatTime;
+			mTimeMillisSinceLastShoot = 0;
 		}
 		mTimeMillisSinceLastShoot += timeDelta;
 	}
