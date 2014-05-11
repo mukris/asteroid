@@ -234,9 +234,11 @@ public abstract class GameSession implements ControlInterface.Callback {
 			while (true) {
 				try {
 					if (!mRunning.get()) {
+						updateGUI();
 						synchronized (this) {
 							wait();
 						}
+						updateGUI();
 					} else {
 						if (GameSession.this.getState() == GameSession.State.LEVEL_COMPLETE) {
 							loadNextLevel();
@@ -619,6 +621,7 @@ public abstract class GameSession implements ControlInterface.Callback {
 		 * vehetik...
 		 */
 		protected void onGameOver() {
+			updateGUI();
 		}
 	}
 }

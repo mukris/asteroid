@@ -16,12 +16,14 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  * A játék grafikus megjelenítését végző osztály
@@ -29,8 +31,10 @@ import javax.swing.JOptionPane;
 public class GameField extends GamePanel {
 	private static final long serialVersionUID = 9104240694933170699L;
 
-	private static final int FONT_SIZE = 16;
-	private static final Font mFont = new Font("Serif", Font.PLAIN, FONT_SIZE);
+	private static final int FONT_SIZE_STATS = 16;
+	private static final int FONT_SIZE_STATUS = 80;
+	private static final Font mFontStats = new Font("Serif", Font.PLAIN, FONT_SIZE_STATS);
+	private static final Font mFontStatus = new Font("Serif", Font.BOLD, FONT_SIZE_STATUS);
 	private GameState mGameState;
 	private SpaceShipPainter mSpaceshipPainter;
 	private AsteroidPainter mAsteroidPainter;
@@ -78,9 +82,7 @@ public class GameField extends GamePanel {
 		if (mGameState == null) {
 			mGameState = gameState;
 		} else {
-			synchronized (mGameState) {
-				mGameState.update(gameState);
-			}
+			mGameState.update(gameState);
 		}
 		repaint();
 	}
@@ -143,11 +145,32 @@ public class GameField extends GamePanel {
 			mSpaceshipPainter.paint(g, spaceShip1, true);
 
 			g2.setTransform(originalTransform);
-			g2.setFont(mFont);
+			g2.setFont(mFontStats);
 			g2.setColor(Color.WHITE);
 			printStats(g2, mGameState.getPlayer1State(), 10, 10);
 			if (isMultiplayer) {
 				printStats(g2, mGameState.getPlayer2State(), getWidth() - 100, 10);
+			}
+
+			switch (mGameState.getGameSessionState()) {
+			case PAUSED: {
+				g2.setFont(mFontStatus);
+				final String str = "PAUSED";
+				final Rectangle2D stringBounds = g2.getFontMetrics(mFontStatus).getStringBounds(str, g2);
+				g2.drawString(str, (int) (getWidth() / 2 - stringBounds.getWidth() / 2),
+						(int) (getHeight() / 2 + stringBounds.getHeight() / 2));
+				break;
+			}
+			case GAME_OVER: {
+				g2.setFont(mFontStatus);
+				final String str = "GAME OVER";
+				final Rectangle2D stringBounds = g2.getFontMetrics(mFontStatus).getStringBounds(str, g2);
+				g2.drawString(str, (int) (getWidth() / 2 - stringBounds.getWidth() / 2),
+						(int) (getHeight() / 2 + stringBounds.getHeight() / 2));
+				break;
+			}
+			default:
+				break;
 			}
 		}
 	}
@@ -166,8 +189,8 @@ public class GameField extends GamePanel {
 	 */
 	private void printStats(Graphics g, Player.State state, int posX, int posY) {
 		synchronized (state) {
-			g.drawString("Lives: " + state.getLives(), posX, FONT_SIZE + posY);
-			g.drawString("Points: " + state.getPoints(), posX, FONT_SIZE * 2 + posY);
+			g.drawString("Lives: " + state.getLives(), posX, FONT_SIZE_STATS + posY);
+			g.drawString("Points: " + state.getPoints(), posX, FONT_SIZE_STATS * 2 + posY);
 		}
 	}
 
@@ -178,22 +201,33 @@ public class GameField extends GamePanel {
 
 	public void onGameOver() {
 		if (mGameState != null) {
-			if (!mGameState.isMultiplayer()) {
-				int points = mGameState.getPlayer1State().getPoints();
-				if (GameManager.getInstance().isEnoughForToplist(points)) {
-					String name = "";
-					do {
-						name = JOptionPane.showInputDialog(this, "Hogy hívnak?", "Felkerültél a toplistára",
-								JOptionPane.QUESTION_MESSAGE);
-					} while (name == null || name.isEmpty());
+			SwingUtilities.invokeLater(new Runnable() {
 
-					ToplistItem toplistItem = new ToplistItem(name, points);
-					GameManager.getInstance().addToplistItem(toplistItem);
+				@Override
+				public void run() {
+					paintImmediately(0, 0, getWidth(), getHeight());
+					try {
+						Thread.sleep(3000);
+					} catch (InterruptedException e) {
+					}
+					if (!mGameState.isMultiplayer()) {
+						int points = mGameState.getPlayer1State().getPoints();
+						if (GameManager.getInstance().isEnoughForToplist(points)) {
+							String name = "";
+							do {
+								name = JOptionPane.showInputDialog(GameField.this, "Hogy hívnak?",
+										"Felkerültél a toplistára", JOptionPane.QUESTION_MESSAGE);
+							} while (name == null || name.isEmpty());
+
+							ToplistItem toplistItem = new ToplistItem(name, points);
+							GameManager.getInstance().addToplistItem(toplistItem);
+						}
+						mGameWindow.showPanel(PanelId.TOPLIST);
+					} else {
+						mGameWindow.showPanel(PanelId.GAME_MODE_SELECTOR);
+					}
 				}
-				mGameWindow.showPanel(PanelId.TOPLIST);
-			} else {
-				mGameWindow.showPanel(PanelId.GAME_MODE_SELECTOR);
-			}
+			});
 		}
 	}
 
