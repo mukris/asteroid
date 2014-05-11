@@ -171,7 +171,7 @@ public abstract class NetworkHelper<ReceiveType, SendType> {
 	 * Kapcsolat bontása. Meghívása kötelező az erőforrások felszabadítása
 	 * érdekben.
 	 */
-	protected void disconnect() {
+	public void disconnect() {
 		stopReceiving();
 
 		try {
