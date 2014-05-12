@@ -7,6 +7,7 @@ import hu.bme.mit.asteroid.network.NetworkClient;
 import hu.bme.mit.asteroid.network.NetworkDiscover;
 import hu.bme.mit.asteroid.network.NetworkListener;
 
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -134,6 +135,7 @@ public class ClientPanel extends GamePanel {
 		JScrollPane listScrollPane = new JScrollPane(mAddressList);
 
 		// TODO: normális layout
+		setLayout(new GridLayout(0,3));
 		add(mAddressEdit);
 		add(mBtnConnect);
 		add(listScrollPane);

@@ -27,6 +27,6 @@ public class SimpleWeapon extends Weapon implements Serializable {
 
 	@Override
 	public long getRepeatTime() {
-		return 250;
+		return 100;
 	}
 }

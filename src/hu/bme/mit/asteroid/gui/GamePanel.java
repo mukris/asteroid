@@ -2,6 +2,9 @@ package hu.bme.mit.asteroid.gui;
 
 import hu.bme.mit.asteroid.gui.GameWindow.PanelId;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Logger;
@@ -18,10 +21,12 @@ public abstract class GamePanel extends JPanel {
 	protected final GameWindow mGameWindow;
 	protected JButton mBtnBack;
 
+	
 	protected final Logger logger = Logger.getLogger(this.getClass().getName());
 
 	public GamePanel(GameWindow gameWindow) {
 		mGameWindow = gameWindow;
+		
 	}
 
 	/**
@@ -31,8 +36,11 @@ public abstract class GamePanel extends JPanel {
 	 *            Melyik panelre lépjünk vissza?
 	 * @return A Vissza gomb
 	 */
-	protected JButton getBackButton(final PanelId panelId) {
+	
+	int i=20;
+	public JButton getBackButton(final PanelId panelId) {
 		if (mBtnBack == null) {
+			
 			mBtnBack = new JButton("Vissza");
 			mBtnBack.addActionListener(new ActionListener() {
 
@@ -44,7 +52,7 @@ public abstract class GamePanel extends JPanel {
 		}
 		return mBtnBack;
 	}
-
+	
 	/**
 	 * Akkor hívódik, amikor a panel megjelenik
 	 */

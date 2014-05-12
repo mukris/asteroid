@@ -2,6 +2,8 @@ package hu.bme.mit.asteroid.gui;
 
 import hu.bme.mit.asteroid.gui.GameWindow.PanelId;
 
+import java.awt.Container;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -36,9 +38,10 @@ public class GameModeSelector extends GamePanel {
 				mGameWindow.showPanel(PanelId.MULTIPLAYER_PANEL);
 			}
 		});
-
+		
 		add(mBtnSingleplayer);
 		add(mBtnMultiplayer);
+		
 	}
 
 }

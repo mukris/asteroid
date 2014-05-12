@@ -10,6 +10,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.awt.Container;
+import java.awt.GridLayout;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -36,8 +38,7 @@ public class LevelSelectorPanel extends GamePanel {
 			}
 		});
 
-		add(mBtnToplist);
-		add(getBackButton(PanelId.GAME_MODE_SELECTOR));
+		
 
 		mLevelButtonListener = new ActionListener() {
 
@@ -62,7 +63,9 @@ public class LevelSelectorPanel extends GamePanel {
 			JButton button = new JButton("" + (i + 1));
 			button.addActionListener(mLevelButtonListener);
 			mLevelButtons.add(button);
+			
 			add(button);
+			
 		}
 		updateLevelUnlockStatus();
 	}
@@ -81,5 +84,10 @@ public class LevelSelectorPanel extends GamePanel {
 		for (int i = 0; i < mLevelButtons.size(); i++) {
 			mLevelButtons.get(i).setEnabled(i <= highestUnlockedLevel);
 		}
-	}
+		
+		add(mBtnToplist);
+		add(getBackButton(PanelId.GAME_MODE_SELECTOR));
+		
+		}
+	
 }
