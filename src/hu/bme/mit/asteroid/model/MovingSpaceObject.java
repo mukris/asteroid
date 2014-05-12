@@ -8,6 +8,8 @@ import java.io.Serializable;
  */
 public abstract class MovingSpaceObject extends SpaceObject implements Serializable {
 	private static final long serialVersionUID = 1967192605124590747L;
+	
+	public static final int MULTIPLIER = 15;
 
 	/**
 	 * Az objektum sebessége

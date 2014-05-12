@@ -4,6 +4,7 @@ import hu.bme.mit.asteroid.control.ControlEvent;
 import hu.bme.mit.asteroid.exceptions.GameOverException;
 import hu.bme.mit.asteroid.exceptions.LevelFinishedException;
 import hu.bme.mit.asteroid.exceptions.LevelNotExistsException;
+import hu.bme.mit.asteroid.network.NetworkClient;
 import hu.bme.mit.asteroid.network.NetworkListener;
 import hu.bme.mit.asteroid.network.NetworkServer;
 import hu.bme.mit.asteroid.player.Player;
@@ -24,6 +25,7 @@ public class MultiplayerGameSession extends GameSession {
 	private Player mPlayer2;
 	private NetworkListener mNetworkListener = null;
 	private NetworkServer mNetworkServer = null;
+	private NetworkClient mNetworkClient = null;
 
 	public MultiplayerGameSession(Type type, Player player1, Player player2, int levelID)
 			throws LevelNotExistsException {
@@ -32,8 +34,11 @@ public class MultiplayerGameSession extends GameSession {
 		mPlayer2 = player2;
 		mGameState = GameFactory.createMultiplayerGame(levelID, player1, player2);
 
+		GameManager gameManager = GameManager.getInstance();
 		if (mType == Type.NETWORK_SERVER) {
-			mNetworkServer = GameManager.getInstance().getNetworkServer();
+			mNetworkServer = gameManager.getNetworkServer();
+		} else if (mType == Type.NETWORK_CLIENT) {
+			mNetworkClient = gameManager.getNetworkClient();
 		}
 	}
 
@@ -49,12 +54,15 @@ public class MultiplayerGameSession extends GameSession {
 
 				@Override
 				public void onDisconnect() {
-					stop();
 					GameManager gameManager = GameManager.getInstance();
 					gameManager.unregisterClientListener(MultiplayerGameSession.this);
 					gameManager.unregisterServerListener(MultiplayerGameSession.this);
-					gameManager.onNetworkError();
-					setState(State.ERROR);
+					
+					if (getState() != GameSession.State.GAME_OVER) {
+						stop();
+						gameManager.onNetworkError();
+						setState(State.ERROR);
+					}
 				}
 
 				@Override
@@ -156,6 +164,7 @@ public class MultiplayerGameSession extends GameSession {
 		protected void onGameOver() {
 			super.onGameOver();
 			mNetworkServer.sendGameState(mGameState);
+			mNetworkServer.disconnect();
 		}
 	}
 
@@ -177,6 +186,12 @@ public class MultiplayerGameSession extends GameSession {
 					return;
 				}
 			}
+		}
+
+		@Override
+		protected void onGameOver() {
+			super.onGameOver();
+			mNetworkClient.disconnect();
 		}
 	}
 }

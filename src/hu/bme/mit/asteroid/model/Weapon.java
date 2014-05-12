@@ -9,7 +9,7 @@ public abstract class Weapon extends DirectionalMovingSpaceObject implements Clo
 	private static final long serialVersionUID = -1604474174764776496L;
 	
 	public static final int RADIUS = 10;
-	public static final int LIFE_SPAN_MILLIS = 5000;
+	public static final int LIFE_SPAN_MILLIS = 2000;
 	protected long mTimeMillisUntilDeath = 0;
 
 	public Weapon() {

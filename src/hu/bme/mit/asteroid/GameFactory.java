@@ -4,6 +4,7 @@ import hu.bme.mit.asteroid.exceptions.LevelNotExistsException;
 import hu.bme.mit.asteroid.exceptions.LevelNotUnlockedException;
 import hu.bme.mit.asteroid.model.Asteroid;
 import hu.bme.mit.asteroid.model.Asteroid.Type;
+import hu.bme.mit.asteroid.model.MovingSpaceObject;
 import hu.bme.mit.asteroid.model.SimpleWeapon;
 import hu.bme.mit.asteroid.model.SpaceShip;
 import hu.bme.mit.asteroid.model.Vector2D;
@@ -157,16 +158,16 @@ public class GameFactory {
 
 		switch (type) {
 		case LARGE:
-			maxSpeed = Asteroid.ASTEROID_SPEED_LARGE_MAX;
-			minSpeed = Asteroid.ASTEROID_SPEED_LARGE_MIN;
+			maxSpeed = (Asteroid.ASTEROID_SPEED_LARGE_MAX * MovingSpaceObject.MULTIPLIER);
+			minSpeed = (Asteroid.ASTEROID_SPEED_LARGE_MIN * MovingSpaceObject.MULTIPLIER);
 			break;
 		case MEDIUM:
-			maxSpeed = Asteroid.ASTEROID_SPEED_MEDIUM_MAX;
-			minSpeed = Asteroid.ASTEROID_SPEED_MEDIUM_MIN;
+			maxSpeed = (Asteroid.ASTEROID_SPEED_MEDIUM_MAX * MovingSpaceObject.MULTIPLIER);
+			minSpeed = (Asteroid.ASTEROID_SPEED_MEDIUM_MIN * MovingSpaceObject.MULTIPLIER);
 			break;
 		case SMALL:
-			maxSpeed = Asteroid.ASTEROID_SPEED_SMALL_MAX;
-			minSpeed = Asteroid.ASTEROID_SPEED_SMALL_MIN;
+			maxSpeed = (Asteroid.ASTEROID_SPEED_SMALL_MAX * MovingSpaceObject.MULTIPLIER);
+			minSpeed = (Asteroid.ASTEROID_SPEED_SMALL_MIN * MovingSpaceObject.MULTIPLIER);
 			break;
 
 		default:
