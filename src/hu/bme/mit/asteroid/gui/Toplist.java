@@ -19,17 +19,12 @@ public class Toplist extends GamePanel {
 	private static final long serialVersionUID = -2252378497305833635L;
 
 	private Container mToplistTable = new Container();
-	private final JLabel mLabelToplist;
 	private final JLabel mLabelHeaderRank;
 	private final JLabel mLabelHeaderName;
 	private final JLabel mLabelHeaderScore;
 
 	public Toplist(GameWindow gameWindow) {
 		super(gameWindow);
-
-		mLabelToplist = new JLabel("Toplista");
-		mLabelToplist.setFont(mHeaderFont);
-		mLabelToplist.setHorizontalAlignment(JLabel.CENTER);
 
 		mLabelHeaderRank = new JLabel("Helyezés");
 		mLabelHeaderRank.setFont(mHeaderFont);
@@ -50,7 +45,7 @@ public class Toplist extends GamePanel {
 		final BorderLayout borderLayout = new BorderLayout(50, 30);
 		setLayout(borderLayout);
 
-		add(mLabelToplist, BorderLayout.NORTH);
+		add(getHeaderLabel("Toplista"), BorderLayout.NORTH);
 		add(mToplistTable, BorderLayout.CENTER);
 		add(getBackButton(PanelId.GAME_MODE_SELECTOR), BorderLayout.SOUTH);
 	}

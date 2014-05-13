@@ -54,6 +54,7 @@ public class ServerPanel extends GamePanel {
 		
 		JScrollPane listScrollPane = new JScrollPane(mAddressList);
 		
+		add(getHeaderLabel("Szerver"));
 		add(listScrollPane);
 		
 		add(getBackButton(PanelId.MULTIPLAYER_PANEL));

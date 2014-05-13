@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.util.logging.Logger;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
@@ -22,6 +23,7 @@ public abstract class GamePanel extends JPanel {
 	protected final Font mButtonFont = new Font("Serif", Font.PLAIN, 20);
 
 	protected JButton mBtnBack;
+	protected JLabel mHeaderLabel;
 
 	protected final Logger logger = Logger.getLogger(this.getClass().getName());
 
@@ -50,6 +52,15 @@ public abstract class GamePanel extends JPanel {
 			});
 		}
 		return mBtnBack;
+	}
+
+	protected JLabel getHeaderLabel(String title) {
+		if (mHeaderLabel == null) {
+			mHeaderLabel = new JLabel(title);
+			mHeaderLabel.setFont(mHeaderFont);
+			mHeaderLabel.setHorizontalAlignment(JLabel.CENTER);
+		}
+		return mHeaderLabel;
 	}
 
 	/**

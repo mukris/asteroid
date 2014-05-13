@@ -78,7 +78,8 @@ public class LevelSelectorPanel extends GamePanel {
 			
 		}
 		updateLevelUnlockStatus();
-		
+
+		add(getHeaderLabel("Singleplayer"));
 		add(levelButtons);
 		add(mBtnToplist);
 		add(getBackButton(PanelId.GAME_MODE_SELECTOR));

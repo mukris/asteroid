@@ -68,7 +68,8 @@ public class MultiplayerPanel extends GamePanel {
 		multiPLayerButtons.add(mBtnLocal);
 		multiPLayerButtons.add(mBtnServer);
 		multiPLayerButtons.add(mBtnClient);
-		
+
+		add(getHeaderLabel("Multiplayer"));
 		add(multiPLayerButtons);
 		
 		add(getBackButton(PanelId.GAME_MODE_SELECTOR));

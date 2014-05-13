@@ -144,7 +144,8 @@ public class ClientPanel extends GamePanel {
 		clientButtons.add(mAddressEdit);
 		clientButtons.add(mBtnConnect);
 		clientButtons.add(listScrollPane);
-		
+
+		add(getHeaderLabel("Csatlakozás játékhoz"));
 		add(clientButtons);
 		add(getBackButton(PanelId.MULTIPLAYER_PANEL));
 	}
