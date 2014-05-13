@@ -32,6 +32,7 @@ public class LevelSelectorPanel extends GamePanel {
 		super(gameWindow);
 
 		mBtnToplist = new JButton("Toplista");
+		mBtnToplist.setFont(mButtonFont);
 		mBtnToplist.addActionListener(new ActionListener() {
 
 			@Override
@@ -70,6 +71,7 @@ public class LevelSelectorPanel extends GamePanel {
 
 		for (int i = 0; i < GameFactory.getLevelCount(); i++) {
 			JButton button = new JButton("" + (i + 1));
+			button.setFont(mButtonFont);
 			button.addActionListener(mLevelButtonListener);
 			mLevelButtons.add(button);
 			levelButtons.add(button);

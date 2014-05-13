@@ -27,6 +27,7 @@ public class MultiplayerPanel extends GamePanel {
 		super(gameWindow);
 		
 		mBtnLocal = new JButton("Helyi játék");
+		mBtnLocal.setFont(mButtonFont);
 		mBtnLocal.addActionListener(new ActionListener() {
 
 			@Override
@@ -41,6 +42,7 @@ public class MultiplayerPanel extends GamePanel {
 		});
 
 		mBtnServer = new JButton("Szerver indítása");
+		mBtnServer.setFont(mButtonFont);
 		mBtnServer.addActionListener(new ActionListener() {
 
 			@Override
@@ -50,6 +52,7 @@ public class MultiplayerPanel extends GamePanel {
 		});
 
 		mBtnClient = new JButton("Csatlakozás játékhoz");
+		mBtnClient.setFont(mButtonFont);
 		mBtnClient.addActionListener(new ActionListener() {
 
 			@Override

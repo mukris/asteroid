@@ -106,6 +106,7 @@ public class ClientPanel extends GamePanel {
 		});
 
 		mBtnConnect = new JButton("Csatlakozás");
+		mBtnConnect.setFont(mButtonFont);
 		mBtnConnect.setEnabled(false);
 		mBtnConnect.addActionListener(new ActionListener() {
 

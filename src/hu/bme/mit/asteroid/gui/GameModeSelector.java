@@ -23,6 +23,9 @@ public class GameModeSelector extends GamePanel {
 		mBtnMultiplayer = new JButton("Multiplayer");
 		mBtnSingleplayer = new JButton("SinglePlayer");
 
+		mBtnMultiplayer.setFont(mButtonFont);
+		mBtnSingleplayer.setFont(mButtonFont);
+
 		mBtnSingleplayer.addActionListener(new ActionListener() {
 
 			@Override
