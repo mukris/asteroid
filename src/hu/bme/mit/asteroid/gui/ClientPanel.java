@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.awt.Container;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -135,10 +136,15 @@ public class ClientPanel extends GamePanel {
 		JScrollPane listScrollPane = new JScrollPane(mAddressList);
 
 		// TODO: normális layout
-		setLayout(new GridLayout(0,3));
-		add(mAddressEdit);
-		add(mBtnConnect);
-		add(listScrollPane);
+		Container clientButtons = new Container();
+		
+		clientButtons.setLayout(new GridLayout(3,0));
+		clientButtons.setSize(10,10);
+		clientButtons.add(mAddressEdit);
+		clientButtons.add(mBtnConnect);
+		clientButtons.add(listScrollPane);
+		
+		add(clientButtons);
 		add(getBackButton(PanelId.MULTIPLAYER_PANEL));
 	}
 

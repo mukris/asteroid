@@ -61,7 +61,7 @@ public class MultiplayerPanel extends GamePanel {
 		Container multiPLayerButtons = new Container();
 		
 		multiPLayerButtons.setLayout(new GridLayout(4,0));
-		multiPLayerButtons.setSize(10,10);;
+		multiPLayerButtons.setSize(10,10);
 		multiPLayerButtons.add(mBtnLocal);
 		multiPLayerButtons.add(mBtnServer);
 		multiPLayerButtons.add(mBtnClient);

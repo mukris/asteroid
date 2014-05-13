@@ -11,9 +11,11 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.Container;
+import java.awt.Font;
 import java.awt.GridLayout;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 /**
@@ -58,18 +60,28 @@ public class LevelSelectorPanel extends GamePanel {
 		};
 
 		mLevelButtons = new ArrayList<>();
+		Container levelButtons = new Container();
+		
+		levelButtons.setLayout(new GridLayout(11,0));
+		JLabel jl = new JLabel("Pályák");
+		jl.setFont(new Font("Serif",1,20));
+		
+		levelButtons.add(jl);
 
 		for (int i = 0; i < GameFactory.getLevelCount(); i++) {
 			JButton button = new JButton("" + (i + 1));
 			button.addActionListener(mLevelButtonListener);
 			mLevelButtons.add(button);
-			
-			add(button);
+			levelButtons.add(button);
 			
 		}
 		updateLevelUnlockStatus();
+		
+		add(levelButtons);
+		add(mBtnToplist);
+		add(getBackButton(PanelId.GAME_MODE_SELECTOR));
 	}
-
+	
 	@Override
 	protected void onShow() {
 		super.onShow();
@@ -85,9 +97,7 @@ public class LevelSelectorPanel extends GamePanel {
 			mLevelButtons.get(i).setEnabled(i <= highestUnlockedLevel);
 		}
 		
-		add(mBtnToplist);
-		add(getBackButton(PanelId.GAME_MODE_SELECTOR));
-		
 		}
 	
+		
 }
