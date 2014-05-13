@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 public class SimpleWeapon extends Weapon implements Serializable {
 	private static final long serialVersionUID = -8572824732369348348L;
-	
+
 	private static final float SPEED = 1.6f;
 
 	public SimpleWeapon() {
@@ -27,6 +27,6 @@ public class SimpleWeapon extends Weapon implements Serializable {
 
 	@Override
 	public long getRepeatTime() {
-		return 100;
+		return 250;
 	}
 }
