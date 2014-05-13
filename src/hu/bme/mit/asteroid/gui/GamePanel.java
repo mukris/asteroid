@@ -2,26 +2,34 @@ package hu.bme.mit.asteroid.gui;
 
 import hu.bme.mit.asteroid.gui.GameWindow.PanelId;
 
+import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.logging.Logger;
 
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 
 /**
  * A kezelőfelület paneljeinek közös őse
  */
 public abstract class GamePanel extends JPanel {
-	private static final long serialVersionUID = 3534384992072339327L;
-	
+	private static final long serialVersionUID = -7570121177800374977L;
+
 	protected final GameWindow mGameWindow;
 	protected final Font mHeaderFont = new Font("Serif", Font.BOLD, 30);
 	protected final Font mStandardFont = new Font("Serif", Font.PLAIN, 20);
 	protected final Font mButtonFont = new Font("Serif", Font.PLAIN, 20);
 
+	protected Image mBackgroundImage;
 	protected JButton mBtnBack;
 	protected JLabel mHeaderLabel;
 
@@ -29,6 +37,17 @@ public abstract class GamePanel extends JPanel {
 
 	public GamePanel(GameWindow gameWindow) {
 		mGameWindow = gameWindow;
+		try {
+			mBackgroundImage = ImageIO.read(new File("res/space_1.jpg"));
+			UIManager.put("Label.foreground", Color.WHITE);
+		} catch (IOException e) {
+		}
+	}
+
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.drawImage(mBackgroundImage, 0, 0, null);
 	}
 
 	/**
@@ -38,7 +57,7 @@ public abstract class GamePanel extends JPanel {
 	 *            Melyik panelre lépjünk vissza?
 	 * @return A Vissza gomb
 	 */
-	public JButton getBackButton(final PanelId panelId) {
+	protected JButton getBackButton(final PanelId panelId) {
 		if (mBtnBack == null) {
 
 			mBtnBack = new JButton("Vissza");
