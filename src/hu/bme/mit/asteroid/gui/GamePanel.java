@@ -2,9 +2,7 @@ package hu.bme.mit.asteroid.gui;
 
 import hu.bme.mit.asteroid.gui.GameWindow.PanelId;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.GridLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Logger;
@@ -16,17 +14,19 @@ import javax.swing.JPanel;
  * A kezelőfelület paneljeinek közös őse
  */
 public abstract class GamePanel extends JPanel {
-	private static final long serialVersionUID = 6984627964669987283L;
-
+	private static final long serialVersionUID = 3534384992072339327L;
+	
 	protected final GameWindow mGameWindow;
+	protected final Font mHeaderFont = new Font("Serif", Font.BOLD, 30);
+	protected final Font mStandardFont = new Font("Serif", Font.PLAIN, 20);
+	protected final Font mButtonFont = new Font("Serif", Font.PLAIN, 20);
+
 	protected JButton mBtnBack;
 
-	
 	protected final Logger logger = Logger.getLogger(this.getClass().getName());
 
 	public GamePanel(GameWindow gameWindow) {
 		mGameWindow = gameWindow;
-		
 	}
 
 	/**
@@ -36,12 +36,11 @@ public abstract class GamePanel extends JPanel {
 	 *            Melyik panelre lépjünk vissza?
 	 * @return A Vissza gomb
 	 */
-	
-	int i=20;
 	public JButton getBackButton(final PanelId panelId) {
 		if (mBtnBack == null) {
-			
+
 			mBtnBack = new JButton("Vissza");
+			mBtnBack.setFont(mButtonFont);
 			mBtnBack.addActionListener(new ActionListener() {
 
 				@Override
@@ -52,7 +51,7 @@ public abstract class GamePanel extends JPanel {
 		}
 		return mBtnBack;
 	}
-	
+
 	/**
 	 * Akkor hívódik, amikor a panel megjelenik
 	 */
@@ -66,5 +65,4 @@ public abstract class GamePanel extends JPanel {
 	protected void onHide() {
 
 	}
-
 }
