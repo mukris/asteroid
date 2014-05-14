@@ -8,7 +8,6 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
 
@@ -38,7 +37,8 @@ public abstract class GamePanel extends JPanel {
 	public GamePanel(GameWindow gameWindow) {
 		mGameWindow = gameWindow;
 		try {
-			mBackgroundImage = ImageIO.read(new File("res/space_1.jpg"));
+			mBackgroundImage = ImageIO
+					.read(GamePanel.class.getResourceAsStream("/hu/bme/mit/asteroid/res/space_1.jpg"));
 			UIManager.put("Label.foreground", Color.WHITE);
 		} catch (IOException e) {
 		}

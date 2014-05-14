@@ -17,7 +17,6 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -46,23 +45,23 @@ public class GameField extends GamePanel {
 	public GameField(GameWindow gameWindow) {
 		super(gameWindow);
 		try {
-			mImageBackground = ImageIO.read(new File("res/space_1.jpg"));
-			final Image imageSpaceship1Default = ImageIO.read(new File("res/Spaceship_G_nofire.png"));
-			final Image imageSpaceship1Acc = ImageIO.read(new File("res/Spaceship_G_fire.png"));
-			final Image imageSpaceship2Default = ImageIO.read(new File("res/Spaceship_R_nofire.png"));
-			final Image imageSpaceship2Acc = ImageIO.read(new File("res/Spaceship_R_fire.png"));
+			mImageBackground = ImageIO.read(GameField.class.getResourceAsStream("/hu/bme/mit/asteroid/res/space_1.jpg"));
+			final Image imageSpaceship1Default = ImageIO.read(GameField.class.getResourceAsStream("/hu/bme/mit/asteroid/res/Spaceship_G_nofire.png"));
+			final Image imageSpaceship1Acc = ImageIO.read(GameField.class.getResourceAsStream("/hu/bme/mit/asteroid/res/Spaceship_G_fire.png"));
+			final Image imageSpaceship2Default = ImageIO.read(GameField.class.getResourceAsStream("/hu/bme/mit/asteroid/res/Spaceship_R_nofire.png"));
+			final Image imageSpaceship2Acc = ImageIO.read(GameField.class.getResourceAsStream("/hu/bme/mit/asteroid/res/Spaceship_R_fire.png"));
 			mSpaceshipPainter = new SpaceShipPainter(imageSpaceship1Default, imageSpaceship1Acc,
 					imageSpaceship2Default, imageSpaceship2Acc);
 
-			final Image imageAsteroidSmall = ImageIO.read(new File("res/asteroid_1.png"));
-			final Image imageAsteroidMedium = ImageIO.read(new File("res/asteroid_2.png"));
-			final Image imageAsteroidLarge = ImageIO.read(new File("res/asteroid_3.png"));
+			final Image imageAsteroidSmall = ImageIO.read(GameField.class.getResourceAsStream("/hu/bme/mit/asteroid/res/asteroid_1.png"));
+			final Image imageAsteroidMedium = ImageIO.read(GameField.class.getResourceAsStream("/hu/bme/mit/asteroid/res/asteroid_2.png"));
+			final Image imageAsteroidLarge = ImageIO.read(GameField.class.getResourceAsStream("/hu/bme/mit/asteroid/res/asteroid_3.png"));
 			mAsteroidPainter = new AsteroidPainter(imageAsteroidSmall, imageAsteroidMedium, imageAsteroidLarge);
 
-			final Image imageWeapon = ImageIO.read(new File("res/weapon.png"));
+			final Image imageWeapon = ImageIO.read(GameField.class.getResourceAsStream("/hu/bme/mit/asteroid/res/weapon.png"));
 			mWeaponPainter = new WeaponPainter(imageWeapon);
 
-			final Image imagePowerup = ImageIO.read(new File("res/powerup.png"));
+			final Image imagePowerup = ImageIO.read(GameField.class.getResourceAsStream("/hu/bme/mit/asteroid/res/powerup.png"));
 			mPowerupPainter = new PowerupPainter(imagePowerup);
 
 		} catch (IOException e) {

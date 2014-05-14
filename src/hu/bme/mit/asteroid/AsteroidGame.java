@@ -3,7 +3,6 @@ package hu.bme.mit.asteroid;
 import hu.bme.mit.asteroid.gui.GameWindow;
 
 import java.awt.Image;
-import java.io.File;
 
 import javax.imageio.ImageIO;
 import javax.swing.SwingUtilities;
@@ -41,7 +40,8 @@ public class AsteroidGame {
 		gameWindow.setSize(WINDOW_SIZE_X, WINDOW_SIZE_Y);
 
 		try {
-			Image icon = ImageIO.read(new File("res/Spaceship_G_fire.png"));
+			Image icon = ImageIO.read(AsteroidGame.class
+					.getResourceAsStream("/hu/bme/mit/asteroid/res/Spaceship_G_fire.png"));
 			gameWindow.setIconImage(icon);
 		} catch (Exception e) {
 		}
