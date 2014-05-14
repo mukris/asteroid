@@ -11,6 +11,8 @@ import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.io.IOException;
 import java.net.InetAddress;
 
@@ -102,6 +104,22 @@ public class ClientPanel extends GamePanel {
 					mBtnConnect.setEnabled(false);
 				} else {
 					mBtnConnect.setEnabled(true);
+				}
+			}
+		});
+		mAddressEdit.addFocusListener(new FocusListener() {
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (mAddressEdit.getText().isEmpty()) {
+					mAddressEdit.setText(PLACEHOLDER);
+				}
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				if (mAddressEdit.getText().equals(PLACEHOLDER)) {
+					mAddressEdit.setText("");
 				}
 			}
 		});
