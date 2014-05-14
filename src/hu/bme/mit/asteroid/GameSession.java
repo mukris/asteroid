@@ -53,7 +53,6 @@ public abstract class GameSession implements ControlInterface.Callback {
 	protected GameRunner mGameRunner;
 	protected Player mPlayer1;
 	protected State mState;
-	protected State mOldState;
 	protected int mLevelID;
 
 	protected int mWidth;
@@ -173,11 +172,9 @@ public abstract class GameSession implements ControlInterface.Callback {
 		switch (event.getType()) {
 		case INVERT_PAUSE:
 			if (getState() != State.PAUSED) {
-				mOldState = getState();
 				pause();
 			} else {
 				start();
-				setState(mOldState);
 			}
 			break;
 
