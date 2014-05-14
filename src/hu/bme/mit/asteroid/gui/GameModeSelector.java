@@ -50,7 +50,7 @@ public class GameModeSelector extends GamePanel {
 		constraints.gridwidth = 2;
 		constraints.weighty = 1;
 		constraints.anchor = GridBagConstraints.PAGE_START;
-		add(getHeaderLabel("Asteriod Shooter"), constraints);
+		add(getHeaderLabel("Asteroid Shooter"), constraints);
 
 		constraints.gridx = 0;
 		constraints.gridy = 1;
