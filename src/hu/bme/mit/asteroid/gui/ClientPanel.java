@@ -79,6 +79,7 @@ public class ClientPanel extends GamePanel {
 		super(gameWindow);
 
 		mAddressEdit = new JTextField(PLACEHOLDER, 16);
+		mAddressEdit.setFont(mStandardFont);
 		mAddressEdit.getDocument().addDocumentListener(new DocumentListener() {
 
 			@Override
@@ -125,6 +126,7 @@ public class ClientPanel extends GamePanel {
 		mAddressList = new JList<>(mAddresses);
 		mAddressList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		mAddressList.setVisibleRowCount(5);
+		mAddressList.setFont(mStandardFont);
 		mAddressList.addListSelectionListener(new ListSelectionListener() {
 
 			@Override

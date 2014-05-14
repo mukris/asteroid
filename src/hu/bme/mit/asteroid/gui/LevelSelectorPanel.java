@@ -7,7 +7,6 @@ import hu.bme.mit.asteroid.exceptions.LevelNotLoadableException;
 import hu.bme.mit.asteroid.gui.GameWindow.PanelId;
 
 import java.awt.Container;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -63,7 +62,7 @@ public class LevelSelectorPanel extends GamePanel {
 
 		levelButtons.setLayout(new GridLayout(11,0));
 		JLabel jl = new JLabel("Pályák");
-		jl.setFont(new Font("Serif",1,20));
+		jl.setFont(mStandardFont);
 
 		levelButtons.add(jl);
 
