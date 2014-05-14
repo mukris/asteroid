@@ -7,6 +7,8 @@ import hu.bme.mit.asteroid.exceptions.LevelNotLoadableException;
 import hu.bme.mit.asteroid.gui.GameWindow.PanelId;
 
 import java.awt.Container;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -57,14 +59,17 @@ public class LevelSelectorPanel extends GamePanel {
 			}
 		};
 
+		JLabel labelLevels = new JLabel("Pályák");
+		labelLevels.setFont(mStandardFont);
+		labelLevels.setHorizontalAlignment(JLabel.CENTER);
+
 		mLevelButtons = new ArrayList<>();
 		Container levelButtons = new Container();
 
-		levelButtons.setLayout(new GridLayout(11,0));
-		JLabel jl = new JLabel("Pályák");
-		jl.setFont(mStandardFont);
-
-		levelButtons.add(jl);
+		GridLayout gridLayout = new GridLayout(2, 5);
+		gridLayout.setHgap(10);
+		gridLayout.setVgap(10);
+		levelButtons.setLayout(gridLayout);
 
 		for (int i = 0; i < GameFactory.getLevelCount(); i++) {
 			JButton button = new JButton("" + (i + 1));
@@ -76,10 +81,36 @@ public class LevelSelectorPanel extends GamePanel {
 		}
 		updateLevelUnlockStatus();
 
-		add(getHeaderLabel("Singleplayer"));
-		add(levelButtons);
-		add(mBtnToplist);
-		add(getBackButton(PanelId.GAME_MODE_SELECTOR));
+		setLayout(new GridBagLayout());
+		GridBagConstraints constraints = new GridBagConstraints();
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.gridwidth = 1;
+		constraints.ipadx = 200;
+		constraints.weighty = 1;
+		constraints.anchor = GridBagConstraints.PAGE_START;
+		add(getHeaderLabel("Singleplayer"), constraints);
+
+		constraints.gridy = 1;
+		constraints.weighty = 0;
+		constraints.anchor = GridBagConstraints.CENTER;
+		add(labelLevels, constraints);
+
+		constraints.gridy = 2;
+		constraints.weighty = 4;
+		constraints.fill = GridBagConstraints.BOTH;
+		add(levelButtons, constraints);
+
+		constraints.gridy = 3;
+		constraints.weighty = 1;
+		constraints.fill = GridBagConstraints.NONE;
+		constraints.anchor = GridBagConstraints.PAGE_END;
+		add(mBtnToplist, constraints);
+
+		constraints.gridy = 4;
+		constraints.ipady = 30;
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		add(getBackButton(PanelId.GAME_MODE_SELECTOR), constraints);
 	}
 
 	@Override
