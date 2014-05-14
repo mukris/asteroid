@@ -19,7 +19,7 @@ public abstract class SpaceObject implements Serializable {
 	private int mRadius;
 	
 	/**
-	 * Az objektum (aszteroida) Èlete
+	 * Az objektum (aszteroida) √©lete
 	 */
 	private int mHitsLeft;
 
@@ -96,7 +96,7 @@ public abstract class SpaceObject implements Serializable {
 	}
 	
 	/**
-	 * Az objektum (aszteroida) h·tralevı ÈletÈnek ·llÌt·sa
+	 * Az objektum (aszteroida) h√°tralev≈ë √©let√©nek √°ll√°as
 	 * @param hitsleft
 	 */
 	public void setHitsLeft(int hitsleft) {
@@ -104,7 +104,7 @@ public abstract class SpaceObject implements Serializable {
 	}
 	
 	/**
-	 * @return az objektum (aszteroida) h·tralevı ÈletÈnek sz·ma
+	 * @return az objektum (aszteroida) h√°tral√©v≈ë √©let√©nek sz√°ma
 	 */
 	public int getHitsLeft() {
 		return mHitsLeft;

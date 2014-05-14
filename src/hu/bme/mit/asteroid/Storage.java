@@ -81,8 +81,6 @@ public class Storage {
 	 * 
 	 * @param levelID
 	 *            A pálya száma
-	 * @param unlocked
-	 *            True ha igen, false ha nem
 	 */
 	public void setLevelUnlocked(int levelID) {
 		if (levelID > getIntProperty(mProperties, KEY_UNLOCKED)) {

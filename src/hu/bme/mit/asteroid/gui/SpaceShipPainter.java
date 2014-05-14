@@ -27,10 +27,14 @@ public class SpaceShipPainter extends Painter {
 	 * {@link SpaceShip} képét annak állapotától függően kirajzolja a
 	 * játékmezőre
 	 * 
-	 * @param defaultImage
-	 *            Az űrhajó normál képe
-	 * @param acceleratingImage
-	 *            Az űrhajó képe bekapcsolt rakétával
+	 * @param defaultImage1
+	 *            Az első űrhajó normál képe
+	 * @param acceleratingImage1
+	 *            Az első űrhajó képe bekapcsolt rakétával
+	 * @param defaultImage2
+	 *            A második űrhajó normál képe
+	 * @param acceleratingImage2
+	 *            A második űrhajó képe bekapcsolt rakétával
 	 */
 	public SpaceShipPainter(Image defaultImage1, Image acceleratingImage1, Image defaultImage2, Image acceleratingImage2) {
 		mDefaultImage1 = defaultImage1
@@ -41,7 +45,7 @@ public class SpaceShipPainter extends Painter {
 				.getScaledInstance(SpaceShip.RADIUS * 2, SpaceShip.RADIUS * 2, Image.SCALE_SMOOTH);
 		mAcceleratingImage2 = acceleratingImage2.getScaledInstance(SpaceShip.RADIUS * 2, SpaceShip.RADIUS * 2,
 				Image.SCALE_SMOOTH);
-		
+
 		mImageOffsetHorizontal = mDefaultImage1.getWidth(null) / 2;
 		mImageOffsetVertical = mDefaultImage1.getHeight(null) / 2;
 	}
