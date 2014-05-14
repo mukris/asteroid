@@ -56,7 +56,6 @@ public class ServerPanel extends GamePanel {
 		
 		add(getHeaderLabel("Szerver"));
 		add(listScrollPane);
-		
 		add(getBackButton(PanelId.MULTIPLAYER_PANEL));
 	}
 

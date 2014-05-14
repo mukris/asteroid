@@ -6,13 +6,13 @@ import hu.bme.mit.asteroid.Storage;
 import hu.bme.mit.asteroid.exceptions.LevelNotLoadableException;
 import hu.bme.mit.asteroid.gui.GameWindow.PanelId;
 
+import java.awt.Container;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.awt.Container;
-import java.awt.Font;
-import java.awt.GridLayout;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -41,8 +41,6 @@ public class LevelSelectorPanel extends GamePanel {
 			}
 		});
 
-		
-
 		mLevelButtonListener = new ActionListener() {
 
 			@Override
@@ -62,11 +60,11 @@ public class LevelSelectorPanel extends GamePanel {
 
 		mLevelButtons = new ArrayList<>();
 		Container levelButtons = new Container();
-		
+
 		levelButtons.setLayout(new GridLayout(11,0));
 		JLabel jl = new JLabel("Pályák");
 		jl.setFont(new Font("Serif",1,20));
-		
+
 		levelButtons.add(jl);
 
 		for (int i = 0; i < GameFactory.getLevelCount(); i++) {
@@ -75,7 +73,7 @@ public class LevelSelectorPanel extends GamePanel {
 			button.addActionListener(mLevelButtonListener);
 			mLevelButtons.add(button);
 			levelButtons.add(button);
-			
+
 		}
 		updateLevelUnlockStatus();
 
@@ -84,7 +82,7 @@ public class LevelSelectorPanel extends GamePanel {
 		add(mBtnToplist);
 		add(getBackButton(PanelId.GAME_MODE_SELECTOR));
 	}
-	
+
 	@Override
 	protected void onShow() {
 		super.onShow();
@@ -99,8 +97,5 @@ public class LevelSelectorPanel extends GamePanel {
 		for (int i = 0; i < mLevelButtons.size(); i++) {
 			mLevelButtons.get(i).setEnabled(i <= highestUnlockedLevel);
 		}
-		
-		}
-	
-		
+	}
 }

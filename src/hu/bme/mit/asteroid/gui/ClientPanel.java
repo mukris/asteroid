@@ -7,12 +7,12 @@ import hu.bme.mit.asteroid.network.NetworkClient;
 import hu.bme.mit.asteroid.network.NetworkDiscover;
 import hu.bme.mit.asteroid.network.NetworkListener;
 
+import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.InetAddress;
-import java.awt.Container;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -138,9 +138,9 @@ public class ClientPanel extends GamePanel {
 
 		// TODO: normális layout
 		Container clientButtons = new Container();
-		
-		clientButtons.setLayout(new GridLayout(3,0));
-		clientButtons.setSize(10,10);
+
+		clientButtons.setLayout(new GridLayout(3, 0));
+		clientButtons.setSize(10, 10);
 		clientButtons.add(mAddressEdit);
 		clientButtons.add(mBtnConnect);
 		clientButtons.add(listScrollPane);
@@ -156,7 +156,7 @@ public class ClientPanel extends GamePanel {
 		logger.entering(this.getClass().getName(), "onShow()");
 
 		GameManager gameManager = GameManager.getInstance();
-		
+
 		mAddresses.clear();
 
 		mNetworkDiscover = gameManager.getNetworkDiscover();

@@ -463,20 +463,24 @@ public abstract class GameSession implements ControlInterface.Callback {
 						switch (asteroid.getType()) {
 						case LARGE:
 							toAdd.add(new Asteroid(Type.MEDIUM, asteroid.getPosition().clone(), Vector2D
-									.generateRandom((Asteroid.ASTEROID_SPEED_MEDIUM_MIN * MovingSpaceObject.MULTIPLIER),
+									.generateRandom(
+											(Asteroid.ASTEROID_SPEED_MEDIUM_MIN * MovingSpaceObject.MULTIPLIER),
 											(Asteroid.ASTEROID_SPEED_MEDIUM_MAX * MovingSpaceObject.MULTIPLIER))));
 
 							toAdd.add(new Asteroid(Type.MEDIUM, asteroid.getPosition().clone(), Vector2D
-									.generateRandom((Asteroid.ASTEROID_SPEED_MEDIUM_MIN * MovingSpaceObject.MULTIPLIER),
+									.generateRandom(
+											(Asteroid.ASTEROID_SPEED_MEDIUM_MIN * MovingSpaceObject.MULTIPLIER),
 											(Asteroid.ASTEROID_SPEED_MEDIUM_MAX * MovingSpaceObject.MULTIPLIER))));
 							toRemove.add(asteroid);
 							break;
 
 						case MEDIUM:
 							toAdd.add(new Asteroid(Type.SMALL, asteroid.getPosition().clone(), Vector2D.generateRandom(
-									(Asteroid.ASTEROID_SPEED_SMALL_MIN * MovingSpaceObject.MULTIPLIER), (Asteroid.ASTEROID_SPEED_SMALL_MAX * MovingSpaceObject.MULTIPLIER))));
+									(Asteroid.ASTEROID_SPEED_SMALL_MIN * MovingSpaceObject.MULTIPLIER),
+									(Asteroid.ASTEROID_SPEED_SMALL_MAX * MovingSpaceObject.MULTIPLIER))));
 							toAdd.add(new Asteroid(Type.SMALL, asteroid.getPosition().clone(), Vector2D.generateRandom(
-									(Asteroid.ASTEROID_SPEED_SMALL_MIN * MovingSpaceObject.MULTIPLIER), (Asteroid.ASTEROID_SPEED_SMALL_MAX * MovingSpaceObject.MULTIPLIER))));
+									(Asteroid.ASTEROID_SPEED_SMALL_MIN * MovingSpaceObject.MULTIPLIER),
+									(Asteroid.ASTEROID_SPEED_SMALL_MAX * MovingSpaceObject.MULTIPLIER))));
 							toRemove.add(asteroid);
 							break;
 
@@ -559,12 +563,18 @@ public abstract class GameSession implements ControlInterface.Callback {
 								} else {
 									switch (asteroid.getType()) {
 									case LARGE:
-										toAdd.add(new Asteroid(Type.MEDIUM, asteroid.getPosition().clone(), Vector2D
-												.generateRandom((Asteroid.ASTEROID_SPEED_MEDIUM_MIN * MovingSpaceObject.MULTIPLIER),
+										toAdd.add(new Asteroid(
+												Type.MEDIUM,
+												asteroid.getPosition().clone(),
+												Vector2D.generateRandom(
+														(Asteroid.ASTEROID_SPEED_MEDIUM_MIN * MovingSpaceObject.MULTIPLIER),
 														(Asteroid.ASTEROID_SPEED_MEDIUM_MAX * MovingSpaceObject.MULTIPLIER))));
 
-										toAdd.add(new Asteroid(Type.MEDIUM, asteroid.getPosition().clone(), Vector2D
-												.generateRandom((Asteroid.ASTEROID_SPEED_MEDIUM_MIN * MovingSpaceObject.MULTIPLIER),
+										toAdd.add(new Asteroid(
+												Type.MEDIUM,
+												asteroid.getPosition().clone(),
+												Vector2D.generateRandom(
+														(Asteroid.ASTEROID_SPEED_MEDIUM_MIN * MovingSpaceObject.MULTIPLIER),
 														(Asteroid.ASTEROID_SPEED_MEDIUM_MAX * MovingSpaceObject.MULTIPLIER))));
 
 										toRemove.add(asteroid);
@@ -572,11 +582,17 @@ public abstract class GameSession implements ControlInterface.Callback {
 										break;
 
 									case MEDIUM:
-										toAdd.add(new Asteroid(Type.SMALL, asteroid.getPosition().clone(), Vector2D
-												.generateRandom((Asteroid.ASTEROID_SPEED_SMALL_MIN * MovingSpaceObject.MULTIPLIER),
+										toAdd.add(new Asteroid(
+												Type.SMALL,
+												asteroid.getPosition().clone(),
+												Vector2D.generateRandom(
+														(Asteroid.ASTEROID_SPEED_SMALL_MIN * MovingSpaceObject.MULTIPLIER),
 														(Asteroid.ASTEROID_SPEED_SMALL_MAX * MovingSpaceObject.MULTIPLIER))));
-										toAdd.add(new Asteroid(Type.SMALL, asteroid.getPosition().clone(), Vector2D
-												.generateRandom((Asteroid.ASTEROID_SPEED_SMALL_MIN * MovingSpaceObject.MULTIPLIER),
+										toAdd.add(new Asteroid(
+												Type.SMALL,
+												asteroid.getPosition().clone(),
+												Vector2D.generateRandom(
+														(Asteroid.ASTEROID_SPEED_SMALL_MIN * MovingSpaceObject.MULTIPLIER),
 														(Asteroid.ASTEROID_SPEED_SMALL_MAX * MovingSpaceObject.MULTIPLIER))));
 										toRemove.add(asteroid);
 										state.addPoints(40);
