@@ -408,7 +408,7 @@ public abstract class GameSession implements ControlInterface.Callback {
 				for (Weapon weapon : weapons) {
 					weapon.decreaseTimeUntilDeath(timeDelta);
 					if (weapon.isAlive()) {
-						Vector2D displacement = weapon.getSpeed().clone().multiply(timeDelta / 100f);
+						Vector2D displacement = weapon.getSpeed().clone().multiply(timeDelta / 1000f);
 						weapon.getPosition().add(displacement).inRange(mWidth, mHeight);
 					} else {
 						deadWeapons.add(weapon);
@@ -624,12 +624,12 @@ public abstract class GameSession implements ControlInterface.Callback {
 				}
 			}
 		}
-		
-		protected void reducePoints (long timeDelta, Player.State state){
-			if ((mReducePointTime -= timeDelta) < 0){
+
+		protected void reducePoints(long timeDelta, Player.State state) {
+			if ((mReducePointTime -= timeDelta) < 0) {
 				mReducePointTime = 1000;
-				if(state.getPoints() > 0){
-			state.addPoints(-5);
+				if (state.getPoints() > 0) {
+					state.addPoints(-5);
 				}
 			}
 		}
