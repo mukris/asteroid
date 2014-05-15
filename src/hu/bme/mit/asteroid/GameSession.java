@@ -406,7 +406,7 @@ public abstract class GameSession implements ControlInterface.Callback {
 				for (Weapon weapon : weapons) {
 					weapon.decreaseTimeUntilDeath(timeDelta);
 					if (weapon.isAlive()) {
-						Vector2D displacement = weapon.getSpeed().clone().multiply(timeDelta / 100f);
+						Vector2D displacement = weapon.getSpeed().clone().multiply(timeDelta / 1000f);
 						weapon.getPosition().add(displacement).inRange(mWidth, mHeight);
 					} else {
 						deadWeapons.add(weapon);

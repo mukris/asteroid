@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class SimpleWeapon extends Weapon implements Serializable {
 	private static final long serialVersionUID = -8572824732369348348L;
 
-	private static final float SPEED = 1.6f;
+	private static final float SPEED = 16f;
 
 	public SimpleWeapon() {
 		this(new Vector2D());
