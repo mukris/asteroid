@@ -4,9 +4,11 @@ import hu.bme.mit.asteroid.Storage;
 import hu.bme.mit.asteroid.gui.GameWindow.PanelId;
 import hu.bme.mit.asteroid.model.ToplistItem;
 
-import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -16,7 +18,7 @@ import javax.swing.JLabel;
  * A toplista megjelenítését végző panel
  */
 public class Toplist extends GamePanel {
-	private static final long serialVersionUID = -2252378497305833635L;
+	private static final long serialVersionUID = 2671114035095351953L;
 
 	private Container mToplistTable = new Container();
 	private final JLabel mLabelHeaderRank;
@@ -42,12 +44,30 @@ public class Toplist extends GamePanel {
 
 		mToplistTable.setLayout(new GridLayout(11, 3));
 
-		final BorderLayout borderLayout = new BorderLayout(50, 30);
-		setLayout(borderLayout);
+		setLayout(new GridBagLayout());
+		GridBagConstraints constraints = new GridBagConstraints();
 
-		add(getHeaderLabel("Toplista"), BorderLayout.NORTH);
-		add(mToplistTable, BorderLayout.CENTER);
-		add(getBackButton(PanelId.GAME_MODE_SELECTOR), BorderLayout.SOUTH);
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.gridwidth = 1;
+		constraints.ipadx = 200;
+		constraints.weighty = 1;
+		constraints.weightx = 1;
+		constraints.anchor = GridBagConstraints.PAGE_START;
+		add(getHeaderLabel("Toplista"), constraints);
+
+		constraints.gridy = 1;
+		constraints.anchor = GridBagConstraints.CENTER;
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.insets = new Insets(15, 30, 30, 0);
+		add(mToplistTable, constraints);
+
+		constraints.gridy = 2;
+		constraints.ipady = 30;
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.anchor = GridBagConstraints.PAGE_END;
+		constraints.insets = new Insets(0, 30, 30, 30);
+		add(getBackButton(PanelId.GAME_MODE_SELECTOR), constraints);
 	}
 
 	@Override

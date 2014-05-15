@@ -10,6 +10,7 @@ import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -98,6 +99,7 @@ public class LevelSelectorPanel extends GamePanel {
 
 		constraints.gridy = 2;
 		constraints.weighty = 4;
+		constraints.insets = new Insets(10, 30, 0, 30);
 		constraints.fill = GridBagConstraints.BOTH;
 		add(levelButtons, constraints);
 
@@ -110,6 +112,7 @@ public class LevelSelectorPanel extends GamePanel {
 		constraints.gridy = 4;
 		constraints.ipady = 30;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.insets = new Insets(0, 30, 30, 30);
 		add(getBackButton(PanelId.GAME_MODE_SELECTOR), constraints);
 	}
 
