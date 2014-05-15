@@ -24,11 +24,11 @@ public abstract class GamePanel extends JPanel {
 	private static final long serialVersionUID = -7570121177800374977L;
 
 	protected final GameWindow mGameWindow;
-	protected final Font mHeaderFont = new Font("Serif", Font.BOLD, 30);
-	protected final Font mStandardFont = new Font("Serif", Font.PLAIN, 20);
-	protected final Font mButtonFont = new Font("Serif", Font.PLAIN, 20);
+	protected static final Font mHeaderFont = new Font("Serif", Font.BOLD, 30);
+	protected static final Font mStandardFont = new Font("Serif", Font.PLAIN, 20);
+	protected static final Font mButtonFont = new Font("Serif", Font.PLAIN, 20);
 
-	protected Image mBackgroundImage;
+	protected static Image mBackgroundImage;
 	protected JButton mBtnBack;
 	protected JLabel mHeaderLabel;
 
