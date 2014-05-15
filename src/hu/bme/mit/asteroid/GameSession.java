@@ -54,6 +54,7 @@ public abstract class GameSession implements ControlInterface.Callback {
 	protected Player mPlayer1;
 	protected State mState;
 	protected int mLevelID;
+	protected int mReducePointTime = 1000;
 
 	protected int mWidth;
 	protected int mHeight;
@@ -625,9 +626,8 @@ public abstract class GameSession implements ControlInterface.Callback {
 		}
 		
 		protected void reducePoints (long timeDelta, Player.State state){
-			long baseTime = 20;
-			if ((baseTime -= timeDelta) < 0){
-				baseTime = 20;
+			if ((mReducePointTime -= timeDelta) < 0){
+				mReducePointTime = 1000;
 			state.addPoints(-5);
 			}
 		}
