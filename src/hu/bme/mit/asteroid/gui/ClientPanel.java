@@ -7,8 +7,9 @@ import hu.bme.mit.asteroid.network.NetworkClient;
 import hu.bme.mit.asteroid.network.NetworkDiscover;
 import hu.bme.mit.asteroid.network.NetworkListener;
 
-import java.awt.Container;
-import java.awt.GridLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -156,18 +157,46 @@ public class ClientPanel extends GamePanel {
 
 		JScrollPane listScrollPane = new JScrollPane(mAddressList);
 
-		// TODO: normális layout
-		Container clientButtons = new Container();
+		setLayout(new GridBagLayout());
+		GridBagConstraints constraints = new GridBagConstraints();
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.gridwidth = 2;
+		constraints.ipadx = 200;
+		constraints.weighty = 1;
+		constraints.weightx = 1;
+		constraints.anchor = GridBagConstraints.PAGE_START;
+		add(getHeaderLabel("Csatlakozás játékhoz"), constraints);
 
-		clientButtons.setLayout(new GridLayout(3, 0));
-		clientButtons.setSize(10, 10);
-		clientButtons.add(mAddressEdit);
-		clientButtons.add(mBtnConnect);
-		clientButtons.add(listScrollPane);
+		constraints.gridy = 1;
+		constraints.gridwidth = 1;
+		constraints.weightx = 3;
+		constraints.anchor = GridBagConstraints.CENTER;
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.insets = new Insets(0, 30, 15, 15);
+		add(mAddressEdit, constraints);
+		
+		constraints.gridx = 1;
+		constraints.gridy = 1;
+		constraints.weightx = 1;
+		constraints.insets = new Insets(0, 15, 15, 30);
+		add(mBtnConnect, constraints);
+		
+		constraints.gridx = 0;
+		constraints.gridy = 2;
+		constraints.gridwidth = 2;
+		constraints.weighty = 2;
+		constraints.insets = new Insets(15, 30, 0, 30);
+		add(listScrollPane, constraints);
 
-		add(getHeaderLabel("Csatlakozás játékhoz"));
-		add(clientButtons);
-		add(getBackButton(PanelId.MULTIPLAYER_PANEL));
+		constraints.gridx = 0;
+		constraints.gridy = 3;
+		constraints.gridwidth = 2;
+		constraints.ipady = 30;
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.anchor = GridBagConstraints.PAGE_END;
+		constraints.insets = new Insets(0, 30, 30, 30);
+		add(getBackButton(PanelId.MULTIPLAYER_PANEL), constraints);
 	}
 
 	@Override
