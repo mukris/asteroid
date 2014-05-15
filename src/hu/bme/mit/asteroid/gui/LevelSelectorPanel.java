@@ -6,6 +6,7 @@ import hu.bme.mit.asteroid.Storage;
 import hu.bme.mit.asteroid.exceptions.LevelNotLoadableException;
 import hu.bme.mit.asteroid.gui.GameWindow.PanelId;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -62,6 +63,7 @@ public class LevelSelectorPanel extends GamePanel {
 
 		JLabel labelLevels = new JLabel("Pályák");
 		labelLevels.setFont(mStandardFont);
+		labelLevels.setForeground(Color.WHITE);
 		labelLevels.setHorizontalAlignment(JLabel.CENTER);
 
 		mLevelButtons = new ArrayList<>();

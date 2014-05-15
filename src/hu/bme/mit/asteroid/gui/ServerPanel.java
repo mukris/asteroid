@@ -7,6 +7,7 @@ import hu.bme.mit.asteroid.network.NetworkDiscover;
 import hu.bme.mit.asteroid.network.NetworkListener;
 import hu.bme.mit.asteroid.network.NetworkServer;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -52,6 +53,7 @@ public class ServerPanel extends GamePanel {
 
 		JLabel labelIPs = new JLabel("A szerver ismert IP címei:");
 		labelIPs.setFont(mStandardFont);
+		labelIPs.setForeground(Color.WHITE);
 		labelIPs.setHorizontalAlignment(JLabel.CENTER);
 
 		mAddresses = new DefaultListModel<>();

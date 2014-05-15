@@ -4,6 +4,7 @@ import hu.bme.mit.asteroid.Storage;
 import hu.bme.mit.asteroid.gui.GameWindow.PanelId;
 import hu.bme.mit.asteroid.model.ToplistItem;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -30,14 +31,17 @@ public class Toplist extends GamePanel {
 
 		mLabelHeaderRank = new JLabel("Helyezés");
 		mLabelHeaderRank.setFont(mHeaderFont);
+		mLabelHeaderRank.setForeground(Color.WHITE);
 		mLabelHeaderRank.setHorizontalAlignment(JLabel.CENTER);
 
 		mLabelHeaderName = new JLabel("Név");
 		mLabelHeaderName.setFont(mHeaderFont);
+		mLabelHeaderName.setForeground(Color.WHITE);
 		mLabelHeaderName.setHorizontalAlignment(JLabel.CENTER);
 
 		mLabelHeaderScore = new JLabel("Pontszám");
 		mLabelHeaderScore.setFont(mHeaderFont);
+		mLabelHeaderScore.setForeground(Color.WHITE);
 		mLabelHeaderScore.setHorizontalAlignment(JLabel.CENTER);
 
 		update(mToplistTable);
@@ -91,16 +95,19 @@ public class Toplist extends GamePanel {
 			final JLabel labelRank = new JLabel(i++ + ".");
 			labelRank.setHorizontalAlignment(JLabel.CENTER);
 			labelRank.setFont(mStandardFont);
+			labelRank.setForeground(Color.WHITE);
 			mToplistTable.add(labelRank);
 
 			final JLabel labelName = new JLabel(toplistItem.getName());
 			labelName.setHorizontalAlignment(JLabel.CENTER);
 			labelName.setFont(mStandardFont);
+			labelName.setForeground(Color.WHITE);
 			mToplistTable.add(labelName);
 
 			final JLabel labelScore = new JLabel(toplistItem.getPoints() + "");
 			labelScore.setHorizontalAlignment(JLabel.CENTER);
 			labelScore.setFont(mStandardFont);
+			labelScore.setForeground(Color.WHITE);
 			mToplistTable.add(labelScore);
 		}
 		toplistTable.revalidate();

@@ -77,6 +77,7 @@ public abstract class GamePanel extends JPanel {
 		if (mHeaderLabel == null) {
 			mHeaderLabel = new JLabel(title);
 			mHeaderLabel.setFont(mHeaderFont);
+			mHeaderLabel.setForeground(Color.WHITE);
 			mHeaderLabel.setHorizontalAlignment(JLabel.CENTER);
 		}
 		return mHeaderLabel;
