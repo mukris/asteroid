@@ -1,5 +1,7 @@
 package hu.bme.mit.asteroid.model;
 
+import hu.bme.mit.asteroid.GameSession;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;

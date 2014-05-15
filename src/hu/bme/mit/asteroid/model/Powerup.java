@@ -11,7 +11,7 @@ import java.util.Map.Entry;
 public class Powerup extends SpaceObject implements Serializable {
 	private static final long serialVersionUID = 5325099147757367725L;
 
-	public static final int RADIUS = 20;
+	public static final int RADIUS = 15;
 
 	/**
 	 * Az egyes típusok megjelenési valószínűsége %-ban

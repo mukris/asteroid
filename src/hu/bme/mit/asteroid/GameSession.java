@@ -253,6 +253,7 @@ public abstract class GameSession implements ControlInterface.Callback {
 							checkCollisions();
 							updateGUI();
 							setLastTime(currentTime);
+							reducePoints(timeDelta, mGameState.getPlayer1State());
 						}
 					}
 				} catch (InterruptedException e) {
@@ -349,7 +350,7 @@ public abstract class GameSession implements ControlInterface.Callback {
 					acceleration.setLength(acceleration.getLength() + timeDelta);
 				}
 
-				spaceShip.getSpeed().add(spaceShip.getAcceleration().clone().multiply(timeDelta / 100f)).limit(600f);
+				spaceShip.getSpeed().add(spaceShip.getAcceleration().clone().multiply(timeDelta / 100f)).limit(200f);
 			}
 
 			if (spaceShip.isTurningLeft()) {
@@ -620,6 +621,14 @@ public abstract class GameSession implements ControlInterface.Callback {
 				for (Asteroid asteroid : toAdd) {
 					asteroids.add(asteroid);
 				}
+			}
+		}
+		
+		protected void reducePoints (long timeDelta, Player.State state){
+			long baseTime = 20;
+			if ((baseTime -= timeDelta) < 0){
+				baseTime = 20;
+			state.addPoints(-5);
 			}
 		}
 
