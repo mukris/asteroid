@@ -4,8 +4,8 @@ import hu.bme.mit.asteroid.GameManager;
 import hu.bme.mit.asteroid.exceptions.LevelNotExistsException;
 import hu.bme.mit.asteroid.gui.GameWindow.PanelId;
 
-import java.awt.Container;
-import java.awt.GridLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -15,7 +15,7 @@ import javax.swing.JButton;
  * A kétjátékos játékmódok kiválasztását lehetővé tévő panel
  */
 public class MultiplayerPanel extends GamePanel {
-	private static final long serialVersionUID = 8978172251199097146L;
+	private static final long serialVersionUID = -476729603741239671L;
 
 	private JButton mBtnLocal;
 	private JButton mBtnServer;
@@ -59,23 +59,43 @@ public class MultiplayerPanel extends GamePanel {
 			}
 		});
 
-		Container multiPLayerButtons = new Container();
+		setLayout(new GridBagLayout());
+		GridBagConstraints constraints = new GridBagConstraints();
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.gridwidth = 2;
+		constraints.ipadx = 200;
+		constraints.weighty = 1;
+		constraints.weightx = 1;
+		constraints.anchor = GridBagConstraints.PAGE_START;
+		add(getHeaderLabel("Multiplayer"), constraints);
 
-		multiPLayerButtons.setLayout(new GridLayout(4, 0));
-		multiPLayerButtons.setSize(10, 10);
-		multiPLayerButtons.add(mBtnLocal);
-		multiPLayerButtons.add(mBtnServer);
-		multiPLayerButtons.add(mBtnClient);
+		constraints.gridx = 0;
+		constraints.gridy = 1;
+		constraints.gridwidth = 1;
+		constraints.gridheight = 2;
+		constraints.weighty = 2;
+		constraints.weightx = 0.5;
+		constraints.anchor = GridBagConstraints.CENTER;
+		constraints.fill = GridBagConstraints.VERTICAL;
+		add(mBtnLocal, constraints);
 
-		add(getHeaderLabel("Multiplayer"));
-		add(multiPLayerButtons);
-		add(getBackButton(PanelId.GAME_MODE_SELECTOR));
+		constraints.gridx = 1;
+		constraints.gridy = 1;
+		constraints.gridheight = 1;
+		constraints.ipadx = 100;
+		add(mBtnServer, constraints);
 
-		/*
-		 * setLayout(new BorderLayout()); add(mBtnLocal,BorderLayout.CENTER);
-		 * add(mBtnServer,BorderLayout.CENTER);
-		 * add(mBtnClient,BorderLayout.CENTER);
-		 * add(getBackButton(PanelId.GAME_MODE_SELECTOR));
-		 */
+		constraints.gridx = 1;
+		constraints.gridy = 2;
+		add(mBtnClient, constraints);
+
+		constraints.gridx = 0;
+		constraints.gridy = 3;
+		constraints.gridwidth = 2;
+		constraints.ipady = 30;
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.anchor = GridBagConstraints.PAGE_END;
+		add(getBackButton(PanelId.GAME_MODE_SELECTOR), constraints);
 	}
 }
