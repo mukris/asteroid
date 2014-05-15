@@ -57,11 +57,15 @@ public class GameState implements Serializable {
 			synchronized (mPlayer2State) {
 				mPlayer2State = newGameState.mPlayer2State;
 			}
+		} else {
+			mPlayer2State = newGameState.mPlayer2State;
 		}
 		if (mSpaceShip2 != null) {
 			synchronized (mSpaceShip2) {
 				mSpaceShip2 = newGameState.mSpaceShip2;
 			}
+		} else {
+			mSpaceShip2 = newGameState.mSpaceShip2;
 		}
 		synchronized (mAsteroids) {
 			mAsteroids = newGameState.mAsteroids;
