@@ -57,7 +57,7 @@ public class MultiplayerGameSession extends GameSession {
 					GameManager gameManager = GameManager.getInstance();
 					gameManager.unregisterClientListener(MultiplayerGameSession.this);
 					gameManager.unregisterServerListener(MultiplayerGameSession.this);
-					
+
 					if (getState() != GameSession.State.GAME_OVER) {
 						stop();
 						gameManager.onNetworkError();
@@ -134,6 +134,12 @@ public class MultiplayerGameSession extends GameSession {
 			checkSpaceship2AsteroidCollisions(mGameState.getSpaceShip2(), mGameState.getPlayer2State());
 			checkSpaceship2PowerupCollision(mGameState.getSpaceShip1(), mGameState.getPlayer1State());
 			checkSpaceship2PowerupCollision(mGameState.getSpaceShip2(), mGameState.getPlayer2State());
+		}
+
+		@Override
+		protected void reducePoints(long timeDelta, Player.State state) {
+			super.reducePoints(timeDelta, state);
+			super.reducePoints(timeDelta, mGameState.getPlayer2State());
 		}
 
 		@Override

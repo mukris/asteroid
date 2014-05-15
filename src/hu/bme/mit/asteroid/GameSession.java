@@ -252,9 +252,9 @@ public abstract class GameSession implements ControlInterface.Callback {
 							}
 							calculatePhysics(timeDelta, currentTime);
 							checkCollisions();
+							reducePoints(timeDelta, mGameState.getPlayer1State());
 							updateGUI();
 							setLastTime(currentTime);
-							reducePoints(timeDelta, mGameState.getPlayer1State());
 						}
 					}
 				} catch (InterruptedException e) {
@@ -625,11 +625,22 @@ public abstract class GameSession implements ControlInterface.Callback {
 			}
 		}
 
+		/**
+		 * Pontcsökkenés számítása
+		 * 
+		 * @param timeDelta
+		 *            A függvény utolsó futtatása óta eltelt idő
+		 *            ezredmásodpercben
+		 * @param state
+		 *            A megfelelő játékos {@link Player.State}-je
+		 */
 		protected void reducePoints(long timeDelta, Player.State state) {
 			if ((mReducePointTime -= timeDelta) < 0) {
 				mReducePointTime = 1000;
-				if (state.getPoints() > 0) {
-					state.addPoints(-5);
+				synchronized (state) {
+					if (state.getPoints() >= 5) {
+						state.addPoints(-5);
+					}
 				}
 			}
 		}
