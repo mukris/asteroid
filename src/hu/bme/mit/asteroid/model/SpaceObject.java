@@ -17,11 +17,6 @@ public abstract class SpaceObject implements Serializable {
 	 * Az objektum sugara
 	 */
 	private int mRadius;
-	
-	/**
-	 * Az objektum (aszteroida) élete
-	 */
-	private int mHitsLeft;
 
 	/**
 	 * Konstruktor
@@ -93,21 +88,6 @@ public abstract class SpaceObject implements Serializable {
 	 */
 	public void setRadius(int radius) {
 		mRadius = radius;
-	}
-	
-	/**
-	 * Az objektum (aszteroida) hátralevő életének álláas
-	 * @param hitsleft
-	 */
-	public void setHitsLeft(int hitsleft) {
-		mHitsLeft = hitsleft;
-	}
-	
-	/**
-	 * @return az objektum (aszteroida) hátralévő életének száma
-	 */
-	public int getHitsLeft() {
-		return mHitsLeft;
 	}
 
 	/**

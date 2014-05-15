@@ -6,7 +6,7 @@ import java.io.Serializable;
  * A játékban szereplő aszteroidákat reprezentáló osztály
  */
 public class Asteroid extends MovingSpaceObject implements Serializable {
-	private static final long serialVersionUID = 8613471195440058251L;
+	private static final long serialVersionUID = -1228942266636338555L;
 
 	/**
 	 * Az aszteroidák lehetséges típusai
@@ -41,6 +41,11 @@ public class Asteroid extends MovingSpaceObject implements Serializable {
 	public static final int ASTEROID_MAXHITS_LARGE = 3;
 	public static final int ASTEROID_MAXHITS_MEDIUM = 2;
 	public static final int ASTEROID_MAXHITS_SMALL = 1;
+
+	/**
+	 * Az aszteroida hátralévő életeinek száma
+	 */
+	private int mHitsLeft;
 
 	private Type mType;
 
@@ -82,6 +87,24 @@ public class Asteroid extends MovingSpaceObject implements Serializable {
 		setRadius(radius);
 		setHitsLeft(maxhits);
 		mType = type;
+	}
+
+	/**
+	 * Az aszteroida hátralevő életének beállítása
+	 * 
+	 * @param hitsleft
+	 */
+	public void setHitsLeft(int hitsleft) {
+		mHitsLeft = hitsleft;
+	}
+
+	/**
+	 * Visszaadja az aszteroida hátralévő életének számát
+	 * 
+	 * @return Az aszteroida hátralévő életének száma
+	 */
+	public int getHitsLeft() {
+		return mHitsLeft;
 	}
 
 	/**
