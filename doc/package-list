@@ -1,0 +1,7 @@
+hu.bme.mit.asteroid
+hu.bme.mit.asteroid.control
+hu.bme.mit.asteroid.exceptions
+hu.bme.mit.asteroid.gui
+hu.bme.mit.asteroid.model
+hu.bme.mit.asteroid.network
+hu.bme.mit.asteroid.player
