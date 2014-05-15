@@ -64,6 +64,7 @@ public class SpaceShip extends DirectionalMovingSpaceObject implements Serializa
 			Weapon newWeapon = mWeapon.clone();
 			newWeapon.setDirection(getDirection());
 			newWeapon.setPosition(getPosition().clone());
+			newWeapon.getSpeed().add(getSpeed().clone());
 			synchronized (mWeapons) {
 				mWeapons.add(newWeapon);
 			}
