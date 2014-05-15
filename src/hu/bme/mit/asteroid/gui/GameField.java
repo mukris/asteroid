@@ -28,40 +28,47 @@ import javax.swing.SwingUtilities;
  * A játék grafikus megjelenítését végző osztály
  */
 public class GameField extends GamePanel {
-	private static final long serialVersionUID = 9104240694933170699L;
+	private static final long serialVersionUID = 1215557671146190785L;
 
-	private static final int FONT_SIZE_STATS = 16;
+	private static final String sPaused = "PAUSED";
+	private static final String sGameOver = "GAME OVER";
 	private static final int FONT_SIZE_STATUS = 80;
-	private static final Font mFontStats = new Font("Serif", Font.PLAIN, FONT_SIZE_STATS);
 	private static final Font mFontStatus = new Font("Serif", Font.BOLD, FONT_SIZE_STATUS);
 	private GameState mGameState;
 	private SpaceShipPainter mSpaceshipPainter;
 	private AsteroidPainter mAsteroidPainter;
 	private WeaponPainter mWeaponPainter;
 	private PowerupPainter mPowerupPainter;
-	private Image mImageBackground = null;
 	private AffineTransform mReverseYAxisTransform;
 
 	public GameField(GameWindow gameWindow) {
 		super(gameWindow);
 		try {
-			mImageBackground = ImageIO.read(GameField.class.getResourceAsStream("/hu/bme/mit/asteroid/res/space_1.jpg"));
-			final Image imageSpaceship1Default = ImageIO.read(GameField.class.getResourceAsStream("/hu/bme/mit/asteroid/res/Spaceship_G_nofire.png"));
-			final Image imageSpaceship1Acc = ImageIO.read(GameField.class.getResourceAsStream("/hu/bme/mit/asteroid/res/Spaceship_G_fire.png"));
-			final Image imageSpaceship2Default = ImageIO.read(GameField.class.getResourceAsStream("/hu/bme/mit/asteroid/res/Spaceship_R_nofire.png"));
-			final Image imageSpaceship2Acc = ImageIO.read(GameField.class.getResourceAsStream("/hu/bme/mit/asteroid/res/Spaceship_R_fire.png"));
+			final Image imageSpaceship1Default = ImageIO.read(GameField.class
+					.getResourceAsStream("/hu/bme/mit/asteroid/res/Spaceship_G_nofire.png"));
+			final Image imageSpaceship1Acc = ImageIO.read(GameField.class
+					.getResourceAsStream("/hu/bme/mit/asteroid/res/Spaceship_G_fire.png"));
+			final Image imageSpaceship2Default = ImageIO.read(GameField.class
+					.getResourceAsStream("/hu/bme/mit/asteroid/res/Spaceship_R_nofire.png"));
+			final Image imageSpaceship2Acc = ImageIO.read(GameField.class
+					.getResourceAsStream("/hu/bme/mit/asteroid/res/Spaceship_R_fire.png"));
 			mSpaceshipPainter = new SpaceShipPainter(imageSpaceship1Default, imageSpaceship1Acc,
 					imageSpaceship2Default, imageSpaceship2Acc);
 
-			final Image imageAsteroidSmall = ImageIO.read(GameField.class.getResourceAsStream("/hu/bme/mit/asteroid/res/asteroid_1.png"));
-			final Image imageAsteroidMedium = ImageIO.read(GameField.class.getResourceAsStream("/hu/bme/mit/asteroid/res/asteroid_2.png"));
-			final Image imageAsteroidLarge = ImageIO.read(GameField.class.getResourceAsStream("/hu/bme/mit/asteroid/res/asteroid_3.png"));
+			final Image imageAsteroidSmall = ImageIO.read(GameField.class
+					.getResourceAsStream("/hu/bme/mit/asteroid/res/asteroid_1.png"));
+			final Image imageAsteroidMedium = ImageIO.read(GameField.class
+					.getResourceAsStream("/hu/bme/mit/asteroid/res/asteroid_2.png"));
+			final Image imageAsteroidLarge = ImageIO.read(GameField.class
+					.getResourceAsStream("/hu/bme/mit/asteroid/res/asteroid_3.png"));
 			mAsteroidPainter = new AsteroidPainter(imageAsteroidSmall, imageAsteroidMedium, imageAsteroidLarge);
 
-			final Image imageWeapon = ImageIO.read(GameField.class.getResourceAsStream("/hu/bme/mit/asteroid/res/weapon.png"));
+			final Image imageWeapon = ImageIO.read(GameField.class
+					.getResourceAsStream("/hu/bme/mit/asteroid/res/weapon.png"));
 			mWeaponPainter = new WeaponPainter(imageWeapon);
 
-			final Image imagePowerup = ImageIO.read(GameField.class.getResourceAsStream("/hu/bme/mit/asteroid/res/powerup.png"));
+			final Image imagePowerup = ImageIO.read(GameField.class
+					.getResourceAsStream("/hu/bme/mit/asteroid/res/powerup.png"));
 			mPowerupPainter = new PowerupPainter(imagePowerup);
 
 		} catch (IOException e) {
@@ -97,11 +104,11 @@ public class GameField extends GamePanel {
 
 	@Override
 	public void paint(Graphics g) {
+		super.paint(g);
 		Graphics2D g2 = (Graphics2D) g;
 		final AffineTransform originalTransform = g2.getTransform();
 		g2.setTransform(mReverseYAxisTransform);
 
-		g.drawImage(mImageBackground, 0, 0, null);
 		if (mGameState != null) {
 			final boolean isMultiplayer = mGameState.isMultiplayer();
 			SpaceShip spaceShip1 = mGameState.getSpaceShip1();
@@ -144,27 +151,25 @@ public class GameField extends GamePanel {
 			mSpaceshipPainter.paint(g, spaceShip1, true);
 
 			g2.setTransform(originalTransform);
-			g2.setFont(mFontStats);
+			g2.setFont(mStandardFont);
 			g2.setColor(Color.WHITE);
-			printStats(g2, mGameState.getPlayer1State(), 10, 10);
+			printStats(g2, mGameState.getPlayer1State(), mStandardFont, 10, 10);
 			if (isMultiplayer) {
-				printStats(g2, mGameState.getPlayer2State(), getWidth() - 100, 10);
+				printStats(g2, mGameState.getPlayer2State(), mStandardFont, getWidth() - 100, 10);
 			}
 
 			switch (mGameState.getGameSessionState()) {
 			case PAUSED: {
 				g2.setFont(mFontStatus);
-				final String str = "PAUSED";
-				final Rectangle2D stringBounds = g2.getFontMetrics(mFontStatus).getStringBounds(str, g2);
-				g2.drawString(str, (int) (getWidth() / 2 - stringBounds.getWidth() / 2),
+				final Rectangle2D stringBounds = g2.getFontMetrics(mFontStatus).getStringBounds(sPaused, g2);
+				g2.drawString(sPaused, (int) (getWidth() / 2 - stringBounds.getWidth() / 2),
 						(int) (getHeight() / 2 + stringBounds.getHeight() / 2));
 				break;
 			}
 			case GAME_OVER: {
 				g2.setFont(mFontStatus);
-				final String str = "GAME OVER";
-				final Rectangle2D stringBounds = g2.getFontMetrics(mFontStatus).getStringBounds(str, g2);
-				g2.drawString(str, (int) (getWidth() / 2 - stringBounds.getWidth() / 2),
+				final Rectangle2D stringBounds = g2.getFontMetrics(mFontStatus).getStringBounds(sGameOver, g2);
+				g2.drawString(sGameOver, (int) (getWidth() / 2 - stringBounds.getWidth() / 2),
 						(int) (getHeight() / 2 + stringBounds.getHeight() / 2));
 				break;
 			}
@@ -181,16 +186,24 @@ public class GameField extends GamePanel {
 	 *            A "vászon", ahova írunk
 	 * @param state
 	 *            A játékos {@link Player.State}-je
+	 * @param font
+	 *            A font, amivel írunk
 	 * @param posX
 	 *            A kiírás bal koordinátája
 	 * @param posY
 	 *            A kíírás felső koordninátája
 	 */
-	private void printStats(Graphics g, Player.State state, int posX, int posY) {
+	private void printStats(Graphics g, Player.State state, Font font, int posX, int posY) {
+		String lives;
+		String points;
 		synchronized (state) {
-			g.drawString("Lives: " + state.getLives(), posX, FONT_SIZE_STATS + posY);
-			g.drawString("Points: " + state.getPoints(), posX, FONT_SIZE_STATS * 2 + posY);
+			lives = "Lives: " + state.getLives();
+			points = "Points: " + state.getPoints();
 		}
+		final Rectangle2D livesBounds = g.getFontMetrics(font).getStringBounds(lives, g);
+		final Rectangle2D pointsBounds = g.getFontMetrics(font).getStringBounds(points, g);
+		g.drawString(lives, posX, (int) (livesBounds.getHeight() + posY));
+		g.drawString(points, posX, (int) (pointsBounds.getHeight() * 2 + posY));
 	}
 
 	@Override
