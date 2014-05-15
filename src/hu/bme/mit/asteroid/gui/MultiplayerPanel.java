@@ -6,6 +6,7 @@ import hu.bme.mit.asteroid.gui.GameWindow.PanelId;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -77,17 +78,20 @@ public class MultiplayerPanel extends GamePanel {
 		constraints.weighty = 2;
 		constraints.weightx = 0.5;
 		constraints.anchor = GridBagConstraints.CENTER;
-		constraints.fill = GridBagConstraints.VERTICAL;
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.insets = new Insets(0, 30, 0, 15);
 		add(mBtnLocal, constraints);
 
 		constraints.gridx = 1;
 		constraints.gridy = 1;
 		constraints.gridheight = 1;
 		constraints.ipadx = 100;
+		constraints.insets = new Insets(0, 15, 15, 30);
 		add(mBtnServer, constraints);
 
 		constraints.gridx = 1;
 		constraints.gridy = 2;
+		constraints.insets = new Insets(15, 15, 0, 30);
 		add(mBtnClient, constraints);
 
 		constraints.gridx = 0;
@@ -96,6 +100,7 @@ public class MultiplayerPanel extends GamePanel {
 		constraints.ipady = 30;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.anchor = GridBagConstraints.PAGE_END;
+		constraints.insets = new Insets(0, 30, 30, 30);
 		add(getBackButton(PanelId.GAME_MODE_SELECTOR), constraints);
 	}
 }
