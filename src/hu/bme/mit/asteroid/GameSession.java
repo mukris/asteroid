@@ -450,7 +450,7 @@ public abstract class GameSession implements ControlInterface.Callback {
 			ArrayList<Asteroid> toAdd = new ArrayList<>();
 			synchronized (asteroids) {
 				for (Asteroid asteroid : asteroids) {
-					if (asteroid.checkCollision(spaceShip) && spaceShip.isVulnerable()) {
+					if (asteroid.checkCollision(spaceShip, mWidth, mHeight) && spaceShip.isVulnerable()) {
 						synchronized (state) {
 							int lives = state.getLives();
 							if (--lives == 0) {
@@ -510,7 +510,7 @@ public abstract class GameSession implements ControlInterface.Callback {
 			ArrayList<Powerup> powerups = mGameState.getPowerups();
 			synchronized (powerups) {
 				for (Powerup powerup : powerups) {
-					if (powerup.checkCollision(spaceShip)) {
+					if (powerup.checkCollision(spaceShip, mWidth, mHeight)) {
 						switch (powerup.getType()) {
 						case PLUS_POINTS_SMALL:
 							state.addPoints(10);
@@ -551,7 +551,7 @@ public abstract class GameSession implements ControlInterface.Callback {
 				for (Weapon weapon : weapons) {
 					synchronized (asteroids) {
 						for (Asteroid asteroid : asteroids) {
-							if (asteroid.checkCollision(weapon) && weapon.isAlive()) {
+							if (asteroid.checkCollision(weapon, mWidth, mHeight) && weapon.isAlive()) {
 								// HACK: ha a lövedék ütközik, azonnal
 								// semmisüljön meg -> hátralévő idejét
 								// csökkentjük

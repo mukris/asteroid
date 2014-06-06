@@ -96,9 +96,13 @@ public abstract class SpaceObject implements Serializable {
 	 * 
 	 * @param other
 	 *            Másik objektum
+	 * @param width
+	 *            A játékmező szélessége
+	 * @param height
+	 *            A játékmező magassága
 	 * @return True, ha igen, false, ha nem.
 	 */
-	public boolean checkCollision(SpaceObject other) {
-		return (Vector2D.getDistance(mPosition, other.mPosition) < (mRadius + other.mRadius));
+	public boolean checkCollision(SpaceObject other, int width, int height) {
+		return (mPosition.getDistanceInRange(other.mPosition, width, height) < (mRadius + other.mRadius));
 	}
 }

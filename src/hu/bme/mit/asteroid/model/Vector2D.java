@@ -25,6 +25,11 @@ public class Vector2D implements Cloneable, Serializable {
 		mY = (float) (length * Math.sin(direction));
 	}
 
+	public Vector2D(Vector2D vector, float dx, float dy) {
+		mX = vector.mX + dx;
+		mY = vector.mY + dy;
+	}
+
 	@Override
 	public Vector2D clone() {
 		return new Vector2D(mX, mY);
@@ -44,6 +49,12 @@ public class Vector2D implements Cloneable, Serializable {
 
 	public void setY(float y) {
 		mY = y;
+	}
+
+	public Vector2D add(float dx, float dy) {
+		mX += dx;
+		mY += dy;
+		return this;
 	}
 
 	public Vector2D add(Vector2D vector) {
@@ -102,8 +113,36 @@ public class Vector2D implements Cloneable, Serializable {
 		return getDistance(this, other);
 	}
 
+	public float getDistanceInRange(Vector2D other, int width, int height) {
+		float distance = getDistance(other);
+		
+		final float dx = ((getX() < other.getX()) ? -width : width);
+		final float dy = ((getY() < other.getY()) ? -height : height);
+		
+		Vector2D temp = new Vector2D(other, dx, 0);
+		float d = getDistance(temp);
+		if (d < distance) {
+			distance = d;
+		}
+
+		temp.add(0, dy);
+		d = getDistance(temp);
+		if (d < distance) {
+			distance = d;
+		}
+		
+		temp.add(-dx, 0);
+		d = getDistance(temp);
+		if (d < distance) {
+			distance = d;
+		}
+		return distance;
+	}
+
 	public static float getDistance(Vector2D v1, Vector2D v2) {
-		return (float) Math.sqrt((v1.mX - v2.mX) * (v1.mX - v2.mX) + (v1.mY - v2.mY) * (v1.mY - v2.mY));
+		final float dx = v1.mX - v2.mX;
+		final float dy = v1.mY - v2.mY;
+		return (float) Math.sqrt(dx * dx + dy * dy);
 	}
 
 	/**
