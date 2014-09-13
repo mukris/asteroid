@@ -13,12 +13,12 @@ public class AsteroidPainter extends Painter {
 	private final Image mLargeImage;
 
 	public AsteroidPainter(Image imageSmall, Image imageMedium, Image imageLarge) {
-		mSmallImage = imageSmall.getScaledInstance(Asteroid.RADIUS_SMALL * 2, Asteroid.RADIUS_SMALL * 2,
-				Image.SCALE_SMOOTH);
-		mMediumImage = imageMedium.getScaledInstance(Asteroid.RADIUS_MEDIUM * 2, Asteroid.RADIUS_MEDIUM * 2,
-				Image.SCALE_SMOOTH);
-		mLargeImage = imageLarge.getScaledInstance(Asteroid.RADIUS_LARGE * 2, Asteroid.RADIUS_LARGE * 2,
-				Image.SCALE_SMOOTH);
+		mSmallImage = imageSmall.getScaledInstance(Asteroid.Type.SMALL.getRadius() * 2,
+				Asteroid.Type.SMALL.getRadius() * 2, Image.SCALE_SMOOTH);
+		mMediumImage = imageMedium.getScaledInstance(Asteroid.Type.MEDIUM.getRadius() * 2,
+				Asteroid.Type.MEDIUM.getRadius() * 2, Image.SCALE_SMOOTH);
+		mLargeImage = imageLarge.getScaledInstance(Asteroid.Type.LARGE.getRadius() * 2,
+				Asteroid.Type.LARGE.getRadius() * 2, Image.SCALE_SMOOTH);
 	}
 
 	public void paint(Graphics g, Asteroid asteroid) {

@@ -7,9 +7,9 @@ import java.io.Serializable;
  * őse.
  */
 public abstract class MovingSpaceObject extends SpaceObject implements Serializable {
-	private static final long serialVersionUID = 1967192605124590747L;
-	
-	public static final int MULTIPLIER = 15;
+	private static final long serialVersionUID = 2838146221163621330L;
+
+	protected static final int MULTIPLIER = 15;
 
 	/**
 	 * Az objektum sebessége
@@ -84,9 +84,4 @@ public abstract class MovingSpaceObject extends SpaceObject implements Serializa
 	public void setSpeed(Vector2D speed) {
 		mSpeed = speed;
 	}
-	
-	//véletlen sebességet generál 0-maxSpeed tartományban
-	/*public void randomSpeedGenerator(float maxSpeed) {
-		mSpeed = (Vector2D)(Vector2D.multiply( Math.random() * maxSpeed));
-	}*/
 }

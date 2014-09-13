@@ -154,28 +154,12 @@ public class GameFactory {
 	 * @return Új véletlenszerűen elhelyezett aszteroida
 	 */
 	private static Asteroid createNewRandomAsteroid(Asteroid.Type type) {
-		float minSpeed, maxSpeed;
+		final Vector2D speed = Vector2D.generateRandom(type.getSpeedMin(), type.getSpeedMax());
 
-		switch (type) {
-		case LARGE:
-			maxSpeed = (Asteroid.ASTEROID_SPEED_LARGE_MAX * MovingSpaceObject.MULTIPLIER);
-			minSpeed = (Asteroid.ASTEROID_SPEED_LARGE_MIN * MovingSpaceObject.MULTIPLIER);
-			break;
-		case MEDIUM:
-			maxSpeed = (Asteroid.ASTEROID_SPEED_MEDIUM_MAX * MovingSpaceObject.MULTIPLIER);
-			minSpeed = (Asteroid.ASTEROID_SPEED_MEDIUM_MIN * MovingSpaceObject.MULTIPLIER);
-			break;
-		case SMALL:
-			maxSpeed = (Asteroid.ASTEROID_SPEED_SMALL_MAX * MovingSpaceObject.MULTIPLIER);
-			minSpeed = (Asteroid.ASTEROID_SPEED_SMALL_MIN * MovingSpaceObject.MULTIPLIER);
-			break;
+		final Vector2D position = Vector2D.generateRandomPosition(mGameFieldWidth, mGameFieldHeight,
+				Asteroid.ASTEROID_MIN_DISTANCE);
 
-		default:
-			throw new RuntimeException();
-		}
-
-		return new Asteroid(type, Vector2D.generateRandomPosition(mGameFieldWidth, mGameFieldHeight,
-				Asteroid.ASTEROID_MIN_DISTANCE), Vector2D.generateRandom(minSpeed, maxSpeed));
+		return new Asteroid(type, position, speed);
 	}
 
 	/**

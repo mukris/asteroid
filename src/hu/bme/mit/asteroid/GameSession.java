@@ -461,25 +461,14 @@ public abstract class GameSession implements ControlInterface.Callback {
 						spaceShip.setUnvulnerableFor(SpaceShip.DEFAULT_UNVULNERABILITY_TIME);
 						switch (asteroid.getType()) {
 						case LARGE:
-							toAdd.add(new Asteroid(Type.MEDIUM, asteroid.getPosition().clone(), Vector2D
-									.generateRandom(
-											(Asteroid.ASTEROID_SPEED_MEDIUM_MIN * MovingSpaceObject.MULTIPLIER),
-											(Asteroid.ASTEROID_SPEED_MEDIUM_MAX * MovingSpaceObject.MULTIPLIER))));
-
-							toAdd.add(new Asteroid(Type.MEDIUM, asteroid.getPosition().clone(), Vector2D
-									.generateRandom(
-											(Asteroid.ASTEROID_SPEED_MEDIUM_MIN * MovingSpaceObject.MULTIPLIER),
-											(Asteroid.ASTEROID_SPEED_MEDIUM_MAX * MovingSpaceObject.MULTIPLIER))));
+							toAdd.add(createAsteroidWithRandomSpeed(Type.MEDIUM, asteroid.getPosition().clone()));
+							toAdd.add(createAsteroidWithRandomSpeed(Type.MEDIUM, asteroid.getPosition().clone()));
 							toRemove.add(asteroid);
 							break;
 
 						case MEDIUM:
-							toAdd.add(new Asteroid(Type.SMALL, asteroid.getPosition().clone(), Vector2D.generateRandom(
-									(Asteroid.ASTEROID_SPEED_SMALL_MIN * MovingSpaceObject.MULTIPLIER),
-									(Asteroid.ASTEROID_SPEED_SMALL_MAX * MovingSpaceObject.MULTIPLIER))));
-							toAdd.add(new Asteroid(Type.SMALL, asteroid.getPosition().clone(), Vector2D.generateRandom(
-									(Asteroid.ASTEROID_SPEED_SMALL_MIN * MovingSpaceObject.MULTIPLIER),
-									(Asteroid.ASTEROID_SPEED_SMALL_MAX * MovingSpaceObject.MULTIPLIER))));
+							toAdd.add(createAsteroidWithRandomSpeed(Type.SMALL, asteroid.getPosition().clone()));
+							toAdd.add(createAsteroidWithRandomSpeed(Type.SMALL, asteroid.getPosition().clone()));
 							toRemove.add(asteroid);
 							break;
 
@@ -562,37 +551,20 @@ public abstract class GameSession implements ControlInterface.Callback {
 								} else {
 									switch (asteroid.getType()) {
 									case LARGE:
-										toAdd.add(new Asteroid(
-												Type.MEDIUM,
-												asteroid.getPosition().clone(),
-												Vector2D.generateRandom(
-														(Asteroid.ASTEROID_SPEED_MEDIUM_MIN * MovingSpaceObject.MULTIPLIER),
-														(Asteroid.ASTEROID_SPEED_MEDIUM_MAX * MovingSpaceObject.MULTIPLIER))));
-
-										toAdd.add(new Asteroid(
-												Type.MEDIUM,
-												asteroid.getPosition().clone(),
-												Vector2D.generateRandom(
-														(Asteroid.ASTEROID_SPEED_MEDIUM_MIN * MovingSpaceObject.MULTIPLIER),
-														(Asteroid.ASTEROID_SPEED_MEDIUM_MAX * MovingSpaceObject.MULTIPLIER))));
+										toAdd.add(createAsteroidWithRandomSpeed(Type.MEDIUM, asteroid.getPosition()
+												.clone()));
+										toAdd.add(createAsteroidWithRandomSpeed(Type.MEDIUM, asteroid.getPosition()
+												.clone()));
 
 										toRemove.add(asteroid);
 										state.addPoints(100);
 										break;
 
 									case MEDIUM:
-										toAdd.add(new Asteroid(
-												Type.SMALL,
-												asteroid.getPosition().clone(),
-												Vector2D.generateRandom(
-														(Asteroid.ASTEROID_SPEED_SMALL_MIN * MovingSpaceObject.MULTIPLIER),
-														(Asteroid.ASTEROID_SPEED_SMALL_MAX * MovingSpaceObject.MULTIPLIER))));
-										toAdd.add(new Asteroid(
-												Type.SMALL,
-												asteroid.getPosition().clone(),
-												Vector2D.generateRandom(
-														(Asteroid.ASTEROID_SPEED_SMALL_MIN * MovingSpaceObject.MULTIPLIER),
-														(Asteroid.ASTEROID_SPEED_SMALL_MAX * MovingSpaceObject.MULTIPLIER))));
+										toAdd.add(createAsteroidWithRandomSpeed(Type.SMALL, asteroid.getPosition()
+												.clone()));
+										toAdd.add(createAsteroidWithRandomSpeed(Type.SMALL, asteroid.getPosition()
+												.clone()));
 										toRemove.add(asteroid);
 										state.addPoints(40);
 										break;
@@ -658,6 +630,19 @@ public abstract class GameSession implements ControlInterface.Callback {
 		 */
 		protected void onGameOver() {
 			updateGUI();
+		}
+
+		/**
+		 * Aszteroida létrehozása a típusnak megfelelő véletlenszerű sebességgel
+		 * 
+		 * @param type
+		 *            A létrehozandó aszteroida típusa
+		 * @param position
+		 *            Az új aszteroida pozíciója
+		 * @return Az új aszteroida
+		 */
+		private Asteroid createAsteroidWithRandomSpeed(Type type, Vector2D position) {
+			return new Asteroid(type, position, Vector2D.generateRandom(type.getSpeedMin(), type.getSpeedMax()));
 		}
 	}
 }
